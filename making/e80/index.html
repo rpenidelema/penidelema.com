@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>A robot that floated · Rodrigo Penide Lema</title>
+<meta name="description" content="Rodrigo Penide Lema: engineering at Harvey Mudd, art history at Pomona.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Brygada+1918:ital,wght@0,400;0,500;1,400&display=swap">
+<link rel="stylesheet" href="../../assets/css/site.css">
+</head>
+<body class="reading">
+<a class="corner tl caps" href="../../"><svg class="mark" viewBox="0 0 44 60" aria-hidden="true"><path d="M12 54 V18" fill="none" stroke="#111214" stroke-width="3.4" stroke-linecap="round"/><path d="M12 28 C 16 16, 26 12, 34 15" fill="none" stroke="#111214" stroke-width="3.4" stroke-linecap="round"/></svg>Rodrigo Penide Lema</a>
+<nav class="corner tr caps" aria-label="Rooms"><a href="../../making/" aria-current="page">Making</a><a href="../../reading/">Reading</a><a href="../../looking/">Looking</a><a href="../../hosting/">Hosting</a><a href="../../journal/">Journal</a><a href="../../plus/">+</a><a href="../../about/">About</a></nav>
+<div class="corner bl caps langs"><a href="#" aria-current="true">EN</a><span class="quiet" title="Coming soon">ES</span><span class="quiet" title="Coming soon">GL</span></div>
+
+<button type="button" class="menu-btn caps" data-menu="open">Menu</button>
+<div class="overlay" hidden>
+  <div class="top"><a class="caps" href="../../">Rodrigo Penide Lema</a><button type="button" class="caps" data-menu="close">Close</button></div>
+  <ul><li><a href="../../making/">Making</a></li><li><a href="../../reading/">Reading</a></li><li><a href="../../looking/">Looking</a></li><li><a href="../../hosting/">Hosting</a></li><li><a href="../../journal/">Journal</a></li><li><a href="../../plus/">+</a></li><li><a class="quiet" href="../../about/">About</a></li></ul>
+  <div class="caps quiet">EN · ES · GL</div>
+</div>
+<main class="read">
+  <div class="label"><span class="t">A robot that floated</span><span>Baby Beach, Dana Point, spring 2026</span><span class="quiet">Engineering 80, Harvey Mudd</span><span class="quiet">PVC, pool noodles, polyethylene, aluminum, a Teensy, six motors</span></div>
+  <div class="body">
+    <h1>A robot that floated, and two sensors that lied</h1>
+    <p class="lead">We built a surface robot to measure the water at five points of Baby Beach in Dana Point, near a sewage outlet, and asked whether temperature, pH and turbidity changed from place to place.</p>
+    <p>The frame was a cube of PVC pipe wrapped in foam pool noodles, with a curved polyethylene top plate and a sealed electronics box in the middle. Underneath, about 15 centimeters below the surface, hung a thermistor, a pH probe and an infrared turbidity sensor in an aluminum bracket modified so water could flow straight through it.</p>
+    <figure><img src="../../assets/img/e80-sketch.png" alt="Sketch of the robot: a PVC frame with foam floats and a blue electronics box" width="740" height="330"><figcaption>The frame, and how the floats were cut to fit it.</figcaption></figure>
+    <h2>What happened at the beach</h2>
+    <p>The robot did everything we asked of it. It floated, followed its programmed path, stopped at each of the five locations, and logged data while its motors were off.</p>
+    <p>The thermistor agreed with the sea: about 17.8 to 18.2 °C. The other two did not. The pH sensor read about 4, in water expected between 6 and 9, and the turbidity sensor read under 0.5 NTU where the water measured about 13.</p>
+    <h2>What I learned</h2>
+    <p>The sensors were not dead. They had been calibrated in the lab, never in saltwater, and the sea is not the lab. The robot worked. The lesson was about calibration: test the whole sensor, mounted, in the conditions it will actually meet.</p>
+  </div>
+  <aside><p>Draft written from my final report. More photographs to come.</p></aside>
+  <div class="next caps"><a href="../../making/">Back to Making</a><a href="../../making/kreios/">Next: The test hall</a></div>
+</main>
+
+<script src="../../assets/js/site.js"></script>
+</body>
+</html>
