@@ -72,6 +72,7 @@
   }
 
   // Welcome: two strokes, a breath, then the logo opens like a window. Once per visit.
+  var welcome = function () {
   var wel = document.querySelector('.welcome');
   if (wel) {
     var seen = false;
@@ -97,5 +98,27 @@
     wel.addEventListener('click', end);
     var t0 = performance.now();
     (function tick(now) { var t = (now - t0) / 1000; frame(t); if (t < 3.5) raf = requestAnimationFrame(tick); else end(); })(t0);
+  }
+  };
+
+  // Preview gate: a curtain while the site is in preparation, not real security.
+  var gate = document.querySelector('[data-gate]');
+  var root = document.documentElement;
+  if (gate && root.classList.contains('locked')) {
+    var pw = gate.querySelector('input'), no = gate.querySelector('.gate-no');
+    pw.focus();
+    gate.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (pw.value.trim() === '1111') {
+        try { localStorage.setItem('pl-preview', '1'); } catch (err) {}
+        root.classList.remove('locked');
+        window.dispatchEvent(new Event('resize'));
+        welcome();
+      } else {
+        no.textContent = 'Not quite.'; pw.value = ''; pw.focus();
+      }
+    });
+  } else {
+    welcome();
   }
 })();

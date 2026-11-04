@@ -38,6 +38,23 @@ WELCOME = """<div class="welcome" hidden aria-hidden="true">
 </div>"""
 
 
+# Preview gate: while the site is unfinished, visitors need a password.
+# It is a curtain, not a lock: the pages are still public files.
+# To open the site to everyone, set GATED = False and rebuild.
+GATED = True
+GATE_HEAD = """<meta name="robots" content="noindex, nofollow">
+<script>(function(){var k;try{k=localStorage.getItem('pl-preview')}catch(e){}if(k!=='1')document.documentElement.classList.add('locked')})();</script>""" if GATED else ""
+GATE = """<form class="gate" data-gate autocomplete="off">
+  <a class="corner tl caps" href="{p}">""" + MARK + """Rodrigo Penide Lema</a>
+  <div class="gate-in">
+    <p class="t">In preparation.</p>
+    <p class="quiet">The rooms are still being hung. If you were given a word, it opens here.</p>
+    <label class="caps quiet" for="gate-pw">Password</label>
+    <div class="gate-row"><input id="gate-pw" type="password" inputmode="numeric" autocomplete="off"><button type="submit" class="caps">Enter</button></div>
+    <p class="gate-no caps quiet" aria-live="polite"></p>
+  </div>
+</form>""" if GATED else ""
+
 def frame(path, title, body, room=None, where="", welcome=False, horizontal=False):
     depth = len([s for s in path.split("/") if s])
     p = "/" if path.endswith(".html") else "../" * depth
@@ -59,8 +76,10 @@ def frame(path, title, body, room=None, where="", welcome=False, horizontal=Fals
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Brygada+1918:ital,wght@0,400;0,500;1,400&display=swap">
 <link rel="stylesheet" href="{p}assets/css/site.css">
+{GATE_HEAD}
 </head>
 <body class="{'walk' if horizontal else 'reading'}">
+{GATE.replace("{p}", p)}
 <a class="corner tl caps" href="{p}">{MARK}Rodrigo Penide Lema</a>
 <nav class="corner tr caps" aria-label="Rooms">{menu}<a href="{p}about/"{" aria-current=\"page\"" if room == "about" else ""}>About</a></nav>
 <div class="corner bl caps langs"><a href="#" aria-current="true">EN</a><span class="quiet" title="Coming soon">ES</span><span class="quiet" title="Coming soon">GL</span></div>
