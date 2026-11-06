@@ -41,7 +41,7 @@ WELCOME = """<div class="welcome" hidden aria-hidden="true">
 # Preview gate: while the site is unfinished, visitors need a password.
 # It is a curtain, not a lock: the pages are still public files.
 # To open the site to everyone, set GATED = False and rebuild.
-GATED = True
+GATED = False
 GATE_HEAD = """<meta name="robots" content="noindex, nofollow">
 <script>(function(){var k;try{k=localStorage.getItem('pl-preview')}catch(e){}if(k!=='1')document.documentElement.classList.add('locked')})();</script>""" if GATED else ""
 GATE = """<form class="gate" data-gate autocomplete="off">
