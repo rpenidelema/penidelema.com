@@ -4,41 +4,66 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>A robot that floated · Rodrigo Penide Lema</title>
-<meta name="description" content="Rodrigo Penide Lema: engineering at Harvey Mudd, art history at Pomona.">
+<meta name="description" content="Rodrigo Penide Lema: engineering at Harvey Mudd, art history at Pomona. Things made, and things read.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Brygada+1918:ital,wght@0,400;0,500;1,400&display=swap">
 <link rel="stylesheet" href="../../assets/css/site.css">
-
 </head>
-<body class="reading">
-
-<a class="corner tl caps" href="../../"><svg class="mark" viewBox="0 0 44 60" aria-hidden="true"><path d="M12 54 V18" fill="none" stroke="#111214" stroke-width="3.4" stroke-linecap="round"/><path d="M12 28 C 16 16, 26 12, 34 15" fill="none" stroke="#111214" stroke-width="3.4" stroke-linecap="round"/></svg>Rodrigo Penide Lema</a>
-<nav class="corner tr caps" aria-label="Rooms"><a href="../../making/" aria-current="page">Making</a><a href="../../reading/">Reading</a><a href="../../looking/">Looking</a><a href="../../hosting/">Hosting</a><a href="../../journal/">Journal</a><a href="../../plus/">+</a><a href="../../about/">About</a></nav>
-<div class="corner bl caps langs"><a href="#" aria-current="true">EN</a><span class="quiet" title="Coming soon">ES</span><span class="quiet" title="Coming soon">GL</span></div>
-
-<button type="button" class="menu-btn caps" data-menu="open">Menu</button>
+<body>
+<header class="bar">
+  <a class="wordmark" href="../../"><svg class="mark" viewBox="0 0 44 60" aria-hidden="true"><path d="M12 54 V18" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M12 28 C 16 16, 26 12, 34 15" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg><span>Rodrigo Penide Lema</span></a>
+  <nav class="rooms" aria-label="Rooms"><a href="../../making/" aria-current="page">Making</a><a href="../../reading/">Reading</a><a href="../../looking/">Looking</a><a href="../../hosting/">Hosting</a><a href="../../journal/">Journal</a><a href="../../plus/">+</a><a href="../../about/">About</a></nav>
+  <button type="button" class="menu-btn" data-menu="open" aria-expanded="false">Menu</button>
+</header>
 <div class="overlay" hidden>
-  <div class="top"><a class="caps" href="../../">Rodrigo Penide Lema</a><button type="button" class="caps" data-menu="close">Close</button></div>
-  <ul><li><a href="../../making/">Making</a></li><li><a href="../../reading/">Reading</a></li><li><a href="../../looking/">Looking</a></li><li><a href="../../hosting/">Hosting</a></li><li><a href="../../journal/">Journal</a></li><li><a href="../../plus/">+</a></li><li><a class="quiet" href="../../about/">About</a></li></ul>
-  <div class="caps quiet">EN · ES · GL</div>
+  <div class="top"><a href="../../">Rodrigo Penide Lema</a><button type="button" data-menu="close">Close</button></div>
+  <ul><li><a href="../../making/">Making</a></li><li><a href="../../reading/">Reading</a></li><li><a href="../../looking/">Looking</a></li><li><a href="../../hosting/">Hosting</a></li><li><a href="../../journal/">Journal</a></li><li><a href="../../plus/">+</a></li><li><a href="../../about/">About</a></li></ul>
+  <p class="small muted">English for now. Español and galego are on their way.</p>
 </div>
-<main class="read">
-  <div class="label"><span class="t">A robot that floated</span><span>Baby Beach, Dana Point, spring 2026</span><span class="quiet">Engineering 80, Harvey Mudd</span><span class="quiet">PVC, pool noodles, polyethylene, aluminum, a Teensy, six motors</span></div>
-  <div class="body">
-    <h1>A robot that floated, and two sensors that lied</h1>
-    <p class="lead">We built a surface robot to measure the water at five points of Baby Beach in Dana Point, near a sewage outlet, and asked whether temperature, pH and turbidity changed from place to place.</p>
-    <p>The frame was a cube of PVC pipe wrapped in foam pool noodles, with a curved polyethylene top plate and a sealed electronics box in the middle. Underneath, about 15 centimeters below the surface, hung a thermistor, a pH probe and an infrared turbidity sensor in an aluminum bracket modified so water could flow straight through it.</p>
-    <figure><img src="../../assets/img/e80-sketch.png" alt="Sketch of the robot: a PVC frame with foam floats and a blue electronics box" width="740" height="330"><figcaption>The frame, and how the floats were cut to fit it.</figcaption></figure>
-    <h2>What happened at the beach</h2>
-    <p>The robot did everything we asked of it. It floated, followed its programmed path, stopped at each of the five locations, and logged data while its motors were off.</p>
-    <p>The thermistor agreed with the sea: about 17.8 to 18.2 °C. The other two did not. The pH sensor read about 4, in water expected between 6 and 9, and the turbidity sensor read under 0.5 NTU where the water measured about 13.</p>
-    <h2>What I learned</h2>
-    <p>The sensors were not dead. They had been calibrated in the lab, never in saltwater, and the sea is not the lab. The robot worked. The lesson was about calibration: test the whole sensor, mounted, in the conditions it will actually meet.</p>
+<section class="top">
+<div class="head grid">
+  <h1 data-reveal>A robot that floated</h1>
+  <p class="lead" data-reveal style="--i:1">We built a surface robot to measure the sea at five points of a beach in Dana Point. Two of its three sensors got the water wrong.</p>
+</div>
+
+<div class="band">
+  <div class="grid">
+    <div class="inside" data-reveal><p>A floating PVC frame, six motors, and three sensors hanging under the surface.</p></div>
+    <figure class=""><div class="shutter" style="--i:0"><img src="../../assets/img/e80-render.png" alt="A drawing of the robot: a square PVC frame with an orange float, a blue electronics box on top and motors at the corners" width="614" height="407" decoding="async"></div><figcaption>The robot, as drawn before it was built.</figcaption></figure>
   </div>
-  <aside><p>Draft written from my final report. More photographs to come.</p></aside>
-  <div class="next caps"><a href="../../making/">Back to Making</a><a href="../../making/kreios/">Next: The test hall</a></div>
-</main>
+</div>
+<ul class="facts inner"><li data-reveal style="--i:0"><b>Five locations</b><span>Baby Beach, Dana Point, spring 2026</span></li><li data-reveal style="--i:1"><b>Six motors</b><span>Forward, back and sideways, in a grid at each site</span></li><li data-reveal style="--i:2"><b>Three sensors</b><span>Temperature, pH and turbidity, about 15 cm down</span></li><li data-reveal style="--i:3"><b>Four of us</b><span>With Emily Bersin, Anna Chen and TJ Kidd</span></li></ul>
+</section><section class="article grid">
+  <h2 data-reveal>The robot</h2>
+  <div class="text" data-reveal style="--i:1">
+    <p>The frame was a floating box of PVC pipe, with an upper platform and a lower mesh, so the sensing structure stayed under water while the robot stayed afloat. The waterproof electronics box sat in the middle of the top platform, to spread the weight evenly and keep the cables short.</p>
+    <p>The turbidity sensor pointed down through the platform inside a length of PVC pipe, with its opening facing the direction of travel so fresh water kept flowing past it.</p></div>
+  <div class="duo"><figure class=""><div class="shutter" style="--i:0"><img src="../../assets/img/e80-frame.png" alt="A drawing of the PVC frame from above, with its floats cut to fit" width="587" height="425" decoding="async"></div><figcaption>The frame and its floats.</figcaption></figure><figure class=""><div class="shutter" style="--i:1"><img src="../../assets/img/e80-sketch.png" alt="A hand sketch of the robot from the side" width="740" height="330" decoding="async"></div><figcaption>An early sketch.</figcaption></figure></div>
+</section><section class="article grid">
+  <h2 data-reveal>The circuits</h2>
+  <div class="text" data-reveal style="--i:1">
+    <p>Each sensor needed its own amplifier to turn a tiny signal into something the Teensy could read: an inverting offset amplifier with a buffer for the thermistor, a non-inverting pair for the pH probe, and for turbidity a 555 timer pulsing an infrared diode, read by a photodiode through a transimpedance amplifier.</p></div>
+  <div class="duo"><figure class="on-white"><div class="shutter" style="--i:0"><img src="../../assets/img/e80-thermistor.jpg" alt="Circuit diagram of the thermistor amplifier" width="1260" height="680" decoding="async"></div><figcaption>Temperature: the thermistor circuit.</figcaption></figure><figure class="on-white"><div class="shutter" style="--i:1"><img src="../../assets/img/e80-turbidity-circuit.jpg" alt="Circuit diagram of the turbidity photodiode amplifier" width="1280" height="610" decoding="async"></div><figcaption>Turbidity: the photodiode circuit.</figcaption></figure></div>
+</section><section class="article grid">
+  <h2 data-reveal>What the sea said</h2>
+  <div class="text" data-reveal style="--i:1">
+    <p>The robot did everything we asked of it. It floated, followed its path, stopped at each location and logged every sample.</p>
+    <p>The thermistor agreed with the sea: an average of 17.86 °C, less than half a degree from the 18.2 °C we measured by hand. The other two did not. The pH sensor read three to four points low, and the turbidity sensor read between 0.28 and 0.54 NTU, where a classmate's sample of the same water measured 13.3.</p></div>
+  <div class="trio"><figure class="on-white"><div class="shutter" style="--i:0"><img src="../../assets/img/e80-temperature.jpg" alt="Graph of temperature at five locations, flat near 17.9 degrees" width="1372" height="818" decoding="async"></div><figcaption>Temperature at the five locations.</figcaption></figure><figure class="on-white"><div class="shutter" style="--i:1"><img src="../../assets/img/e80-ph.jpg" alt="Graph of pH at five locations, far below the expected line" width="1377" height="818" decoding="async"></div><figcaption>pH, against the expected value.</figcaption></figure><figure class="on-white"><div class="shutter" style="--i:2"><img src="../../assets/img/e80-turbidity.jpg" alt="Graph of turbidity at five locations, all below 0.6" width="1389" height="818" decoding="async"></div><figcaption>Turbidity at the five locations.</figcaption></figure></div>
+</section><section class="article grid">
+  <h2 data-reveal>What I learned</h2>
+  <div class="text" data-reveal style="--i:1">
+    <p>The sensors were not broken. They had been calibrated in fresh water, and the sea is not fresh water: salt changes how a thermistor and a pH probe behave, and our turbidity amplifier had so much gain that it saw almost nothing at all.</p>
+    <p>The robot worked. The lesson was about calibration: test the whole sensor, mounted, in the water it will actually meet.</p>
+    <p class="small muted">Engineering 80, Harvey Mudd, spring 2026. Thanks to Professors Helms, Mohanty, Sinopoli and Yang, to Lynn and Xavier, and to Angie Zhou and Spencer Michaelson for sharing their measurements of the water.</p></div>
+  
+</section><nav class="next" aria-label="Next"><span>Next</span><a href="../../making/northstar/">Sensing an electron beam</a></nav>
+<footer class="foot">
+  <nav aria-label="Rooms, again" data-reveal><a href="../../making/">Making</a><a href="../../reading/">Reading</a><a href="../../looking/">Looking</a><a href="../../hosting/">Hosting</a><a href="../../journal/">Journal</a><a href="../../plus/">+</a><a href="../../about/">About</a><a href="mailto:rpenidelema@g.hmc.edu">rpenidelema@g.hmc.edu</a></nav>
+  <p class="big" aria-hidden="true" data-reveal style="--i:1">Rodrigo Penide Lema</p>
+  <div class="fine" data-reveal style="--i:2"><span>Engineering at Harvey Mudd, art history at Pomona.</span><span>English for now. Español and galego are on their way.</span><span>2026</span></div>
+</footer>
 
 <script src="../../assets/js/site.js"></script>
 </body>

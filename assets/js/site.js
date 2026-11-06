@@ -1,78 +1,61 @@
-// penidelema.com: room walking, phone menu, the + drawing, the welcome, copy email.
+// penidelema.com: entrances, phone menu, the + drawing, the welcome.
 (function () {
-  var wide = function () { return window.matchMedia('(min-width: 761px)').matches; };
+  var root = document.documentElement;
 
-  // Rooms: a vertical wheel walks sideways; drag with the mouse too.
-  var track = document.querySelector('.track');
-  if (track) {
-    var prog = document.querySelector('.progress i');
-    var where = document.querySelector('[data-where]');
-    var walls = track.querySelectorAll('.wall');
-    track.addEventListener('wheel', function (e) {
-      if (!wide()) return;
-      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) { track.scrollLeft += e.deltaY; e.preventDefault(); }
-    }, { passive: false });
-    var update = function () {
-      var max = track.scrollWidth - track.clientWidth;
-      if (prog) prog.style.width = (max > 0 ? track.scrollLeft / max * 100 : 0) + '%';
-      if (where) {
-        var mid = track.scrollLeft + track.clientWidth * 0.45, name = walls[0] ? walls[0].dataset.where : '';
-        walls.forEach(function (w) { if (w.offsetLeft <= mid) name = w.dataset.where; });
-        where.textContent = name;
-      }
-    };
-    track.addEventListener('scroll', update);
-    window.addEventListener('resize', update);
-    var down = false, sx = 0, sl = 0;
-    track.addEventListener('pointerdown', function (e) {
-      if (e.pointerType !== 'mouse' || !wide() || e.target.closest('a, canvas')) return;
-      down = true; sx = e.clientX; sl = track.scrollLeft;
+  // Entrances: once, when a part of a section comes into view.
+  // A shutter is clipped shut, so its parent is watched instead.
+  var parts = document.querySelectorAll('[data-reveal], .shutter');
+  if ('IntersectionObserver' in window && parts.length) {
+    root.classList.add('js');
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        var t = e.target.__part || e.target;
+        t.classList.add('is-in'); io.unobserve(e.target);
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+    parts.forEach(function (el) {
+      if (el.classList.contains('shutter')) { var w = el.parentElement; w.__part = el; io.observe(w); }
+      else io.observe(el);
     });
-    window.addEventListener('pointermove', function (e) { if (down) track.scrollLeft = sl - (e.clientX - sx); });
-    window.addEventListener('pointerup', function () { down = false; });
-    track.addEventListener('dragstart', function (e) { e.preventDefault(); });
-    window.addEventListener('keydown', function (e) {
-      if (!wide()) return;
-      if (e.key === 'ArrowRight') track.scrollBy({ left: track.clientWidth * 0.6, behavior: 'smooth' });
-      if (e.key === 'ArrowLeft') track.scrollBy({ left: -track.clientWidth * 0.6, behavior: 'smooth' });
-    });
-    update();
   }
 
   // Phone menu
   var overlay = document.querySelector('.overlay');
   document.querySelectorAll('[data-menu]').forEach(function (b) {
-    b.addEventListener('click', function () { overlay.hidden = b.dataset.menu === 'close'; });
+    b.addEventListener('click', function () {
+      var open = b.dataset.menu === 'open';
+      overlay.hidden = !open;
+      document.querySelectorAll('[data-menu="open"]').forEach(function (o) { o.setAttribute('aria-expanded', open ? 'true' : 'false'); });
+    });
   });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && overlay && !overlay.hidden) overlay.hidden = true; });
 
-  // The +: one line per visit. Lines are not saved yet; that comes with the shared database.
+  // The +: one line per visit. Lines are not shared yet; that comes with a database.
   var cv = document.querySelector('.plus-frame canvas');
   if (cv) {
     var fr = cv.parentElement, ctx = cv.getContext('2d');
-    var seed = [[0.30, 0.62], [0.34, 0.48], [0.42, 0.40], [0.52, 0.38]], mine = [], drawing = false, done = false;
+    var seed = [[0.22, 0.70], [0.27, 0.52], [0.36, 0.41], [0.47, 0.37], [0.55, 0.39]], mine = [], drawing = false, done = false;
     var seg = function (p, w, h) { if (p.length < 2) return; ctx.beginPath(); ctx.moveTo(p[0][0] * w, p[0][1] * h); for (var i = 1; i < p.length; i++) ctx.lineTo(p[i][0] * w, p[i][1] * h); ctx.stroke(); };
-    var draw = function () { var r = fr.getBoundingClientRect(); ctx.clearRect(0, 0, r.width, r.height); ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.lineWidth = 2; ctx.strokeStyle = '#111214'; seg(seed, r.width, r.height); ctx.strokeStyle = '#1c2a66'; seg(mine, r.width, r.height); };
+    var draw = function () { var r = fr.getBoundingClientRect(); ctx.clearRect(0, 0, r.width, r.height); ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.lineWidth = 2.5; ctx.strokeStyle = '#111214'; seg(seed, r.width, r.height); ctx.strokeStyle = '#1c2a66'; seg(mine, r.width, r.height); };
     var size = function () { var r = fr.getBoundingClientRect(); if (!r.width) return; var d = window.devicePixelRatio || 1; cv.width = r.width * d; cv.height = r.height * d; ctx.setTransform(d, 0, 0, d, 0, 0); draw(); };
     var pt = function (e) { var r = cv.getBoundingClientRect(); return [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]; };
+    var status = document.querySelector('[data-plus-status]');
     cv.addEventListener('pointerdown', function (e) { if (done) return; drawing = true; mine = [pt(e)]; cv.setPointerCapture(e.pointerId); });
     cv.addEventListener('pointermove', function (e) { if (drawing) { mine.push(pt(e)); draw(); } });
-    cv.addEventListener('pointerup', function () { drawing = false; done = mine.length > 1; });
+    cv.addEventListener('pointerup', function () { drawing = false; done = mine.length > 1; if (done && status) status.textContent = 'Your line is in. Thank you.'; });
+    // Keyboard: Enter adds a line from the last one's end.
+    cv.addEventListener('keydown', function (e) {
+      if (done || (e.key !== 'Enter' && e.key !== ' ')) return;
+      e.preventDefault();
+      var a = seed[seed.length - 1]; mine = [a, [a[0] + 0.12, a[1] + 0.08], [a[0] + 0.22, a[1] + 0.22]]; done = true; draw();
+      if (status) status.textContent = 'Your line is in. Thank you.';
+    });
     window.addEventListener('resize', size);
     size();
   }
 
-  // Copy email
-  var copy = document.querySelector('[data-copy]');
-  if (copy) {
-    copy.addEventListener('click', function () {
-      var el = document.getElementById(copy.dataset.copy);
-      var sel = function () { var r = document.createRange(); r.selectNodeContents(el); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); };
-      try { navigator.clipboard.writeText(el.textContent).then(function () { copy.textContent = 'Copied'; setTimeout(function () { copy.textContent = 'Copy email'; }, 1600); }, sel); } catch (e) { sel(); }
-    });
-  }
-
   // Welcome: two strokes, a breath, then the logo opens like a window. Once per visit.
-  var welcome = function () {
   var wel = document.querySelector('.welcome');
   if (wel) {
     var seen = false;
@@ -98,27 +81,5 @@
     wel.addEventListener('click', end);
     var t0 = performance.now();
     (function tick(now) { var t = (now - t0) / 1000; frame(t); if (t < 3.5) raf = requestAnimationFrame(tick); else end(); })(t0);
-  }
-  };
-
-  // Preview gate: a curtain while the site is in preparation, not real security.
-  var gate = document.querySelector('[data-gate]');
-  var root = document.documentElement;
-  if (gate && root.classList.contains('locked')) {
-    var pw = gate.querySelector('input'), no = gate.querySelector('.gate-no');
-    pw.focus();
-    gate.addEventListener('submit', function (e) {
-      e.preventDefault();
-      if (pw.value.trim() === '1111') {
-        try { localStorage.setItem('pl-preview', '1'); } catch (err) {}
-        root.classList.remove('locked');
-        window.dispatchEvent(new Event('resize'));
-        welcome();
-      } else {
-        no.textContent = 'Not quite.'; pw.value = ''; pw.focus();
-      }
-    });
-  } else {
-    welcome();
   }
 })();

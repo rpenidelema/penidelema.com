@@ -4,42 +4,48 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>About · Rodrigo Penide Lema</title>
-<meta name="description" content="Rodrigo Penide Lema: engineering at Harvey Mudd, art history at Pomona.">
+<meta name="description" content="Rodrigo Penide Lema: engineering at Harvey Mudd, art history at Pomona. Things made, and things read.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Brygada+1918:ital,wght@0,400;0,500;1,400&display=swap">
 <link rel="stylesheet" href="../assets/css/site.css">
-
 </head>
-<body class="reading">
-
-<a class="corner tl caps" href="../"><svg class="mark" viewBox="0 0 44 60" aria-hidden="true"><path d="M12 54 V18" fill="none" stroke="#111214" stroke-width="3.4" stroke-linecap="round"/><path d="M12 28 C 16 16, 26 12, 34 15" fill="none" stroke="#111214" stroke-width="3.4" stroke-linecap="round"/></svg>Rodrigo Penide Lema</a>
-<nav class="corner tr caps" aria-label="Rooms"><a href="../making/">Making</a><a href="../reading/">Reading</a><a href="../looking/">Looking</a><a href="../hosting/">Hosting</a><a href="../journal/">Journal</a><a href="../plus/">+</a><a href="../about/" aria-current="page">About</a></nav>
-<div class="corner bl caps langs"><a href="#" aria-current="true">EN</a><span class="quiet" title="Coming soon">ES</span><span class="quiet" title="Coming soon">GL</span></div>
-
-<button type="button" class="menu-btn caps" data-menu="open">Menu</button>
+<body>
+<header class="bar">
+  <a class="wordmark" href="../"><svg class="mark" viewBox="0 0 44 60" aria-hidden="true"><path d="M12 54 V18" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M12 28 C 16 16, 26 12, 34 15" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg><span>Rodrigo Penide Lema</span></a>
+  <nav class="rooms" aria-label="Rooms"><a href="../making/">Making</a><a href="../reading/">Reading</a><a href="../looking/">Looking</a><a href="../hosting/">Hosting</a><a href="../journal/">Journal</a><a href="../plus/">+</a><a href="../about/" aria-current="page">About</a></nav>
+  <button type="button" class="menu-btn" data-menu="open" aria-expanded="false">Menu</button>
+</header>
 <div class="overlay" hidden>
-  <div class="top"><a class="caps" href="../">Rodrigo Penide Lema</a><button type="button" class="caps" data-menu="close">Close</button></div>
-  <ul><li><a href="../making/">Making</a></li><li><a href="../reading/">Reading</a></li><li><a href="../looking/">Looking</a></li><li><a href="../hosting/">Hosting</a></li><li><a href="../journal/">Journal</a></li><li><a href="../plus/">+</a></li><li><a class="quiet" href="../about/">About</a></li></ul>
-  <div class="caps quiet">EN · ES · GL</div>
+  <div class="top"><a href="../">Rodrigo Penide Lema</a><button type="button" data-menu="close">Close</button></div>
+  <ul><li><a href="../making/">Making</a></li><li><a href="../reading/">Reading</a></li><li><a href="../looking/">Looking</a></li><li><a href="../hosting/">Hosting</a></li><li><a href="../journal/">Journal</a></li><li><a href="../plus/">+</a></li><li><a href="../about/">About</a></li></ul>
+  <p class="small muted">English for now. Español and galego are on their way.</p>
 </div>
-<main class="read">
-  <div class="label"><img src="../assets/img/portrait.jpg" alt="Rodrigo in a navy pinstripe shirt under an oak tree on campus" width="1200" height="1500"></div>
-  <div class="body">
-    <h1>Engineering at Harvey Mudd, art history at Pomona.</h1>
-    <p class="lead">I study how things are made, and why they matter.</p>
-    <p>Most of my work happens where those two questions meet: in a vacuum chamber, in an archive of interviews, in a map of the materials that grow and are made around Los Angeles.</p>
-    <h2>Study</h2>
-    <p>B.S. Engineering, Harvey Mudd College. B.A. Art History, Pomona College. Class of 2028.</p>
-    <h2>Languages</h2>
-    <p>Spanish, Galician and Portuguese, natively. English and French.</p>
-    <h2>Honors</h2>
-    <p>Randal Lewis Fellow in Innovation and Entrepreneurship. Emerging Leader Award, Harvey Mudd, 2025 and 2026.</p>
-    <h2>Write to me</h2>
-    <div class="copy-row"><span class="em" id="email">rpenidelema@g.hmc.edu</span><button type="button" class="caps" data-copy="email">Copy email</button></div>
+<section class="about grid">
+  <figure data-reveal><img src="../assets/img/portrait.jpg" alt="Rodrigo in a navy pinstripe shirt under an oak tree on campus" width="1200" height="1500" decoding="async"></figure>
+  <div class="text">
+    <h1 data-reveal>Rodrigo Penide Lema</h1>
+    <p class="lead" data-reveal style="--i:1">I study how things are made, and why they matter.</p>
+    <p data-reveal style="--i:2">Most of my work happens where those two questions meet: in a vacuum chamber, in an archive of interviews, in a map of the materials that grow and are made around Los Angeles.</p>
+    <h2 data-reveal>Study</h2>
+    <p data-reveal style="--i:1">B.S. Engineering, Harvey Mudd College. B.A. Art History, Pomona College. Class of 2028.</p>
+    <h2 data-reveal>Languages</h2>
+    <p data-reveal style="--i:1">Spanish, Galician and Portuguese, natively. English and French.</p>
+    <h2 data-reveal>Honours</h2>
+    <p data-reveal style="--i:1">Randal Lewis Fellow in Innovation and Entrepreneurship. Emerging Leader Award, Harvey Mudd, 2025 and 2026.</p>
   </div>
-  <aside><p>Draft bio, to be rewritten in my voice.</p></aside>
-</main>
+</section>
+<section class="contact" aria-labelledby="write">
+  <div class="row"><h2 id="write">Write to me</h2></div>
+  <div class="row"><a class="email" href="mailto:rpenidelema@g.hmc.edu">rpenidelema@g.hmc.edu</a></div>
+  <div class="row"><span>Claremont, California</span></div>
+  <div class="row greet-row"><span class="greet"><span>Hola</span><a class="go" href="mailto:rpenidelema@g.hmc.edu?subject=Hola%20Rodrigo" aria-label="Write an email to Rodrigo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></span></div>
+</section>
+<footer class="foot">
+  <nav aria-label="Rooms, again" data-reveal><a href="../making/">Making</a><a href="../reading/">Reading</a><a href="../looking/">Looking</a><a href="../hosting/">Hosting</a><a href="../journal/">Journal</a><a href="../plus/">+</a><a href="../about/">About</a><a href="mailto:rpenidelema@g.hmc.edu">rpenidelema@g.hmc.edu</a></nav>
+  <p class="big" aria-hidden="true" data-reveal style="--i:1">Rodrigo Penide Lema</p>
+  <div class="fine" data-reveal style="--i:2"><span>Engineering at Harvey Mudd, art history at Pomona.</span><span>English for now. Español and galego are on their way.</span><span>2026</span></div>
+</footer>
 
 <script src="../assets/js/site.js"></script>
 </body>

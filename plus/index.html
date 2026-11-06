@@ -4,27 +4,45 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>+ · Rodrigo Penide Lema</title>
-<meta name="description" content="Rodrigo Penide Lema: engineering at Harvey Mudd, art history at Pomona.">
+<meta name="description" content="Rodrigo Penide Lema: engineering at Harvey Mudd, art history at Pomona. Things made, and things read.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Brygada+1918:ital,wght@0,400;0,500;1,400&display=swap">
 <link rel="stylesheet" href="../assets/css/site.css">
-
 </head>
-<body class="walk">
-
-<a class="corner tl caps" href="../"><svg class="mark" viewBox="0 0 44 60" aria-hidden="true"><path d="M12 54 V18" fill="none" stroke="#111214" stroke-width="3.4" stroke-linecap="round"/><path d="M12 28 C 16 16, 26 12, 34 15" fill="none" stroke="#111214" stroke-width="3.4" stroke-linecap="round"/></svg>Rodrigo Penide Lema</a>
-<nav class="corner tr caps" aria-label="Rooms"><a href="../making/">Making</a><a href="../reading/">Reading</a><a href="../looking/">Looking</a><a href="../hosting/">Hosting</a><a href="../journal/">Journal</a><a href="../plus/" aria-current="page">+</a><a href="../about/">About</a></nav>
-<div class="corner bl caps langs"><a href="#" aria-current="true">EN</a><span class="quiet" title="Coming soon">ES</span><span class="quiet" title="Coming soon">GL</span></div>
-<div class="corner br caps quiet" data-where>+</div>
-<div class="progress"><i></i></div>
-<button type="button" class="menu-btn caps" data-menu="open">Menu</button>
+<body>
+<header class="bar">
+  <a class="wordmark" href="../"><svg class="mark" viewBox="0 0 44 60" aria-hidden="true"><path d="M12 54 V18" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M12 28 C 16 16, 26 12, 34 15" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg><span>Rodrigo Penide Lema</span></a>
+  <nav class="rooms" aria-label="Rooms"><a href="../making/">Making</a><a href="../reading/">Reading</a><a href="../looking/">Looking</a><a href="../hosting/">Hosting</a><a href="../journal/">Journal</a><a href="../plus/" aria-current="page">+</a><a href="../about/">About</a></nav>
+  <button type="button" class="menu-btn" data-menu="open" aria-expanded="false">Menu</button>
+</header>
 <div class="overlay" hidden>
-  <div class="top"><a class="caps" href="../">Rodrigo Penide Lema</a><button type="button" class="caps" data-menu="close">Close</button></div>
-  <ul><li><a href="../making/">Making</a></li><li><a href="../reading/">Reading</a></li><li><a href="../looking/">Looking</a></li><li><a href="../hosting/">Hosting</a></li><li><a href="../journal/">Journal</a></li><li><a href="../plus/">+</a></li><li><a class="quiet" href="../about/">About</a></li></ul>
-  <div class="caps quiet">EN · ES · GL</div>
+  <div class="top"><a href="../">Rodrigo Penide Lema</a><button type="button" data-menu="close">Close</button></div>
+  <ul><li><a href="../making/">Making</a></li><li><a href="../reading/">Reading</a></li><li><a href="../looking/">Looking</a></li><li><a href="../hosting/">Hosting</a></li><li><a href="../journal/">Journal</a></li><li><a href="../plus/">+</a></li><li><a href="../about/">About</a></li></ul>
+  <p class="small muted">English for now. Español and galego are on their way.</p>
 </div>
-<main class="room"><div class="track"><div class="wall title" data-where="+"><div><h1>Add <em>one line</em></h1><p class="sub">Every visitor adds a single line to one shared drawing.</p></div></div><div class="wall" data-where="+"><div class="plus-frame"><canvas aria-label="Shared drawing, add one line"></canvas></div><div class="tomb"><p class="t">Untitled (Lines)</p><p>2026–</p><p class="quiet">Rodrigo Penide Lema, with interventions by visitors from around the world</p><p class="note">Add one line before you leave.</p></div></div></div></main>
+<section class="top">
+<div class="head grid">
+  <h1 data-reveal>One shared drawing</h1>
+  <p class="lead" data-reveal style="--i:1">Every visitor adds a single line.</p>
+</div>
+
+</section><section class="plus grid" aria-labelledby="plus-h">
+  <h2 id="plus-h" data-reveal>Add one line</h2>
+  <div class="plus-frame" data-reveal><canvas tabindex="0" aria-label="A shared drawing. Draw one line with your finger or mouse, or press Enter to add one." aria-describedby="plus-how"></canvas></div>
+  <div class="label" data-reveal style="--i:1">
+    <p class="t">Untitled (Lines)</p>
+    <p>2026–</p>
+    <p>Rodrigo Penide Lema, with interventions by visitors from around the world</p>
+    <p class="how" id="plus-how">One line each, drawn in one stroke. For now your line stays on your screen; soon every line will join the same drawing.</p>
+    <p class="small" data-plus-status aria-live="polite"></p>
+  </div>
+</section>
+<footer class="foot">
+  <nav aria-label="Rooms, again" data-reveal><a href="../making/">Making</a><a href="../reading/">Reading</a><a href="../looking/">Looking</a><a href="../hosting/">Hosting</a><a href="../journal/">Journal</a><a href="../plus/">+</a><a href="../about/">About</a><a href="mailto:rpenidelema@g.hmc.edu">rpenidelema@g.hmc.edu</a></nav>
+  <p class="big" aria-hidden="true" data-reveal style="--i:1">Rodrigo Penide Lema</p>
+  <div class="fine" data-reveal style="--i:2"><span>Engineering at Harvey Mudd, art history at Pomona.</span><span>English for now. Español and galego are on their way.</span><span>2026</span></div>
+</footer>
 
 <script src="../assets/js/site.js"></script>
 </body>
