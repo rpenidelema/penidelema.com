@@ -5,45 +5,50 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>+ · Rodrigo Penide Lema</title>
 <meta name="description" content="Rodrigo Penide Lema: engineering at Harvey Mudd, art history at Pomona. Things made, and things read.">
+<meta name="theme-color" content="#1c2a66">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Brygada+1918:ital,wght@0,400;0,500;1,400&display=swap">
 <link rel="stylesheet" href="../assets/css/site.css">
 </head>
 <body>
-<header class="bar">
-  <a class="wordmark" href="../"><svg class="mark" viewBox="0 0 44 60" aria-hidden="true"><path d="M12 54 V18" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M12 28 C 16 16, 26 12, 34 15" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg><span>Rodrigo Penide Lema</span></a>
-  <nav class="rooms" aria-label="Rooms"><a href="../making/">Making</a><a href="../reading/">Reading</a><a href="../looking/">Looking</a><a href="../hosting/">Hosting</a><a href="../journal/">Journal</a><a href="../plus/" aria-current="page">+</a><a href="../about/">About</a></nav>
+<div class="page page-plus">
+<svg class="line" aria-hidden="true"></svg>
+<div class="wrap"><header class="bar">
+  <a class="home-name" href="../"><span class="mark-box" data-logo="mark" aria-hidden="true"></span><span>Rodrigo Penide Lema</span></a>
+  <nav aria-label="Rooms"><ul class="rooms"><li><a href="../making/">Making</a></li><li><a href="../reading/">Reading</a></li><li><a href="../looking/">Looking</a></li><li><a href="../hosting/">Hosting</a></li><li><a href="../journal/">Journal</a></li><li><a href="../plus/" aria-current="page" aria-label="Plus: a drawing everyone adds a line to">+</a></li></ul></nav>
   <button type="button" class="menu-btn" data-menu="open" aria-expanded="false">Menu</button>
-</header>
-<div class="overlay" hidden>
-  <div class="top"><a href="../">Rodrigo Penide Lema</a><button type="button" data-menu="close">Close</button></div>
-  <ul><li><a href="../making/">Making</a></li><li><a href="../reading/">Reading</a></li><li><a href="../looking/">Looking</a></li><li><a href="../hosting/">Hosting</a></li><li><a href="../journal/">Journal</a></li><li><a href="../plus/">+</a></li><li><a href="../about/">About</a></li></ul>
-  <p class="small muted">English for now. Español and galego are on their way.</p>
-</div>
-<section class="top">
-<div class="head grid">
-  <h1 data-reveal>One shared drawing</h1>
-  <p class="lead" data-reveal style="--i:1">Every visitor adds a single line.</p>
-</div>
-
-</section><section class="plus grid" aria-labelledby="plus-h">
-  <h2 id="plus-h" data-reveal>Add one line</h2>
-  <div class="plus-frame" data-reveal><canvas tabindex="0" aria-label="A shared drawing. Draw one line with your finger or mouse, or press Enter to add one." aria-describedby="plus-how"></canvas></div>
-  <div class="label" data-reveal style="--i:1">
-    <p class="t">Untitled (Lines)</p>
-    <p>2026–</p>
-    <p>Rodrigo Penide Lema, with interventions by visitors from around the world</p>
-    <p class="how" id="plus-how">One line each, drawn in one stroke. For now your line stays on your screen; soon every line will join the same drawing.</p>
-    <p class="small" data-plus-status aria-live="polite"></p>
+</header></div>
+<main>
+<section class="wrap top">
+  <div class="grid" data-line="avoid" data-side="left"><h1 data-in>One shared drawing</h1><p class="lead" data-in style="--i:1">Every visitor adds a single line to it.</p></div>
+</section><section class="wrap plus grid" id="plus" aria-label="Plus: a drawing everyone adds one line to">
+  <div class="sheet" data-line="end">
+    <canvas tabindex="0" aria-label="A shared drawing. Drag to add your line, or press Enter." aria-describedby="plus-how"></canvas>
+    <div class="label">
+      <b>Untitled (Lines), 2026–</b>
+      <span>Rodrigo Penide Lema, with interventions by visitors from around the world.</span>
+      <span id="plus-how">One line each, in one stroke. For now your line stays on your screen; soon every line will join the same drawing.</span>
+      <output aria-live="polite" data-plus-status>The line above is mine. Add one of yours.</output>
+    </div>
   </div>
 </section>
-<footer class="foot">
-  <nav aria-label="Rooms, again" data-reveal><a href="../making/">Making</a><a href="../reading/">Reading</a><a href="../looking/">Looking</a><a href="../hosting/">Hosting</a><a href="../journal/">Journal</a><a href="../plus/">+</a><a href="../about/">About</a><a href="mailto:rpenidelema@g.hmc.edu">rpenidelema@g.hmc.edu</a></nav>
-  <p class="big" aria-hidden="true" data-reveal style="--i:1">Rodrigo Penide Lema</p>
-  <div class="fine" data-reveal style="--i:2"><span>Engineering at Harvey Mudd, art history at Pomona.</span><span>English for now. Español and galego are on their way.</span><span>2026</span></div>
+</main>
+<section class="wrap write" aria-labelledby="write">
+  <h2 id="write">Write to me</h2>
+  <div class="mail"><a href="mailto:rpenidelema@g.hmc.edu">rpenidelema@g.hmc.edu</a><button type="button" data-copy="rpenidelema@g.hmc.edu">Copy address</button></div>
+</section>
+<footer class="wrap foot">
+  <span>Claremont, California</span>
+  <nav aria-label="Rooms, again"><a href="../making/">Making</a><a href="../reading/">Reading</a><a href="../looking/">Looking</a><a href="../hosting/">Hosting</a><a href="../journal/">Journal</a><a href="../plus/">+</a><a href="../about/">About</a></nav>
+  <span>English for now. Español y galego, pronto.</span>
 </footer>
-
+</div>
+<div class="overlay" hidden>
+  <div class="top"><a href="../">Rodrigo Penide Lema</a><button type="button" class="menu-btn" data-menu="close">Close</button></div>
+  <ul><li><a href="../making/">Making</a></li><li><a href="../reading/">Reading</a></li><li><a href="../looking/">Looking</a></li><li><a href="../hosting/">Hosting</a></li><li><a href="../journal/">Journal</a></li><li><a href="../plus/">+</a></li><li><a href="../about/">About</a></li></ul>
+  <p>English for now. Español y galego, pronto.</p>
+</div>
 <script src="../assets/js/site.js"></script>
 </body>
 </html>

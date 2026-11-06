@@ -5,50 +5,57 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Making · Rodrigo Penide Lema</title>
 <meta name="description" content="Rodrigo Penide Lema: engineering at Harvey Mudd, art history at Pomona. Things made, and things read.">
+<meta name="theme-color" content="#1c2a66">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Brygada+1918:ital,wght@0,400;0,500;1,400&display=swap">
 <link rel="stylesheet" href="../assets/css/site.css">
 </head>
 <body>
-<header class="bar">
-  <a class="wordmark" href="../"><svg class="mark" viewBox="0 0 44 60" aria-hidden="true"><path d="M12 54 V18" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M12 28 C 16 16, 26 12, 34 15" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg><span>Rodrigo Penide Lema</span></a>
-  <nav class="rooms" aria-label="Rooms"><a href="../making/" aria-current="page">Making</a><a href="../reading/">Reading</a><a href="../looking/">Looking</a><a href="../hosting/">Hosting</a><a href="../journal/">Journal</a><a href="../plus/">+</a><a href="../about/">About</a></nav>
+<div class="page page-making">
+<svg class="line" aria-hidden="true"></svg>
+<div class="wrap"><header class="bar">
+  <a class="home-name" href="../"><span class="mark-box" data-logo="mark" aria-hidden="true"></span><span>Rodrigo Penide Lema</span></a>
+  <nav aria-label="Rooms"><ul class="rooms"><li><a href="../making/" aria-current="page">Making</a></li><li><a href="../reading/">Reading</a></li><li><a href="../looking/">Looking</a></li><li><a href="../hosting/">Hosting</a></li><li><a href="../journal/">Journal</a></li><li><a href="../plus/" aria-label="Plus: a drawing everyone adds a line to">+</a></li></ul></nav>
   <button type="button" class="menu-btn" data-menu="open" aria-expanded="false">Menu</button>
-</header>
-<div class="overlay" hidden>
-  <div class="top"><a href="../">Rodrigo Penide Lema</a><button type="button" data-menu="close">Close</button></div>
-  <ul><li><a href="../making/">Making</a></li><li><a href="../reading/">Reading</a></li><li><a href="../looking/">Looking</a></li><li><a href="../hosting/">Hosting</a></li><li><a href="../journal/">Journal</a></li><li><a href="../plus/">+</a></li><li><a href="../about/">About</a></li></ul>
-  <p class="small muted">English for now. Español and galego are on their way.</p>
-</div>
-<section class="top">
-<div class="head grid">
-  <h1 data-reveal>Making</h1>
-  <p class="lead" data-reveal style="--i:1">Things built, tested, and designed for people.</p>
-</div>
-
+</header></div>
+<main>
+<section class="wrap top room v-left" aria-label="Making">
+  <h1><span data-line="circle">Making</span></h1>
+  <p class="lead" data-line="avoid" data-in>Things built, tested, and designed for people.</p>
 </section>
-<section class="poster grid" aria-label="Projects">
-  <ul><li data-reveal style="--i:0"><a class="item" href="../making/kreios/">Kreios Space</a><span class="detail">Test hardware for plasma thrusters, 2026</span></li><li data-reveal style="--i:1"><a class="item" href="../making/e80/">The E80 robot</a><span class="detail">Water sensing at Dana Point, 2026</span></li><li data-reveal style="--i:2"><a class="item" href="../making/northstar/">NorthStar</a><span class="detail">Sensing an electron beam, 2026 to now</span></li><li data-reveal style="--i:3"><span class="item">A mine shaft winch</span><span class="detail">A sensor payload lowered 600 feet, 2025</span></li><li data-reveal style="--i:4"><span class="item">Alumni and students</span><span class="detail">Human-centred design, with Pomona College</span></li><li data-reveal style="--i:5"><span class="item">People and animals</span><span class="detail">Human-centred design, with The Salvation Army</span></li></ul>
-  <div class="pair">
-    <figure class=""><div class="shutter" style="--i:0"><img src="../assets/img/kreios.jpg" alt="The Kreios Space test hall seen from above: two steel vacuum chambers and workbenches" width="1800" height="1350" decoding="async"></div><figcaption>The test hall at Kreios Space.</figcaption></figure>
-    <figure class=""><div class="shutter" style="--i:1"><img src="../assets/img/e80-render.png" alt="A drawing of the E80 robot: a square PVC frame with an orange float and a blue electronics box" width="614" height="407" decoding="async"></div><figcaption>The E80 robot, drawn before it was built.</figcaption></figure>
+<section class="wrap" aria-label="Projects">
+  <div class="row grid">
+    <figure class="shot R6" data-line="through" data-in style="--i:0"><img src="../assets/img/kreios.jpg" alt="The Kreios Space test hall seen from above: two steel vacuum chambers and workbenches" width="1800" height="1350" decoding="async"></figure>
+    <div class="words W-L end" data-line-phone="avoid" data-in style="--i:1"><h2>Kreios Space</h2><p>Test hardware for plasma thrusters, summer 2026.</p><a class="go" href="../making/kreios/"><span>Read about it</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a></div>
   </div>
-</section>
-<section class="article grid">
-  <h2 data-reveal>Still to be written up</h2>
-  <div class="text" data-reveal style="--i:1">
-    <p>A collapsible winch that lowers a sensor payload more than 600 feet into a mine shaft, with gas sensors and live video, on a $400 budget.</p>
-    <p>With Pomona College, designing better ways for alumni and students across the Claremont Colleges to meet.</p>
-    <p>With The Salvation Army in Orange County, asking how time with animals might support trust and purpose for people recovering from homelessness and addiction.</p>
+  <div class="row grid">
+    <figure class="shot L sheet-pic" data-line="through" data-in style="--i:0"><img src="../assets/img/e80-render.png" alt="A drawing of the E80 robot: a square PVC frame with an orange float and a blue electronics box" width="614" height="407" loading="lazy" decoding="async"></figure>
+    <div class="words R mid" data-line-phone="avoid" data-in style="--i:1"><h2>The E80 robot</h2><p>Water sensing at Dana Point, spring 2026.</p><a class="go" href="../making/e80/"><span>Read about it</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a></div>
   </div>
+  <div class="row grid">
+    <figure class="shot R7" data-line="through" data-in style="--i:0"><img src="../assets/img/northstar.jpg" alt="The electron beam accelerator at NorthStar" width="2000" height="1333" loading="lazy" decoding="async"></figure>
+    <div class="words W-L" data-line-phone="avoid" data-in style="--i:1"><h2>NorthStar</h2><p>Sensing an electron beam, 2026 to now.</p><a class="go" href="../making/northstar/"><span>Read about it</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a></div>
+  </div>
+  <div class="row grid roles"><div class="list L7" data-line="avoid"><ul><li data-in style="--i:0"><b>A mine shaft winch</b><span>2025</span><p>A collapsible winch that lowers a sensor payload more than 600 feet into a mine shaft, with gas sensors and live video, on a $400 budget.</p></li><li data-in style="--i:1"><b>Alumni and students</b><span>Human-centred design, with Pomona College</span><p>Designing better ways for alumni and students across the Claremont Colleges to meet.</p></li><li data-in style="--i:2"><b>People and animals</b><span>Human-centred design, with The Salvation Army</span><p>Asking how time with animals might support trust and purpose for people recovering from homelessness and addiction, in Orange County.</p></li></ul></div></div>
 </section>
-<footer class="foot">
-  <nav aria-label="Rooms, again" data-reveal><a href="../making/">Making</a><a href="../reading/">Reading</a><a href="../looking/">Looking</a><a href="../hosting/">Hosting</a><a href="../journal/">Journal</a><a href="../plus/">+</a><a href="../about/">About</a><a href="mailto:rpenidelema@g.hmc.edu">rpenidelema@g.hmc.edu</a></nav>
-  <p class="big" aria-hidden="true" data-reveal style="--i:1">Rodrigo Penide Lema</p>
-  <div class="fine" data-reveal style="--i:2"><span>Engineering at Harvey Mudd, art history at Pomona.</span><span>English for now. Español and galego are on their way.</span><span>2026</span></div>
+<nav class="wrap next" aria-label="Next"><span>Next</span><a href="../reading/" data-line="stop">Reading</a></nav>
+</main>
+<section class="wrap write" aria-labelledby="write">
+  <h2 id="write">Write to me</h2>
+  <div class="mail"><a href="mailto:rpenidelema@g.hmc.edu">rpenidelema@g.hmc.edu</a><button type="button" data-copy="rpenidelema@g.hmc.edu">Copy address</button></div>
+</section>
+<footer class="wrap foot">
+  <span>Claremont, California</span>
+  <nav aria-label="Rooms, again"><a href="../making/">Making</a><a href="../reading/">Reading</a><a href="../looking/">Looking</a><a href="../hosting/">Hosting</a><a href="../journal/">Journal</a><a href="../plus/">+</a><a href="../about/">About</a></nav>
+  <span>English for now. Español y galego, pronto.</span>
 </footer>
-
+</div>
+<div class="overlay" hidden>
+  <div class="top"><a href="../">Rodrigo Penide Lema</a><button type="button" class="menu-btn" data-menu="close">Close</button></div>
+  <ul><li><a href="../making/">Making</a></li><li><a href="../reading/">Reading</a></li><li><a href="../looking/">Looking</a></li><li><a href="../hosting/">Hosting</a></li><li><a href="../journal/">Journal</a></li><li><a href="../plus/">+</a></li><li><a href="../about/">About</a></li></ul>
+  <p>English for now. Español y galego, pronto.</p>
+</div>
 <script src="../assets/js/site.js"></script>
 </body>
 </html>

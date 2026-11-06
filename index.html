@@ -5,108 +5,107 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Rodrigo Penide Lema</title>
 <meta name="description" content="Rodrigo Penide Lema: engineering at Harvey Mudd, art history at Pomona. Things made, and things read.">
+<meta name="theme-color" content="#1c2a66">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Brygada+1918:ital,wght@0,400;0,500;1,400&display=swap">
 <link rel="stylesheet" href="assets/css/site.css">
 </head>
 <body>
+<div class="page">
+<svg class="line" aria-hidden="true"></svg>
 
-<div class="overlay" hidden>
-  <div class="top"><a href="">Rodrigo Penide Lema</a><button type="button" data-menu="close">Close</button></div>
-  <ul><li><a href="making/">Making</a></li><li><a href="reading/">Reading</a></li><li><a href="looking/">Looking</a></li><li><a href="hosting/">Hosting</a></li><li><a href="journal/">Journal</a></li><li><a href="plus/">+</a></li><li><a href="about/">About</a></li></ul>
-  <p class="small muted">English for now. Español and galego are on their way.</p>
-</div>
-<section class="monument">
-  <header class="bar">
-  <a class="wordmark" href=""><svg class="mark" viewBox="0 0 44 60" aria-hidden="true"><path d="M12 54 V18" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M12 28 C 16 16, 26 12, 34 15" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg><span>Rodrigo Penide Lema</span></a>
-  <nav class="rooms" aria-label="Rooms"><a href="making/">Making</a><a href="reading/">Reading</a><a href="looking/">Looking</a><a href="hosting/">Hosting</a><a href="journal/">Journal</a><a href="plus/">+</a><a href="about/">About</a></nav>
-  <button type="button" class="menu-btn" data-menu="open" aria-expanded="false">Menu</button>
-</header>
-  <div class="says">
+<main>
+<header class="hero wrap">
+  <nav class="bar" aria-label="Rooms"><ul><li><a href="making/">Making</a></li><li><a href="reading/">Reading</a></li><li><a href="looking/">Looking</a></li><li><a href="hosting/">Hosting</a></li><li><a href="journal/">Journal</a></li><li><a href="plus/" aria-label="Plus: a drawing everyone adds a line to">+</a></li></ul></nav>
+  <div class="logo-box" data-logo="hero" aria-hidden="true"></div>
+  <div class="hero-text" data-line-phone="avoid">
+    <h1>Rodrigo<br>Penide Lema</h1>
     <p>I study how things are made, and why they matter: engineering at Harvey Mudd, art history at Pomona.</p>
-    <a class="button" href="#work">See the work <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
   </div>
-  <h1 class="name"><span class="sr">Rodrigo </span><span class="first">Penide</span><span class="win" aria-hidden="true"><img src="assets/img/quarry-window.jpg" alt="" width="1320" height="1311" decoding="async"><img src="assets/img/kreios.jpg" alt="" width="1800" height="1350" decoding="async"><img src="assets/img/northstar.jpg" alt="" width="2000" height="1333" decoding="async"><img src="assets/img/clay.jpg" alt="" width="1320" height="1752" decoding="async"></span><span class="second">Lema</span></h1>
+</header>
+
+<section class="wrap row intro grid" aria-label="About">
+  <div class="words L mid" data-line-phone="avoid" data-in style="--i:0"><p>Two colleges across one street in Claremont. In one I learn to build things; in the other, to read them.</p>
+    <ul class="facts"><li>B.S. Engineering, Harvey Mudd</li><li>B.A. Art History, Pomona</li><li>Class of 2028, five languages</li></ul>
+    <a class="go" href="about/"><span>About me</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a></div>
+  <figure class="shot R4" data-line="through" data-in style="--i:1"><img src="assets/img/portrait.jpg" alt="Rodrigo in a navy pinstripe shirt under an oak tree on campus" width="1200" height="1500" decoding="async"></figure>
 </section>
 
-<section class="intro grid" aria-labelledby="one">
-  <h2 id="one" data-reveal>One practice</h2>
-  <p class="note" data-reveal style="--i:1">Two colleges across one street in Claremont. In one I learn to build things; in the other, to read them. Most of my work happens where the two meet.</p>
-</section>
-<ul class="facts "><li data-reveal style="--i:0"><b>Harvey Mudd</b><span>B.S. Engineering</span></li><li data-reveal style="--i:1"><b>Pomona</b><span>B.A. Art History</span></li><li data-reveal style="--i:2"><b>2028</b><span>Graduating class</span></li><li data-reveal style="--i:3"><b>Five languages</b><span>Spanish, Galician and Portuguese from home; English and French</span></li></ul>
-<div class="intro grid" style="padding-top:0">
-  <p class="lead-in" data-reveal>A vacuum chamber, a robot at sea, a quarry in Provence, an archive of voices.</p>
-  <figure><div class="shutter"><img src="assets/img/portrait.jpg" alt="Rodrigo in a navy pinstripe shirt under an oak tree on campus" width="1200" height="1500" decoding="async"></div></figure>
-</div>
-
-<section class="work grid" id="work" aria-labelledby="making-h">
-  <h2 id="making-h" data-reveal>Making</h2>
-  <p class="run" data-reveal style="--i:1"><a href="making/kreios/">Plasma thruster test hardware at Kreios Space<span class="pic"><img src="assets/img/kreios.jpg" alt="" width="1800" height="1350" loading="lazy" decoding="async"></span></a>, <a href="making/e80/">a robot that floated at Dana Point<span class="pic"><img src="assets/img/e80-render.png" alt="" width="614" height="407" loading="lazy" decoding="async"></span></a>, <a href="making/northstar/">beam sensing at NorthStar<span class="pic"><img src="assets/img/northstar.jpg" alt="" width="2000" height="1333" loading="lazy" decoding="async"></span></a>, <span class="n">a mine shaft winch, and design with people.</span></p>
-</section>
-<section class="work grid" style="padding-top:64px" aria-labelledby="reading-h">
-  <h2 id="reading-h" data-reveal>Reading</h2>
-  <p class="run" data-reveal style="--i:1"><a href="reading/bioregional/">The materials of Los Angeles, with Jia Yi Gu<span class="pic"><img src="assets/img/clay.jpg" alt="" width="1320" height="1752" loading="lazy" decoding="async"></span></a>, <span class="n">an archive of voices with Isabel Balseiro, and papers in art history.</span></p>
-  <p class="count">Eight projects, 2024 to now.</p>
-</section>
-
-<section class="gallery grid" aria-labelledby="looking-h">
-  <h2 id="looking-h" data-reveal>Looking</h2>
-  <figure class="g-a"><div class="shutter" style="--i:0"><img src="assets/img/quarry-window.jpg" alt="A limestone quarry seen through a gap between two cut walls, with shrubs growing on the ledges" width="1320" height="1311" decoding="async"></div><figcaption>A quarry, seen from inside another. Summer 2026.</figcaption></figure>
-  <figure class="g-b"><div class="shutter" style="--i:0"><img src="assets/img/stone-saw.jpg" alt="A man feeds a block of limestone to a large circular saw inside a quarry hall" width="1320" height="738" decoding="async"></div><figcaption>Cutting limestone into blocks.</figcaption></figure>
-  <figure class="g-c"><div class="shutter" style="--i:0"><img src="assets/img/quarry-face.jpg" alt="Tall rooms cut into a pale quarry face, with pines along the top" width="1320" height="1299" decoding="async"></div><figcaption>Rooms left behind by the stone that was taken.</figcaption></figure>
-  <figure class="g-d"><div class="shutter" style="--i:0"><img src="assets/img/clay.jpg" alt="A hand holding a lump of pale clay over cracked dry ground" width="1320" height="1752" decoding="async"></div><figcaption>Clay, picked up on site.</figcaption></figure>
-  <p class="more" data-reveal><a class="link" href="looking/">All the photographs</a></p>
-</section>
-
-<section class="poster grid" aria-labelledby="hosting-h">
-  <h2 id="hosting-h" data-reveal>Hosting</h2>
-  <ul><li data-reveal style="--i:0"><span class="item">Class president</span><span class="detail">Harvey Mudd, Class of 2028, since 2026</span></li><li data-reveal style="--i:1"><span class="item">Philanthropy</span><span class="detail">Director, Board of Trustees, since 2025</span></li><li data-reveal style="--i:2"><span class="item">Mentoring</span><span class="detail">Fourteen new international students, since 2025</span></li><li data-reveal style="--i:3"><span class="item">Student affairs</span><span class="detail">Representative to the Board, since 2024</span></li><li data-reveal style="--i:4"><span class="item">Volunteering</span><span class="detail">Mudders Making a Difference, since 2024</span></li></ul>
-  <p class="more" data-reveal><a class="link" href="hosting/">What each one involves</a></p>
-</section>
-
-<section class="plus grid" aria-labelledby="plus-h">
-  <h2 id="plus-h" data-reveal>Add one line</h2>
-  <div class="plus-frame" data-reveal><canvas tabindex="0" aria-label="A shared drawing. Draw one line with your finger or mouse, or press Enter to add one." aria-describedby="plus-how"></canvas></div>
-  <div class="label" data-reveal style="--i:1">
-    <p class="t">Untitled (Lines)</p>
-    <p>2026–</p>
-    <p>Rodrigo Penide Lema, with interventions by visitors from around the world</p>
-    <p class="how" id="plus-how">One line each, drawn in one stroke. For now your line stays on your screen; soon every line will join the same drawing.</p>
-    <p class="small" data-plus-status aria-live="polite"></p>
+<section class="wrap" aria-labelledby="making-h">
+  <div class="verb v-left"><h2 id="making-h"><a href="making/"><span data-line="circle">Making</span></a></h2></div>
+  <div class="row grid">
+    <figure class="shot R6" data-line="through" data-in style="--i:0"><img src="assets/img/kreios.jpg" alt="The Kreios Space test hall seen from above: two steel vacuum chambers and workbenches" width="1800" height="1350" loading="lazy" decoding="async"></figure>
+    <div class="words W-L end" data-line-phone="avoid" data-in style="--i:1"><h3>Kreios Space</h3><p>Test hardware for plasma thrusters. The work is under NDA, so its page is mostly words.</p><a class="go" href="making/kreios/"><span>Read about it</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a></div>
+  </div>
+  <div class="row grid">
+    <figure class="shot L sheet-pic" data-line="through" data-in style="--i:0"><img src="assets/img/e80-render.png" alt="A drawing of the E80 robot: a square PVC frame with an orange float and a blue electronics box" width="614" height="407" loading="lazy" decoding="async"></figure>
+    <div class="words R mid" data-line-phone="avoid" data-in style="--i:1"><h3>The E80 robot</h3><p>A robot that floated at Dana Point and measured the sea: 17.86 °C, turbidity under 0.6 NTU.</p><a class="go" href="making/e80/"><span>Read about it</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a></div>
+  </div>
+  <div class="row grid">
+    <figure class="shot R7" data-line="through" data-in style="--i:0"><img src="assets/img/northstar.jpg" alt="The electron beam accelerator at NorthStar, where the sensing system will sit" width="2000" height="1333" loading="lazy" decoding="async"></figure>
+    <div class="words W-L" data-line-phone="avoid" data-in style="--i:1"><h3>NorthStar</h3><p>Sensing an electron beam, on the accelerator itself. Ongoing.</p><a class="go" href="making/northstar/"><span>Read about it</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a></div>
   </div>
 </section>
-<section class="contact" aria-labelledby="write">
-  <div class="row"><h2 id="write">Write to me</h2></div>
-  <div class="row"><a class="email" href="mailto:rpenidelema@g.hmc.edu">rpenidelema@g.hmc.edu</a></div>
-  <div class="row"><span>Claremont, California</span></div>
-  <div class="row greet-row"><span class="greet"><span>Hola</span><a class="go" href="mailto:rpenidelema@g.hmc.edu?subject=Hola%20Rodrigo" aria-label="Write an email to Rodrigo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></span></div>
+
+<section class="wrap" aria-labelledby="reading-h">
+  <div class="verb v-right"><h2 id="reading-h"><a href="reading/"><span data-line="circle">Reading</span></a></h2></div>
+  <div class="row grid">
+    <figure class="shot L4" data-line="through" data-in style="--i:0"><img src="assets/img/clay.jpg" alt="A hand holding a lump of pale clay over cracked dry ground" width="1320" height="1752" loading="lazy" decoding="async"></figure>
+    <div class="words R mid" data-line-phone="avoid" data-in style="--i:1"><h3>The materials of Los Angeles</h3><p>Bioregional research with Professor Jia Yi Gu: where a region's clay, stone and timber come from, and who works them.</p><a class="go" href="reading/bioregional/"><span>Read about it</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a></div>
+  </div>
+  <div class="row grid">
+    <div class="words R" data-line="avoid" data-line-phone="avoid" data-in style="--i:0"><h3>An archive of voices</h3><p>With Professor Isabel Balseiro. And papers in art history, on how things are looked at.</p></div>
+  </div>
 </section>
-<footer class="foot">
-  <nav aria-label="Rooms, again" data-reveal><a href="making/">Making</a><a href="reading/">Reading</a><a href="looking/">Looking</a><a href="hosting/">Hosting</a><a href="journal/">Journal</a><a href="plus/">+</a><a href="about/">About</a><a href="mailto:rpenidelema@g.hmc.edu">rpenidelema@g.hmc.edu</a></nav>
-  <p class="big" aria-hidden="true" data-reveal style="--i:1">Rodrigo Penide Lema</p>
-  <div class="fine" data-reveal style="--i:2"><span>Engineering at Harvey Mudd, art history at Pomona.</span><span>English for now. Español and galego are on their way.</span><span>2026</span></div>
+
+<section class="wrap" aria-labelledby="looking-h">
+  <div class="verb v-left"><h2 id="looking-h"><a href="looking/"><span data-line="circle">Looking</span></a></h2></div>
+  <div class="row grid">
+    <figure class="shot R" data-line="through" data-in style="--i:0"><img src="assets/img/quarry-window.jpg" alt="A limestone quarry seen through a gap between two cut walls, with shrubs on the ledges" width="1320" height="1311" loading="lazy" decoding="async"></figure>
+    <div class="words W-L end" data-line-phone="avoid" data-in style="--i:1"><p class="plain">A quarry, seen from inside another. Provence, summer 2026.</p></div>
+  </div>
+  <div class="row grid">
+    <figure class="shot L6" data-line="through" data-in style="--i:0"><img src="assets/img/stone-saw.jpg" alt="A man feeds a block of limestone to a large circular saw inside a quarry hall" width="1320" height="738" loading="lazy" decoding="async"></figure>
+    <div class="words W-R end" data-line-phone="avoid" data-in style="--i:1"><p class="plain">Cutting limestone into blocks.</p></div>
+  </div>
+  <div class="row grid">
+    <figure class="shot R4" data-line="through" data-in style="--i:0"><img src="assets/img/quarry-face.jpg" alt="Tall rooms cut into a pale quarry face, with pines along the top" width="1320" height="1299" loading="lazy" decoding="async"></figure>
+    <div class="words W-L mid" data-line-phone="avoid" data-in style="--i:1"><p class="plain">Rooms left behind by the stone that was taken.</p><a class="go" href="looking/"><span>All the photographs</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a></div>
+  </div>
+</section>
+
+<section class="wrap" aria-labelledby="hosting-h">
+  <div class="verb v-right"><h2 id="hosting-h"><a href="hosting/"><span data-line="circle">Hosting</span></a></h2></div>
+  <div class="row grid roles"><div class="list L6" data-line="avoid"><ul><li data-in style="--i:0"><b>Class president</b><span>Harvey Mudd, Class of 2028, since 2026</span></li><li data-in style="--i:1"><b>Philanthropy</b><span>Director, Board of Trustees, since 2025</span></li><li data-in style="--i:2"><b>Mentoring</b><span>Fourteen new international students, since 2025</span></li><li data-in style="--i:0"><b>Student affairs</b><span>Representative to the Board, since 2024</span></li><li data-in style="--i:1"><b>Volunteering</b><span>Mudders Making a Difference, since 2024</span></li></ul></div></div>
+</section>
+
+<section class="wrap plus grid" id="plus" aria-label="Plus: a drawing everyone adds one line to">
+  <div class="sheet" data-line="end">
+    <canvas tabindex="0" aria-label="A shared drawing. Drag to add your line, or press Enter." aria-describedby="plus-how"></canvas>
+    <div class="label">
+      <b>Untitled (Lines), 2026–</b>
+      <span>Rodrigo Penide Lema, with interventions by visitors from around the world.</span>
+      <span id="plus-how">One line each, in one stroke. For now your line stays on your screen; soon every line will join the same drawing.</span>
+      <output aria-live="polite" data-plus-status>The line above is mine. Add one of yours.</output>
+    </div>
+  </div>
+</section>
+</main>
+<section class="wrap write" aria-labelledby="write">
+  <h2 id="write">Write to me</h2>
+  <div class="mail"><a href="mailto:rpenidelema@g.hmc.edu">rpenidelema@g.hmc.edu</a><button type="button" data-copy="rpenidelema@g.hmc.edu">Copy address</button></div>
+</section>
+<footer class="wrap foot">
+  <span>Claremont, California</span>
+  <nav aria-label="Rooms, again"><a href="making/">Making</a><a href="reading/">Reading</a><a href="looking/">Looking</a><a href="hosting/">Hosting</a><a href="journal/">Journal</a><a href="plus/">+</a><a href="about/">About</a></nav>
+  <span>English for now. Español y galego, pronto.</span>
 </footer>
-<div class="welcome" hidden aria-hidden="true">
-  <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
-    <defs>
-      <mask id="win" maskUnits="userSpaceOnUse" x="0" y="0" width="1600" height="900">
-        <rect width="1600" height="900" fill="black"/>
-        <g id="win-g" transform="translate(800 450)">
-          <path d="M-12 54 V-26" fill="none" stroke="white" stroke-width="14" stroke-linecap="round"/>
-          <path d="M-12 -4 C 0 -34, 26 -44, 46 -36" fill="none" stroke="white" stroke-width="14" stroke-linecap="round"/>
-        </g>
-        <rect id="mfill" width="1600" height="900" fill="white" opacity="0"/>
-      </mask>
-    </defs>
-    <rect width="1600" height="900" fill="#ffffff"/>
-    <g id="ink-g" transform="translate(800 450)">
-      <path id="s1" d="M-12 -4 C 0 -34, 26 -44, 46 -36" fill="none" stroke="#111214" stroke-width="7" stroke-linecap="round"/>
-      <path id="s2" d="M-12 54 V-26" fill="none" stroke="#111214" stroke-width="7" stroke-linecap="round"/>
-    </g>
-    <image id="photo" href="assets/img/quarry-window.jpg" x="0" y="0" width="1600" height="900" preserveAspectRatio="xMidYMid slice" mask="url(#win)" opacity="0"/>
-  </svg>
-  <span class="skip">Tap to skip</span>
+</div>
+<div class="overlay" hidden>
+  <div class="top"><a href="">Rodrigo Penide Lema</a><button type="button" class="menu-btn" data-menu="close">Close</button></div>
+  <ul><li><a href="making/">Making</a></li><li><a href="reading/">Reading</a></li><li><a href="looking/">Looking</a></li><li><a href="hosting/">Hosting</a></li><li><a href="journal/">Journal</a></li><li><a href="plus/">+</a></li><li><a href="about/">About</a></li></ul>
+  <p>English for now. Español y galego, pronto.</p>
 </div>
 <script src="assets/js/site.js"></script>
 </body>
