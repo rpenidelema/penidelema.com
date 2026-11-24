@@ -1,4 +1,4 @@
-// penidelema.com: the line (Rodrigo's logo, continued down the page), entrances, phone menu, the +.
+// penidelema.com: the line (Rodrigo's signature, continued down the page), entrances, phone menu, the +.
 (function () {
   // Rodrigo's logo, traced from his drawing: the small stroke first, then the loop.
   var LOGO = [
@@ -13,6 +13,8 @@
   root.classList.add('js');
 
   // ---------- The line ----------
+  // One thin line, like a fountain pen: the signature, then on down the page to its bottom edge.
+  // Laid out once (and again only when the page changes size), drawn as far as the reader has read.
   var svg = document.querySelector('svg.line'), logoBox = document.querySelector('[data-logo]');
   if (svg && logoBox) {
     var hero = logoBox.dataset.logo === 'hero';
@@ -21,132 +23,156 @@
     var seen = false;
     try { seen = sessionStorage.getItem('pl-drawn') === '1'; sessionStorage.setItem('pl-drawn', '1'); } catch (e) {}
     var instant = still || (hero && seen);
-    var strokes = LOGO.map(function (s) {
+    // The pen presses a little harder on the long stroke than on the short one.
+    var PEN = hero ? [1.1, 1.5] : [0.9, 1.1];
+    var strokes = LOGO.map(function (s, i) {
       var p = document.createElementNS(NS, 'path'); p.setAttribute('d', s.d);
-      if (hero) p.setAttribute('stroke-width', s.w);
-      else { p.setAttribute('stroke-width', s.w / 13.4 * 4); p.setAttribute('vector-effect', 'non-scaling-stroke'); }
+      p.setAttribute('stroke-width', PEN[i]); p.setAttribute('vector-effect', 'non-scaling-stroke');
       logoG.appendChild(p);
       var L = p.getTotalLength(); p.__L = L; p.style.strokeDasharray = L; p.style.strokeDashoffset = instant ? 0 : L; return p;
     });
 
+    var page = document.querySelector('.page');
     var box = function (el) { var r = el.getBoundingClientRect(); return { x: r.left + scrollX, y: r.top + scrollY, w: r.width, h: r.height }; };
     var wob = function (i) { return Math.abs(Math.sin(i * 12.9898) * 43758.5453 % 1); };
     var catmull = function (pts) {
       var f = function (v) { return v.toFixed(1); }, d = 'M' + f(pts[0][0]) + ' ' + f(pts[0][1]);
+      // Each handle is kept shorter than a third of its own segment, so a short step next to a
+      // long one never swings out past the page edge.
+      var handle = function (a, b, seg) {
+        var x = (b[0] - a[0]) / 6, y = (b[1] - a[1]) / 6, m = Math.hypot(x, y), cap = seg / 3;
+        return m > cap && m ? [x * cap / m, y * cap / m] : [x, y];
+      };
       for (var i = 0; i < pts.length - 1; i++) {
         var p0 = pts[i - 1] || pts[i], p1 = pts[i], p2 = pts[i + 1], p3 = pts[i + 2] || p2;
-        d += ' C' + f(p1[0] + (p2[0] - p0[0]) / 6) + ' ' + f(p1[1] + (p2[1] - p0[1]) / 6) + ' ' +
-          f(p2[0] - (p3[0] - p1[0]) / 6) + ' ' + f(p2[1] - (p3[1] - p1[1]) / 6) + ' ' + f(p2[0]) + ' ' + f(p2[1]);
+        var seg = Math.hypot(p2[0] - p1[0], p2[1] - p1[1]), t1 = handle(p0, p2, seg), t2 = handle(p1, p3, seg);
+        d += ' C' + f(p1[0] + t1[0]) + ' ' + f(p1[1] + t1[1]) + ' ' +
+          f(p2[0] - t2[0]) + ' ' + f(p2[1] - t2[1]) + ' ' + f(p2[0]) + ' ' + f(p2[1]);
       }
       return d;
     };
-    var samples = [], total = 0, drawn = 0, shown = 0, ready = instant;
+    // lens[i] is a length along the line; low[i] the lowest point the line reaches before it.
+    var lens = [], low = [], total = 0, drawn = 0, shown = 0, ready = instant, running = false, lastW = 0, lastH = 0;
 
     var layout = function () {
-      var W = root.clientWidth, H = document.querySelector('.page').offsetHeight;
+      var W = root.clientWidth, H = page.offsetHeight;
+      if (W === lastW && H === lastH && total) return;
+      lastW = W; lastH = H;
       svg.setAttribute('width', W); svg.setAttribute('height', H); svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
       var b = box(logoBox), s = Math.min(b.w / 654, b.h / 724);
       var ox = b.x + (b.w - 654 * s) / 2, oy = b.y + (b.h - 724 * s) / 2;
       logoG.setAttribute('transform', 'translate(' + ox.toFixed(1) + ' ' + oy.toFixed(1) + ') scale(' + s.toFixed(4) + ')');
-      var width = hero ? Math.max(5, 11 * s) : (phone.matches ? 3.5 : 4);
       var e = [ox + END[0] * s, oy + END[1] * s], lead = hero ? 46 * s : 60 * s;
-      var pts = [e, [e[0] + DIR[0] * lead, e[1] + DIR[1] * lead]];
-      var n = 0, small = phone.matches, list = [];
+      // From the corner, the pen drops straight down the margin first, clear of the name beside it.
+      var pts = hero ? [e, [e[0] + DIR[0] * lead, e[1] + DIR[1] * lead]] : [e, [e[0] + 3, e[1] + 22], [e[0] + 4, e[1] + 70]];
+      var n = 0, small = phone.matches;
+      // Beside the words themselves, on their emptier side: close enough to follow, never on top.
+      var lane = function (r, el) {
+        var a = Infinity, z = -Infinity;
+        [].forEach.call(el.children.length ? el.children : [el], function (c) { var q = box(c); if (q.w) { a = Math.min(a, q.x); z = Math.max(z, q.x + q.w); } });
+        if (a === Infinity) { a = r.x; z = r.x + r.w; }
+        var left = a, right = W - z, side = small ? '' : (el.dataset.side || '');
+        if (side === 'left' || (!side && left > right)) return Math.max(a - Math.min(72, left / 2), 30);
+        return Math.min(z + Math.min(72, right / 2), W - 30);
+      };
       document.querySelectorAll('[data-line], [data-line-phone]').forEach(function (el) {
         var kind = small && el.dataset.linePhone ? el.dataset.linePhone : el.dataset.line;
-        if (kind && kind !== 'none' && el.offsetParent !== null) list.push({ el: el, kind: kind });
-      });
-      var lane = function (r, el) {
-        var left = r.x, right = W - (r.x + r.w), side = small ? '' : (el.dataset.side || '');
-        return side === 'left' || (!side && left > right) ? Math.max(left * .5, 8) : W - Math.max(right * .5, 8);
-      };
-      list.forEach(function (it, idx) {
-        var el = it.el, kind = it.kind, r = box(el), prev = pts[pts.length - 1], cx = r.x + r.w / 2;
+        if (!kind || kind === 'none' || el.offsetParent === null) return;
+        var r = box(el), cx = r.x + r.w / 2;
         if (kind === 'through') {
           // Behind the picture: in at the top, out at the bottom, clear of the caption on the left.
-          var pic = el.querySelector('img'); if (pic) { r = box(pic); cx = r.x + r.w / 2; }
-          // On a phone the words sit right under the picture, so leave by the lane on the right.
+          var pic = el.querySelector('img, canvas'); if (pic) { r = box(pic); cx = r.x + r.w / 2; }
           var ox2 = small ? r.x + r.w * .93 : r.x + r.w * (.7 + .06 * (wob(++n) - .5));
           pts.push([cx + r.w * .06 * (wob(++n) - .5), r.y + r.h * .3], [ox2, r.y + r.h * .74], [ox2, r.y + r.h + (small ? 14 : 56)]);
-        } else if (kind === 'circle') {
-          // The logo's own gesture: one loop round the word, leaving towards what comes next.
-          var cy = r.y + r.h * .55, pad = Math.max(16, r.h * .3);
-          var rx = r.w / 2 + pad * 1.4, ry = r.h / 2 + pad, tilt = -0.09;
-          var nx = list[idx + 1], nb = nx ? box(nx.el) : { x: cx, y: cy + 400, w: 0, h: 0 };
-          var tgt = nx && nx.kind === 'avoid' ? [lane(nb, nx.el), nb.y - 24] : [nb.x + nb.w / 2, nb.y + Math.min(nb.h * .3, 120)];
-          var a0 = Math.atan2((prev[1] - cy) / ry, (prev[0] - cx) / rx);
-          var a1 = Math.atan2((tgt[1] - cy) / ry, (tgt[0] - cx) / rx);
-          var TAU = Math.PI * 2, delta = ((a1 - a0) % TAU + TAU) % TAU;
-          var sweep = delta > Math.PI * 1.5 ? delta : delta + TAU, steps = Math.round(16 * sweep / TAU);
-          var on = function (a, g) { var x = Math.cos(a) * rx * g, y = Math.sin(a) * ry * g; return [cx + x * Math.cos(tilt) - y * Math.sin(tilt), cy + x * Math.sin(tilt) + y * Math.cos(tilt)]; };
-          pts.push(on(a0 - 0.25, 1.45));
-          for (var k = 0; k <= steps; k++) pts.push(on(a0 + sweep * k / steps, 1 + 0.12 * k / steps));
-          pts.push(on(a0 + sweep + 0.2, 1.5));
+        } else if (kind === 'behind') {
+          // Down through a wall of pictures, in the gap between two of them nearest the pen.
+          var figs = [].map.call(el.querySelectorAll('figure'), box), bx = r.x + r.w / 2, bd = Infinity, prevX = pts[pts.length - 1][0];
+          for (var g = 1; g < figs.length; g++) {
+            var gx = (figs[g - 1].x + figs[g - 1].w + figs[g].x) / 2;
+            if (Math.abs(gx - prevX) < bd) { bd = Math.abs(gx - prevX); bx = gx; }
+          }
+          var top = figs.length ? Math.min.apply(null, figs.map(function (q) { return q.y; })) : r.y;
+          pts.push([bx, top - 30], [bx, r.y + r.h - 40]);
         } else if (kind === 'avoid') {
           // Down the emptier side of a block of words.
+          // Measured from the words, not the padding around them.
+          var y0 = Infinity, y1 = -Infinity;
+          [].forEach.call(el.children.length ? el.children : [el], function (c) { var q = box(c); if (q.h) { y0 = Math.min(y0, q.y); y1 = Math.max(y1, q.y + q.h); } });
+          if (y0 === Infinity) { y0 = r.y; y1 = r.y + r.h; }
           var lx = lane(r, el);
-          pts.push([lx, r.y - 24], [lx + 10 * (wob(++n) - .5), r.y + r.h + 24]);
-        } else if (kind === 'end') {
-          // Onto the paper, where it becomes the first line of the drawing.
-          var tx = r.x + r.w * .3;
-          pts.push([tx, r.y - 70], [tx, r.y + 2]);
-        } else if (kind === 'stop') {
-          // Under a word, and off.
-          var fromLeft = prev[0] < r.x + r.w / 2, b0 = r.y + r.h + 8;
-          if (fromLeft) pts.push([r.x - 16, b0 + 6], [r.x + r.w * .5, b0], [r.x + r.w + 14, b0 + 5]);
-          else pts.push([r.x + r.w + 16, b0 + 6], [r.x + r.w * .5, b0], [r.x - 14, b0 + 5]);
+          pts.push([lx, y0 - 24], [lx + 8 * (wob(++n) - .5), y1 + 24]);
         }
       });
+      // And on to the bottom edge of the page, through the widest gap in the foot nearest the pen.
+      var last = pts[pts.length - 1], fx = last[0], foot = document.querySelector('.foot');
+      if (foot) {
+        var fb = box(foot), spans = [], best = -Infinity;
+        [].forEach.call(foot.children, function (c) {
+          [].forEach.call(c.children.length ? c.children : [c], function (k) { var q = box(k); spans.push([q.x, q.x + q.w]); });
+        });
+        spans.sort(function (u, v) { return u[0] - v[0]; });
+        var edge = Math.max(fb.x, 0) + 8;
+        spans.concat([[W - 8, W]]).forEach(function (sp) {
+          var g = sp[0] - edge;
+          if (g > 40) { var c = edge + g / 2, score = g - Math.abs(c - last[0]) * 1.5; if (score > best) { best = score; fx = c; } }
+          edge = Math.max(edge, sp[1]);
+        });
+      }
+      if (last[1] < H - 160) pts.push([fx, Math.max(last[1] + 80, H - 160)]);
+      pts.push([fx, H]);
+
       cont.setAttribute('d', catmull(pts));
-      cont.setAttribute('stroke-width', width.toFixed(1));
+      cont.setAttribute('stroke-width', small ? .9 : 1);
+      cont.setAttribute('vector-effect', 'non-scaling-stroke');
       total = cont.getTotalLength();
-      cont.style.strokeDasharray = total;
-      samples = [];
-      for (var l = 0; l <= total; l += 6) samples.push([l, cont.getPointAtLength(l).y]);
-      samples.push([total, Infinity]);
+      cont.style.strokeDasharray = total + ' ' + total;
+      lens = []; low = [];
+      var m = -Infinity, step = Math.max(12, total / 1500);
+      for (var l = 0; l <= total; l += step) { m = Math.max(m, cont.getPointAtLength(l).y); lens.push(l); low.push(m); }
+      lens.push(total); low.push(Infinity);
       if (still) drawn = shown = total;
       drawn = Math.min(drawn, total); shown = Math.min(shown, total);
       cont.style.strokeDashoffset = total - shown;
-      svg.__width = width;
+      wake();
     };
 
     // How far the pen has got: as far as the reader has read, never back.
     var reach = function () {
-      var T = scrollY + innerHeight * .78, i = 0;
-      while (i < samples.length - 1 && samples[i + 1][1] <= T) i++;
-      for (var j = i + 1; j < samples.length && j < i + 400; j++) if (samples[j][1] <= T) i = j;
-      // At the bottom of the page, finish the line.
-      if (scrollY + innerHeight >= root.scrollHeight - 4) i = samples.length - 1;
-      drawn = Math.max(drawn, samples[i][0]);
+      if (scrollY + innerHeight >= root.scrollHeight - 4) { drawn = total; return; }
+      var T = scrollY + innerHeight * .82, lo = 0, hi = low.length - 1;
+      while (lo < hi) { var mid = (lo + hi + 1) >> 1; if (low[mid] <= T) lo = mid; else hi = mid - 1; }
+      drawn = Math.max(drawn, lens[lo] || 0);
     };
     var tick = function () {
-      if (ready && samples.length) { reach(); shown += (drawn - shown) * .085; if (drawn - shown < .5) shown = drawn; cont.style.strokeDashoffset = total - shown; }
-      requestAnimationFrame(tick);
+      reach(); shown += (drawn - shown) * .2; if (drawn - shown < .5) shown = drawn;
+      cont.style.strokeDashoffset = total - shown;
+      if (shown < drawn) requestAnimationFrame(tick); else running = false;
     };
+    var wake = function () { if (!ready || !lens.length) return; reach(); if (!running && shown < drawn) { running = true; requestAnimationFrame(tick); } };
+    window.addEventListener('scroll', wake, { passive: true });
 
-    // The logo draws itself: on the home page slowly, the first time; in the corner, quickly.
+    // The signature writes itself: on the home page once a visit, in the corner in half a second.
     var heroText = document.querySelector('.hero-text');
     var draw = function () {
-      if (instant) { if (heroText) heroText.classList.add('on'); return; }
+      if (instant) { if (heroText) heroText.classList.add('on'); wake(); return; }
       var ease = function (t) { return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
-      var k = hero ? 1 : .45, t0 = performance.now();
+      var k = hero ? .75 : .25, t0 = performance.now();
       (function f(now) {
         var t = (now - t0) / 1000 / k;
-        var a = Math.min(Math.max((t - .2) / .7, 0), 1), b = Math.min(Math.max((t - 1.0) / 1.5, 0), 1);
+        var a = Math.min(Math.max((t - .1) / .6, 0), 1), b = Math.min(Math.max((t - .6) / 1.4, 0), 1);
         strokes[0].style.strokeDashoffset = strokes[0].__L * (1 - ease(a));
         strokes[1].style.strokeDashoffset = strokes[1].__L * (1 - ease(b));
-        if (t > 2.1 && heroText) heroText.classList.add('on');
-        if (t > 2.45) ready = true;
-        if (t < 2.6) requestAnimationFrame(f);
+        if (t > 1.2 && heroText) heroText.classList.add('on');
+        if (t >= 2) { ready = true; wake(); return; }
+        requestAnimationFrame(f);
       })(t0);
     };
 
-    layout(); draw(); requestAnimationFrame(tick);
-    var rt;
-    window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { var f = total ? shown / total : 0; layout(); shown = drawn = Math.max(drawn, f * total); }, 120); });
-    if (document.fonts) document.fonts.ready.then(layout);
+    layout(); draw();
+    var rt, relayout = function () { clearTimeout(rt); rt = setTimeout(layout, 150); };
+    window.addEventListener('resize', relayout);
     window.addEventListener('load', layout);
-    document.querySelectorAll('.page img').forEach(function (im) { if (!im.complete) im.addEventListener('load', function () { clearTimeout(rt); rt = setTimeout(layout, 60); }); });
+    if ('ResizeObserver' in window) new ResizeObserver(relayout).observe(page);
   } else {
     var ht = document.querySelector('.hero-text'); if (ht) ht.classList.add('on');
   }
@@ -178,11 +204,15 @@
   if (cv) {
     var ctx = cv.getContext('2d');
     var seedLine = [[0.3, 0], [0.3, 0.1], [0.285, 0.24], [0.32, 0.38], [0.4, 0.47], [0.5, 0.5], [0.58, 0.47]], mine = [], down = false, done = false;
-    var seg = function (p, w, h) { if (p.length < 2) return; ctx.beginPath(); ctx.moveTo(p[0][0] * w, p[0][1] * h); for (var i = 1; i < p.length; i++) ctx.lineTo(p[i][0] * w, p[i][1] * h); ctx.stroke(); };
+    var seg = function (p, w, h) {
+      if (p.length < 2) return; ctx.beginPath(); ctx.moveTo(p[0][0] * w, p[0][1] * h);
+      for (var i = 1; i < p.length - 1; i++) ctx.quadraticCurveTo(p[i][0] * w, p[i][1] * h, (p[i][0] + p[i + 1][0]) / 2 * w, (p[i][1] + p[i + 1][1]) / 2 * h);
+      ctx.lineTo(p[p.length - 1][0] * w, p[p.length - 1][1] * h); ctx.stroke();
+    };
     var paint = function () {
       var r = cv.getBoundingClientRect(); ctx.clearRect(0, 0, r.width, r.height); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-      ctx.lineWidth = (svg && svg.__width) || 6; ctx.strokeStyle = '#111214'; seg(seedLine, r.width, r.height);
-      ctx.lineWidth = 3; ctx.strokeStyle = '#1c2a66'; seg(mine, r.width, r.height);
+      ctx.lineWidth = 1; ctx.strokeStyle = '#000'; seg(seedLine, r.width, r.height);
+      ctx.lineWidth = 1.4; seg(mine, r.width, r.height);
     };
     var size = function () { var r = cv.getBoundingClientRect(); if (!r.width) return; var d = window.devicePixelRatio || 1; cv.width = r.width * d; cv.height = r.height * d; ctx.setTransform(d, 0, 0, d, 0, 0); paint(); };
     var at = function (e) { var r = cv.getBoundingClientRect(); return [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]; };
