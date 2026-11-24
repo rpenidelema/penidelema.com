@@ -11,40 +11,32 @@
 <body>
 <div class="page page-plus">
 <svg class="line" aria-hidden="true"></svg>
-<div class="wrap"><header class="bar">
-  <a class="home-name" href="../"><span class="mark-box" data-logo="mark" aria-hidden="true"></span><span>Rodrigo Penide Lema</span></a>
-  <nav aria-label="Rooms"><ul class="rooms"><li><a href="../making/">Making</a></li><li><a href="../reading/">Reading</a></li><li><a href="../photography/">Photography</a></li><li><a href="../leadership/">Leadership</a></li><li><a href="../journal/">Journal</a></li><li><a href="../plus/" aria-current="page" aria-label="Plus: a drawing everyone adds a line to">+</a></li></ul></nav>
-  <button type="button" class="menu-btn" data-menu="open" aria-expanded="false">Menu</button>
-</header></div>
+<header>
+<a class="corner home-name" href="../"><span class="mark-box" data-logo="mark" aria-hidden="true"></span><span class="who"><span>Rodrigo Penide Lema</span><span>Untitled (Lines)</span></span></a>
+<nav class="corner-r rooms" aria-label="Rooms"><a href="../making/">Making</a><a href="../reading/">Reading</a><a href="../photography/">Photography</a><a href="../leadership/">Leadership</a><a href="../journal/">Journal</a><a href="../plus/" aria-current="page" aria-label="Plus: a drawing everyone adds a line to">+</a><a href="../about/">About</a></nav>
+<button type="button" class="corner-r menu-btn" data-menu="open" aria-expanded="false">Index</button>
+</header>
 <main>
-<section class="wrap top">
-  <div class="grid" data-line="avoid"><h1 data-in>One shared drawing</h1><p class="lead" data-in style="--i:1">Every visitor adds a single line to it.</p></div>
-</section><section class="wrap plus grid" id="plus" aria-label="Plus: a drawing everyone adds one line to">
+<section class="wrap plus" aria-label="Plus: a drawing everyone adds one line to">
   <div class="sheet" data-line="through">
     <canvas tabindex="0" aria-label="A shared drawing. Drag to add your line, or press Enter." aria-describedby="plus-how"></canvas>
-    <div class="label">
-      <b>Untitled (Lines), 2026–</b>
-      <span>Rodrigo Penide Lema, with interventions by visitors from around the world.</span>
-      <span id="plus-how">One line each, in one stroke. For now your line stays on your screen; soon every line will join the same drawing.</span>
-      <output aria-live="polite" data-plus-status>The line above is mine. Add one of yours.</output>
-    </div>
+  </div>
+  <div class="tomb">
+    <p><i>Untitled (Lines)</i>, 2026–</p>
+    <p>Rodrigo Penide Lema, with interventions by visitors from around the world</p>
+    <p class="g" id="plus-how">One line each, in one stroke. For now your line stays on your screen; soon every line will join the same drawing.</p>
+    <output aria-live="polite" data-plus-status>The line on the paper is mine. Add one of yours.</output>
   </div>
 </section>
 </main>
-<section class="wrap write" aria-labelledby="write">
-  <h2 id="write">Write to me</h2>
-  <div class="mail"><a href="mailto:rpenidelema@g.hmc.edu">rpenidelema@g.hmc.edu</a><button type="button" data-copy="rpenidelema@g.hmc.edu">Copy address</button></div>
-</section>
 <footer class="wrap foot">
-  <span>Claremont, California</span>
-  <nav aria-label="Rooms, again"><a href="../making/">Making</a><a href="../reading/">Reading</a><a href="../photography/">Photography</a><a href="../leadership/">Leadership</a><a href="../journal/">Journal</a><a href="../plus/">+</a><a href="../about/">About</a></nav>
-  <span>English for now. Español y galego, pronto.</span>
+  <div class="mail"><a href="mailto:rpenidelema@g.hmc.edu">rpenidelema@g.hmc.edu</a><button type="button" data-copy="rpenidelema@g.hmc.edu">Copy</button></div>
+  <span class="g">Claremont, California. English for now; español y galego, pronto.</span>
 </footer>
 </div>
 <div class="overlay" hidden>
-  <div class="top"><a href="../">Rodrigo Penide Lema</a><button type="button" class="menu-btn" data-menu="close">Close</button></div>
+  <div class="bar"><a href="../">Rodrigo Penide Lema</a><button type="button" data-menu="close">Close</button></div>
   <ul><li><a href="../making/">Making</a></li><li><a href="../reading/">Reading</a></li><li><a href="../photography/">Photography</a></li><li><a href="../leadership/">Leadership</a></li><li><a href="../journal/">Journal</a></li><li><a href="../plus/">+</a></li><li><a href="../about/">About</a></li></ul>
-  <p>English for now. Español y galego, pronto.</p>
 </div>
 <script src="../assets/js/site.js"></script>
 </body>

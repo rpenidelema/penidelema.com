@@ -1,161 +1,146 @@
-/* penidelema.com: the same look as /anarchitecture. White ground, black type, Arial at one
-   small size, grey for what is secondary. Nothing big, nothing bold; hierarchy is space.
-   Rodrigo's signature continues down every page as one thin line. */
+/* penidelema.com, laid out like /anarchitecture: white ground, black Arial at one small
+   size, grey for numbers and what is secondary, italic for titles. Corners, a checklist,
+   walls of pictures over a floor line, wall labels. One thin line, the signature, runs
+   down every page and stops at its bottom edge. */
 :root {
   --white: #fff;
   --black: #000;
-  --grey: #767676;
-  --block: #efefef;
+  --grey: #8a8a8a;
+  --block: #e9e9e9;
   --font: Arial, "Helvetica Neue", Helvetica, sans-serif;
-  --gutter: 24px;
+  --gutter: max(24px, env(safe-area-inset-left, 0px));
+  --gutter-r: max(24px, env(safe-area-inset-right, 0px));
   color-scheme: light;
 }
 * { box-sizing: border-box; }
 html { background: var(--white); }
 body {
   margin: 0; background: var(--white); color: var(--black);
-  font-family: var(--font); font-size: 13px; line-height: 1.45;
+  font-family: var(--font); font-size: 13px; line-height: 1.4;
   overflow-x: clip; -webkit-font-smoothing: antialiased;
 }
 a, button { color: inherit; font: inherit; }
 a { text-decoration: none; }
 a:hover { text-decoration: underline; }
 button { background: none; border: 0; padding: 0; cursor: pointer; }
+button:hover { text-decoration: underline; }
 h1, h2, h3, p, ul, figure { margin: 0; }
 h1, h2, h3, b { font-size: inherit; font-weight: 400; }
 img { display: block; max-width: 100%; height: auto; }
 [hidden] { display: none !important; }
 :focus-visible { outline: 1px solid var(--black); outline-offset: 3px; }
+.g, .n { color: var(--grey); }
 
 .page { position: relative; }
 .line { position: absolute; top: 0; left: 0; z-index: 1; pointer-events: none; overflow: visible; }
 .line path { fill: none; stroke: var(--black); stroke-linecap: round; stroke-linejoin: round; }
 
-.wrap {
-  position: relative; max-width: 1440px; margin: 0 auto;
-  padding-left: max(var(--gutter), env(safe-area-inset-left, 0px));
-  padding-right: max(var(--gutter), env(safe-area-inset-right, 0px));
-}
-.grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; }
-.grid > * { min-width: 0; }
+.wrap { position: relative; max-width: 1288px; margin: 0 auto; padding-left: var(--gutter); padding-right: var(--gutter-r); }
 
-/* Top bar: name in one corner, rooms in the other */
-.bar { position: relative; z-index: 4; display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding-top: calc(22px + env(safe-area-inset-top, 0px)); }
-.home-name { display: flex; align-items: flex-start; gap: 10px; }
-.mark-box { display: block; width: 24px; height: 27px; flex: none; margin-top: -4px; }
-.bar ul { list-style: none; padding: 0; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 4px 18px; }
-.bar ul a[aria-current] { text-decoration: underline; }
+/* The corners */
+.corner { position: absolute; z-index: 4; top: calc(22px + env(safe-area-inset-top, 0px)); left: var(--gutter); }
+.corner-r { position: absolute; z-index: 4; top: calc(22px + env(safe-area-inset-top, 0px)); right: var(--gutter-r); display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 4px 18px; max-width: 60vw; }
+.corner-r a[aria-current] { text-decoration: underline; }
+.home-name { display: flex; gap: 10px; align-items: flex-start; }
+.home-name:hover { text-decoration: none; }
+.home-name:hover .who span:first-child { text-decoration: underline; }
+.who { display: grid; }
+.mark-box { display: block; width: 24px; height: 27px; flex: none; margin-top: -2px; }
 .menu-btn { display: none; }
-.menu-btn:hover { text-decoration: underline; }
-.overlay { position: fixed; inset: 0; z-index: 20; background: var(--white); display: flex; flex-direction: column; gap: 28px;
-  padding: calc(22px + env(safe-area-inset-top, 0px)) max(var(--gutter), env(safe-area-inset-right, 0px)) 24px max(var(--gutter), env(safe-area-inset-left, 0px)); }
-.overlay .top { display: flex; justify-content: space-between; align-items: flex-start; padding: 0; }
-.overlay ul { list-style: none; padding: 0; display: grid; gap: 6px; }
-.overlay p { color: var(--grey); margin-top: auto; }
+.overlay { position: fixed; inset: 0; z-index: 20; background: var(--white); display: grid; align-content: start; gap: 80px;
+  padding: calc(22px + env(safe-area-inset-top, 0px)) var(--gutter-r) 24px var(--gutter); }
+.overlay .bar { display: flex; justify-content: space-between; }
+.overlay ul { list-style: none; padding: 0; display: grid; gap: 4px; }
 
-/* Home: the signature, alone, with the name in the corner */
-.hero { position: relative; min-height: 100svh; }
-.hero .bar { position: absolute; top: 0; right: max(var(--gutter), env(safe-area-inset-right, 0px)); }
-.logo-box { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); height: min(64svh, 640px); aspect-ratio: 654 / 724; max-width: 70%; }
-.hero-text { position: absolute; z-index: 3; top: calc(22px + env(safe-area-inset-top, 0px)); max-width: 300px; }
-.hero p { color: var(--grey); }
+/* Home: the signature, alone in the middle, like the plan */
+.hero { position: relative; height: 100svh; min-height: 480px; }
+.logo-box { position: absolute; left: 50%; top: 52%; transform: translate(-50%, -50%); height: min(60svh, 560px); aspect-ratio: 654 / 724; max-width: 76vw; }
 .js .hero-text { opacity: 0; transition: opacity .8s ease; }
 .js .hero-text.on { opacity: 1; }
 
-/* Inner page top */
-.top { padding-block: 14svh 0; }
-.top h1, .top .lead { position: relative; z-index: 3; }
-.top .lead { color: var(--grey); max-width: 46ch; }
+/* The checklist */
+.list { padding-top: 40px; }
+.list ul { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 36px 32px; }
+.list li { position: relative; z-index: 3; }
+.list a { display: block; }
+.list a:hover { text-decoration: none; }
+.list a:hover i { text-decoration: underline; }
+.list .more { margin-top: 6px; color: var(--grey); max-width: 34ch; }
+.page-home .list { padding-top: 0; }
+.room-intro { padding-top: 130px; }
+.room-intro p { max-width: 46ch; }
 
-/* Blocks along the line */
-section { position: relative; }
-.row { align-items: start; padding-block: 12svh 0; }
+/* A wall: the pictures hung at one height over a floor line */
+.wallbox { padding: 90px var(--gutter-r) 100px var(--gutter); overflow-x: auto; }
+.wall { --h: clamp(120px, 15vw, 210px); display: flex; align-items: center; justify-content: center; gap: clamp(32px, 5vw, 80px);
+  width: fit-content; min-width: min(100%, 1240px); margin: 0 auto; padding: 0 clamp(24px, 4vw, 64px) calc(var(--h) * .55); border-bottom: 2px solid var(--black); }
+.wall figure { position: relative; z-index: 2; flex: none; width: calc(var(--h) * var(--r)); }
+.wall img { width: 100%; height: var(--h); object-fit: cover; background: var(--block); }
+.wall figcaption { position: absolute; top: calc(100% + 8px); left: 0; white-space: nowrap; }
+.wall a:hover { text-decoration: none; }
+.wall a:hover i { text-decoration: underline; }
+
+/* A project: the wall label and words on the left, pictures on the right */
+.part { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 32px; padding-top: 110px; align-items: start; }
+.part.first { padding-top: 130px; }
+.part .words { position: relative; z-index: 3; grid-column: 1 / span 4; display: grid; gap: 10px; max-width: 46ch; }
+.part .pics { grid-column: 6 / span 7; display: grid; gap: 48px; }
+.part .pics:empty { display: none; }
+.tomb { display: grid; }
+.tomb .intro { display: grid; gap: 10px; margin-top: 18px; }
+.words h2 { color: var(--grey); }
 .shot { position: relative; z-index: 2; }
 .shot img { width: 100%; }
+.shot.narrow { width: 62%; }
 .shot figcaption { margin-top: 8px; color: var(--grey); }
-.sheet-pic img { background: var(--block); }
-.words { position: relative; z-index: 3; display: grid; gap: 6px; align-content: start; }
-.words p { max-width: 42ch; }
-.go { color: var(--grey); width: fit-content; margin-top: 6px; }
-.go:hover { color: var(--black); }
 
-.verb { position: relative; z-index: 3; padding-block: 18svh 0; }
+/* Photography: one picture to a row, sides alternating, the caption on the far side */
+.gallery { display: grid; }
+.g-row { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 32px; padding-top: 120px; align-items: end; }
+.g-pic { position: relative; z-index: 2; grid-row: 1; }
+.g-pic img { width: 100%; }
+.g-row figcaption { grid-row: 1; position: relative; z-index: 3; }
+.g-row.r .g-pic { grid-column: 7 / span 5; }
+.g-row.r figcaption { grid-column: 1 / span 3; }
+.g-row.l .g-pic { grid-column: 2 / span 5; }
+.g-row.l figcaption { grid-column: 9 / span 3; }
 
-.intro .words p { max-width: 40ch; }
-.facts { list-style: none; padding: 0; display: grid; gap: 2px; color: var(--grey); margin-top: 10px; }
-.facts.big { gap: 12px; margin-top: 0; }
-.facts.big li { display: grid; }
-.facts.big b { color: var(--black); }
-
-.roles ul { list-style: none; padding: 0; display: grid; gap: 16px; }
-.roles li { display: grid; }
-.roles li span { color: var(--grey); }
-.roles li p { max-width: 52ch; margin-top: 4px; }
-
-/* Long text: one column, with room beside it for the line */
-.text { position: relative; z-index: 3; display: grid; gap: 12px; }
-.text h2 { color: var(--grey); margin-top: 12px; }
-.text h2:first-child { margin-top: 0; }
-.text p { max-width: 64ch; }
-.text .small { color: var(--grey); }
-.top .lead a { color: var(--black); text-decoration: underline; }
-
-.pics { display: grid; gap: 24px; align-items: start; }
-
-/* Entrances: a fade, nothing more */
-.js [data-in] { opacity: 0; transition: opacity .7s ease; transition-delay: calc(var(--i, 0) * 70ms); }
-.js [data-in].is-in { opacity: 1; }
-
-/* The +: a sheet each visitor adds one line to */
-.plus { padding-block: 18svh 0; }
+/* The +: a sheet each visitor adds one line to, with its label */
+.plus { padding-top: 130px; display: grid; gap: 14px; max-width: 1000px; }
 .sheet { position: relative; z-index: 2; background: var(--block); }
 .sheet canvas { display: block; width: 100%; aspect-ratio: 16 / 9; cursor: crosshair; touch-action: none; }
 .sheet canvas:focus-visible { outline: 1px solid var(--black); outline-offset: -6px; }
-.label { display: grid; gap: 2px; padding: 0 18px 18px; max-width: 54ch; }
-.label b { font-style: italic; }
-.label span { color: var(--grey); }
-.label output { min-height: 1.45em; margin-top: 8px; }
+.plus .tomb { max-width: 52ch; }
+.plus output { margin-top: 10px; min-height: 1.4em; }
 
-/* Write to me, and the foot */
-.write { position: relative; z-index: 3; padding-block: 18svh 8svh; display: grid; gap: 6px; }
-.mail { display: flex; flex-wrap: wrap; gap: 4px 18px; }
+/* The foot */
+.foot { position: relative; z-index: 3; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 32px; padding-top: 160px; padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px)); }
+.mail { display: flex; flex-wrap: wrap; gap: 4px 14px; }
 .mail a { overflow-wrap: anywhere; }
 .mail button { color: var(--grey); }
-.mail button:hover { color: var(--black); text-decoration: underline; }
-.foot { position: relative; z-index: 3; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 32px; padding-block: 24px calc(24px + env(safe-area-inset-bottom, 0px)); color: var(--grey); }
-.foot nav { display: flex; flex-wrap: wrap; gap: 4px 18px; }
-.foot a:hover { color: var(--black); }
-
-/* Desktop placement */
-@media (min-width: 761px) {
-  .L { grid-column: 1 / span 5; } .L4 { grid-column: 2 / span 4; } .L6 { grid-column: 1 / span 6; } .L7 { grid-column: 1 / span 7; }
-  .R { grid-column: 7 / span 5; } .R4 { grid-column: 8 / span 4; } .R6 { grid-column: 6 / span 6; } .R7 { grid-column: 6 / span 7; }
-  .W-L { grid-column: 1 / span 4; grid-row: 1; } .W-R { grid-column: 8 / span 4; }
-  .end { align-self: end; } .mid { align-self: center; }
-  .text-col { grid-column: 1 / span 6; }
-  .top .grid h1, .top .grid .lead { grid-column: 1 / span 6; }
-  .pics.two { grid-template-columns: 1fr 1fr; }
-  .pics.three { grid-template-columns: repeat(3, 1fr); }
-  .plus .sheet { grid-column: 3 / span 8; }
-  .page-plus .plus .sheet { grid-column: 1 / span 10; }
-}
+.mail button:hover { color: var(--black); }
 
 /* Phone: one column, with a lane down the right for the line */
 @media (max-width: 760px) {
-  :root { --gutter: 18px; }
-  .bar ul.rooms { display: none; }
-  .menu-btn { display: inline-block; }
-  .hero .bar { top: auto; bottom: 24px; right: auto; left: max(var(--gutter), env(safe-area-inset-left, 0px)); padding: 0; }
-  .hero .bar ul { justify-content: flex-start; }
-  .logo-box { height: auto; width: min(78vw, 52svh); max-width: none; }
-  .hero-text { max-width: calc(100% - 2 * var(--gutter)); }
-  .grid { display: flex; flex-direction: column; gap: 16px; }
-  .row { padding-block: 10svh 0; }
-  .words, .roles .list, .text, .facts, .top .lead, .hero-text, .write, .foot { max-width: 84%; }
-  .verb { padding-block: 14svh 0; }
-  .pics { gap: 16px; }
+  :root { --gutter: max(18px, env(safe-area-inset-left, 0px)); --gutter-r: max(18px, env(safe-area-inset-right, 0px)); }
+  .corner-r.rooms { display: none; }
+  .menu-btn { display: block; }
+  .logo-box { height: auto; width: min(74vw, 50svh); }
+  .list ul { grid-template-columns: 1fr 1fr; gap: 28px 18px; padding-right: 14%; }
+  .room-intro { padding-top: 110px; }
+  .room-intro p, .foot { max-width: 84%; }
+  .wallbox { padding-block: 64px 80px; }
+  .wall { --h: 110px; justify-content: flex-start; }
+  .part, .g-row { display: flex; flex-direction: column; gap: 18px; align-items: stretch; }
+  .part { padding-top: 80px; }
+  .part.first { padding-top: 110px; }
+  .part .words { max-width: 84%; }
+  .part .pics { gap: 28px; width: 90%; }
+  .g-row { padding-top: 80px; }
+  .g-pic { width: 90%; }
+  .g-row.l .g-pic { align-self: flex-start; }
+  .g-row figcaption { max-width: 70%; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .js [data-in], .js .hero-text { opacity: 1 !important; transition: none; }
+  .js .hero-text { opacity: 1 !important; transition: none; }
 }
-.shot[data-line] figcaption, .shot[data-line-phone] figcaption { max-width: 46%; }

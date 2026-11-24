@@ -37,10 +37,17 @@
     var wob = function (i) { return Math.abs(Math.sin(i * 12.9898) * 43758.5453 % 1); };
     var catmull = function (pts) {
       var f = function (v) { return v.toFixed(1); }, d = 'M' + f(pts[0][0]) + ' ' + f(pts[0][1]);
+      // Each handle is kept shorter than a third of its own segment, so a short step next to a
+      // long one never swings out past the page edge.
+      var handle = function (a, b, seg) {
+        var x = (b[0] - a[0]) / 6, y = (b[1] - a[1]) / 6, m = Math.hypot(x, y), cap = seg / 3;
+        return m > cap && m ? [x * cap / m, y * cap / m] : [x, y];
+      };
       for (var i = 0; i < pts.length - 1; i++) {
         var p0 = pts[i - 1] || pts[i], p1 = pts[i], p2 = pts[i + 1], p3 = pts[i + 2] || p2;
-        d += ' C' + f(p1[0] + (p2[0] - p0[0]) / 6) + ' ' + f(p1[1] + (p2[1] - p0[1]) / 6) + ' ' +
-          f(p2[0] - (p3[0] - p1[0]) / 6) + ' ' + f(p2[1] - (p3[1] - p1[1]) / 6) + ' ' + f(p2[0]) + ' ' + f(p2[1]);
+        var seg = Math.hypot(p2[0] - p1[0], p2[1] - p1[1]), t1 = handle(p0, p2, seg), t2 = handle(p1, p3, seg);
+        d += ' C' + f(p1[0] + t1[0]) + ' ' + f(p1[1] + t1[1]) + ' ' +
+          f(p2[0] - t2[0]) + ' ' + f(p2[1] - t2[1]) + ' ' + f(p2[0]) + ' ' + f(p2[1]);
       }
       return d;
     };
@@ -56,7 +63,8 @@
       var ox = b.x + (b.w - 654 * s) / 2, oy = b.y + (b.h - 724 * s) / 2;
       logoG.setAttribute('transform', 'translate(' + ox.toFixed(1) + ' ' + oy.toFixed(1) + ') scale(' + s.toFixed(4) + ')');
       var e = [ox + END[0] * s, oy + END[1] * s], lead = hero ? 46 * s : 60 * s;
-      var pts = [e, [e[0] + DIR[0] * lead, e[1] + DIR[1] * lead]];
+      // From the corner, the pen drops straight down the margin first, clear of the name beside it.
+      var pts = hero ? [e, [e[0] + DIR[0] * lead, e[1] + DIR[1] * lead]] : [e, [e[0] + 3, e[1] + 22], [e[0] + 4, e[1] + 70]];
       var n = 0, small = phone.matches;
       // Beside the words themselves, on their emptier side: close enough to follow, never on top.
       var lane = function (r, el) {
@@ -64,8 +72,8 @@
         [].forEach.call(el.children.length ? el.children : [el], function (c) { var q = box(c); if (q.w) { a = Math.min(a, q.x); z = Math.max(z, q.x + q.w); } });
         if (a === Infinity) { a = r.x; z = r.x + r.w; }
         var left = a, right = W - z, side = small ? '' : (el.dataset.side || '');
-        if (side === 'left' || (!side && left > right)) return Math.max(a - Math.min(72, left / 2), 14);
-        return Math.min(z + Math.min(72, right / 2), W - 14);
+        if (side === 'left' || (!side && left > right)) return Math.max(a - Math.min(72, left / 2), 30);
+        return Math.min(z + Math.min(72, right / 2), W - 30);
       };
       document.querySelectorAll('[data-line], [data-line-phone]').forEach(function (el) {
         var kind = small && el.dataset.linePhone ? el.dataset.linePhone : el.dataset.line;
@@ -76,16 +84,29 @@
           var pic = el.querySelector('img, canvas'); if (pic) { r = box(pic); cx = r.x + r.w / 2; }
           var ox2 = small ? r.x + r.w * .93 : r.x + r.w * (.7 + .06 * (wob(++n) - .5));
           pts.push([cx + r.w * .06 * (wob(++n) - .5), r.y + r.h * .3], [ox2, r.y + r.h * .74], [ox2, r.y + r.h + (small ? 14 : 56)]);
+        } else if (kind === 'behind') {
+          // Down through a wall of pictures, in the gap between two of them nearest the pen.
+          var figs = [].map.call(el.querySelectorAll('figure'), box), bx = r.x + r.w / 2, bd = Infinity, prevX = pts[pts.length - 1][0];
+          for (var g = 1; g < figs.length; g++) {
+            var gx = (figs[g - 1].x + figs[g - 1].w + figs[g].x) / 2;
+            if (Math.abs(gx - prevX) < bd) { bd = Math.abs(gx - prevX); bx = gx; }
+          }
+          var top = figs.length ? Math.min.apply(null, figs.map(function (q) { return q.y; })) : r.y;
+          pts.push([bx, top - 30], [bx, r.y + r.h - 40]);
         } else if (kind === 'avoid') {
           // Down the emptier side of a block of words.
+          // Measured from the words, not the padding around them.
+          var y0 = Infinity, y1 = -Infinity;
+          [].forEach.call(el.children.length ? el.children : [el], function (c) { var q = box(c); if (q.h) { y0 = Math.min(y0, q.y); y1 = Math.max(y1, q.y + q.h); } });
+          if (y0 === Infinity) { y0 = r.y; y1 = r.y + r.h; }
           var lx = lane(r, el);
-          pts.push([lx, r.y - 24], [lx + 8 * (wob(++n) - .5), r.y + r.h + 24]);
+          pts.push([lx, y0 - 24], [lx + 8 * (wob(++n) - .5), y1 + 24]);
         }
       });
       // And on to the bottom edge of the page, through the widest gap in the foot nearest the pen.
       var last = pts[pts.length - 1], fx = last[0], foot = document.querySelector('.foot');
       if (foot) {
-        var fb = box(foot), spans = [], best = -1;
+        var fb = box(foot), spans = [], best = -Infinity;
         [].forEach.call(foot.children, function (c) {
           [].forEach.call(c.children.length ? c.children : [c], function (k) { var q = box(k); spans.push([q.x, q.x + q.w]); });
         });
@@ -93,7 +114,7 @@
         var edge = Math.max(fb.x, 0) + 8;
         spans.concat([[W - 8, W]]).forEach(function (sp) {
           var g = sp[0] - edge;
-          if (g > 40) { var c = edge + g / 2, score = g - Math.abs(c - last[0]) * .5; if (score > best) { best = score; fx = c; } }
+          if (g > 40) { var c = edge + g / 2, score = g - Math.abs(c - last[0]) * 1.5; if (score > best) { best = score; fx = c; } }
           edge = Math.max(edge, sp[1]);
         });
       }
