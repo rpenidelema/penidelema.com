@@ -5,33 +5,26 @@ lives in the PAGES list below; "{p}" in content is replaced with the relative pa
 site root. Run `python3 tools/build.py` from the repository root, then commit the generated
 .html files: GitHub Pages serves them as they are.
 
-Design: "the line". Rodrigo's logo is a gesture drawn by hand. On the home page it draws
-itself very large; on every other page it sits small in the corner. From its last stroke
-the same line runs down the page: behind each picture, around the name of each room, down
-the free side of every block of words, and at the end of the home page onto the paper of
-the + drawing. The page marks where the line goes with data attributes, and
-assets/js/site.js draws it:
+Design: the same look as /anarchitecture. White ground, black type, Arial at one small
+size, grey for what is secondary. Nothing big, nothing bold; hierarchy comes from space.
+
+The line: Rodrigo's signature, drawn by hand. On the home page it draws itself large; on
+every other page it sits small in the corner. From its last stroke one thin line, like a
+fountain pen, runs down the page and stops at the bottom edge. The page marks where it
+goes with data attributes, and assets/js/site.js draws it:
 
   data-line="through"  pass behind this picture
-  data-line="circle"   loop once around this word
   data-line="avoid"    run down the emptier side of this block
-  data-line="end"      come down onto this sheet of paper and stop
-  data-line="stop"     underline this word and stop
   data-line-phone="…"  the same, on a phone only (it overrides data-line there)
-
-One look on purpose: navy ground, paper-white line and type, drawings on paper.
-One serif (Brygada 1918), five sizes. No thin rules, no shadows, no small capitals.
 """
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-ROOMS = [("making", "Making"), ("reading", "Reading"), ("looking", "Looking"),
-         ("hosting", "Hosting"), ("journal", "Journal"), ("plus", "+")]
+ROOMS = [("making", "Making"), ("reading", "Reading"), ("photography", "Photography"),
+         ("leadership", "Leadership"), ("journal", "Journal"), ("plus", "+")]
+# Old addresses, kept so links already out in the world still arrive.
+MOVED = {"looking": "photography", "hosting": "leadership"}
 EMAIL = "rpenidelema@g.hmc.edu"
-
-ARROW = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" '
-         'aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>')
-
 
 def img(src, alt, w, h, lazy=True):
     return (f'<img src="{{p}}assets/img/{src}" alt="{alt}" width="{w}" height="{h}"'
@@ -54,7 +47,7 @@ def words(cls, inner, line=None, phone="avoid", i=1):
 
 
 def go(label, href):
-    return f'<a class="go" href="{{p}}{href}"><span>{label}</span>{ARROW}</a>'
+    return f'<a class="go" href="{{p}}{href}">{label}</a>'
 
 
 def bar(p, room, hero=False):
@@ -100,10 +93,7 @@ def frame(path, title, body, room=None, desc=None, home=False):
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{title}</title>
 <meta name="description" content="{desc}">
-<meta name="theme-color" content="#1c2a66">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Brygada+1918:ital,wght@0,400;0,500;1,400&display=swap">
+<meta name="theme-color" content="#ffffff">
 <link rel="stylesheet" href="{p}assets/css/site.css">
 </head>
 <body>
@@ -133,14 +123,9 @@ def frame(path, title, body, room=None, desc=None, home=False):
 
 
 def top(h1, lead="", room=False):
-    """The top of an inner page. A room's name gets the loop; a longer title, the line runs beside."""
-    if room:
-        return f"""<section class="wrap top room v-left" aria-label="{h1}">
-  <h1><span data-line="circle">{h1}</span></h1>
-  {f'<p class="lead" data-line="avoid" data-in>{lead}</p>' if lead else ""}
-</section>"""
+    """The top of an inner page: a title and a line of grey, the same size as everything else."""
     return f"""<section class="wrap top">
-  <div class="grid" data-line="avoid" data-side="left"><h1 data-in>{h1}</h1>{f'<p class="lead" data-in style="--i:1">{lead}</p>' if lead else ""}</div>
+  <div class="grid" data-line="avoid"><h1 data-in>{h1}</h1>{f'<p class="lead" data-in style="--i:1">{lead}</p>' if lead else ""}</div>
 </section>"""
 
 
@@ -163,11 +148,6 @@ def hero_pic(src, alt, w, h, caption):
     return f'<section class="wrap row grid">{shot("R7", src, alt, w, h, caption, lazy=False)}</section>'
 
 
-def nxt(label, href, line="stop"):
-    attr = f' data-line="{line}"' if line else ""
-    return f'<nav class="wrap next" aria-label="Next"><span>Next</span><a href="{{p}}{href}"{attr}>{label}</a></nav>'
-
-
 def roles(rows, cls="L7"):
     lis = []
     for i, (item, detail, more) in enumerate(rows):
@@ -177,7 +157,7 @@ def roles(rows, cls="L7"):
 
 
 PLUS = """<section class="wrap plus grid" id="plus" aria-label="Plus: a drawing everyone adds one line to">
-  <div class="sheet" data-line="end">
+  <div class="sheet" data-line="through">
     <canvas tabindex="0" aria-label="A shared drawing. Drag to add your line, or press Enter." aria-describedby="plus-how"></canvas>
     <div class="label">
       <b>Untitled (Lines), 2026–</b>
@@ -191,7 +171,7 @@ PLUS = """<section class="wrap plus grid" id="plus" aria-label="Plus: a drawing 
 PAGES = []
 
 # ---------- Home ----------
-HOSTING_ROWS = [
+LEADERSHIP_ROWS = [
     ("Class president", "Harvey Mudd, Class of 2028, since 2026", None),
     ("Philanthropy", "Director, Board of Trustees, since 2025", None),
     ("Mentoring", "Fourteen new international students, since 2025", None),
@@ -200,16 +180,15 @@ HOSTING_ROWS = [
 ]
 
 
-def verb(word, href, side="v-left"):
-    return (f'<div class="verb {side}"><h2 id="{href}-h"><a href="{{p}}{href}/">'
-            f'<span data-line="circle">{word}</span></a></h2></div>')
+def verb(word, href, side=""):
+    return f'<div class="verb"><h2 id="{href}-h"><a href="{{p}}{href}/">{word}</a></h2></div>'
 
 
 HOME = """<header class="hero wrap">
   {bar}
   <div class="logo-box" data-logo="hero" aria-hidden="true"></div>
-  <div class="hero-text" data-line-phone="avoid">
-    <h1>Rodrigo<br>Penide Lema</h1>
+  <div class="hero-text">
+    <h1>Rodrigo Penide Lema</h1>
     <p>I study how things are made, and why they matter: engineering at Harvey Mudd, art history at Pomona.</p>
   </div>
 </header>
@@ -238,7 +217,7 @@ HOME = """<header class="hero wrap">
 </section>
 
 <section class="wrap" aria-labelledby="reading-h">
-  """ + verb("Reading", "reading", "v-right") + """
+  """ + verb("Reading", "reading") + """
   <div class="row grid">
     """ + shot("L4", "clay.jpg", "A hand holding a lump of pale clay over cracked dry ground", 1320, 1752) + """
     """ + words("R mid", "<h3>The materials of Los Angeles</h3><p>Bioregional research with Professor Jia Yi Gu: where a region's clay, stone and timber come from, and who works them.</p>" + go("Read about it", "reading/bioregional/")) + """
@@ -248,8 +227,8 @@ HOME = """<header class="hero wrap">
   </div>
 </section>
 
-<section class="wrap" aria-labelledby="looking-h">
-  """ + verb("Looking", "looking") + """
+<section class="wrap" aria-labelledby="photography-h">
+  """ + verb("Photography", "photography") + """
   <div class="row grid">
     """ + shot("R", "quarry-window.jpg", "A limestone quarry seen through a gap between two cut walls, with shrubs on the ledges", 1320, 1311) + """
     """ + words("W-L end", "<p class=\"plain\">A quarry, seen from inside another. Provence, summer 2026.</p>") + """
@@ -260,13 +239,13 @@ HOME = """<header class="hero wrap">
   </div>
   <div class="row grid">
     """ + shot("R4", "quarry-face.jpg", "Tall rooms cut into a pale quarry face, with pines along the top", 1320, 1299) + """
-    """ + words("W-L mid", "<p class=\"plain\">Rooms left behind by the stone that was taken.</p>" + go("All the photographs", "looking/")) + """
+    """ + words("W-L mid", "<p class=\"plain\">Rooms left behind by the stone that was taken.</p>" + go("All the photographs", "photography/")) + """
   </div>
 </section>
 
-<section class="wrap" aria-labelledby="hosting-h">
-  """ + verb("Hosting", "hosting", "v-right") + """
-  <div class="row grid roles">""" + roles(HOSTING_ROWS, "L6") + """</div>
+<section class="wrap" aria-labelledby="leadership-h">
+  """ + verb("Leadership", "leadership") + """
+  <div class="row grid roles">""" + roles(LEADERSHIP_ROWS, "L6") + """</div>
 </section>
 
 """ + PLUS
@@ -295,7 +274,7 @@ PAGES.append(dict(path="making", title="Making · Rodrigo Penide Lema", room="ma
     ("People and animals", "Human-centred design, with The Salvation Army", "Asking how time with animals might support trust and purpose for people recovering from homelessness and addiction, in Orange County."),
 ]) + """</div>
 </section>
-""" + nxt("Reading", "reading/")))
+"""))
 
 # ---------- Kreios ----------
 PAGES.append(dict(path="making/kreios", title="Kreios Space · Rodrigo Penide Lema", room="making", body=top(
@@ -310,8 +289,7 @@ PAGES.append(dict(path="making/kreios", title="Kreios Space · Rodrigo Penide Le
     ]) + text("""
     <p>I built a control panel for the flow of three noble gases, and supports for three sensing systems inside the chamber. Between builds I ran impedance tests and diagnosed plasma across thrust setups.</p>
     <p>I also started documenting the tests that, until then, had gone unrecorded.</p>
-    <p>Much of this work is confidential, so this page is told mostly in words, and the room is all you see.</p>""", "The work")
-    + nxt("A robot that floated", "making/e80/")))
+    <p>Much of this work is confidential, so this page is told mostly in words, and the room is all you see.</p>""", "The work")))
 
 # ---------- E80 ----------
 PAGES.append(dict(path="making/e80", title="A robot that floated · Rodrigo Penide Lema", room="making", body=top(
@@ -341,8 +319,7 @@ PAGES.append(dict(path="making/e80", title="A robot that floated · Rodrigo Peni
     + text("""
     <p>The sensors were not broken. They had been calibrated in fresh water, and the sea is not fresh water: salt changes how a thermistor and a pH probe behave, and our turbidity amplifier had so much gain that it saw almost nothing at all.</p>
     <p>The robot worked. The lesson was about calibration: test the whole sensor, mounted, in the water it will actually meet.</p>
-    <p class="small">Engineering 80, Harvey Mudd, spring 2026. Thanks to Professors Helms, Mohanty, Sinopoli and Yang, to Lynn and Xavier, and to Angie Zhou and Spencer Michaelson for sharing their measurements of the water.</p>""", "What I learned")
-    + nxt("Sensing an electron beam", "making/northstar/")))
+    <p class="small">Engineering 80, Harvey Mudd, spring 2026. Thanks to Professors Helms, Mohanty, Sinopoli and Yang, to Lynn and Xavier, and to Angie Zhou and Spencer Michaelson for sharing their measurements of the water.</p>""", "What I learned")))
 
 # ---------- NorthStar ----------
 PAGES.append(dict(path="making/northstar", title="NorthStar · Rodrigo Penide Lema", room="making", body=top(
@@ -355,8 +332,7 @@ PAGES.append(dict(path="making/northstar", title="NorthStar · Rodrigo Penide Le
         ("Simulated first", "Modelled in FLUKA before it is built"),
     ]) + text("""
     <p>We are designing a sensing system that works inside the accelerator itself, where the beam runs. Before anything is built, we model how it will behave in FLUKA, a code for simulating particles passing through matter.</p>
-    <p>The project is under way; more here as it can be shared.</p>""", "The work")
-    + nxt("Test hardware for plasma thrusters", "making/kreios/")))
+    <p>The project is under way; more here as it can be shared.</p>""", "The work")))
 
 # ---------- Reading ----------
 PAGES.append(dict(path="reading", title="Reading · Rodrigo Penide Lema", room="reading", body=top(
@@ -374,7 +350,7 @@ PAGES.append(dict(path="reading", title="Reading · Rodrigo Penide Lema", room="
     """ + words("R", "<h2>Papers in art history</h2><p>Pomona College. The first ones will be here soon.</p>", line="avoid", i=0) + """
   </div>
 </section>
-""" + nxt("Looking", "looking/")))
+"""))
 
 # ---------- Bioregional ----------
 PAGES.append(dict(path="reading/bioregional", title="Bioregional materials · Rodrigo Penide Lema", room="reading", body=top(
@@ -391,10 +367,9 @@ PAGES.append(dict(path="reading/bioregional", title="Bioregional materials · Ro
     <p>Back in California, I adapted that work into a method for mapping the material streams, suppliers and craftspeople of Southern California, to find where building and design could source locally.</p>
     <p>I do this as the founding student researcher of Biofabrique LA, with faculty from Harvey Mudd, MIT, USC and SCI-Arc, and with researchers at Atelier LUMA.</p>""", "The method")
     + pics(shot("", "clay.jpg", "A hand holding a lump of pale clay over cracked dry ground", 1320, 1752, "Clay, picked up on site."),
-           shot("", "stone-saw.jpg", "A man feeds a block of limestone to a large circular saw", 1320, 738, "Cutting limestone into blocks.", line=None, i=1))
-    + nxt("A robot that floated", "making/e80/")))
+           shot("", "stone-saw.jpg", "A man feeds a block of limestone to a large circular saw", 1320, 738, "Cutting limestone into blocks.", line=None, i=1))))
 
-# ---------- Looking ----------
+# ---------- Photography ----------
 LOOK = [
     ("R", "W-L end", "quarry-window.jpg", "A limestone quarry seen through a gap between two cut walls", 1320, 1311, "A quarry, seen from inside another."),
     ("L6", "W-R end", "stone-saw.jpg", "A man feeds a block of limestone to a large circular saw inside a quarry hall", 1320, 738, "Cutting limestone into blocks."),
@@ -405,29 +380,26 @@ LOOK = [
     ("R4", "W-L mid", "stone-workshop.jpg", "A stone workshop: shelves of offcuts and tools under a coat of white dust", 1320, 1316, "A stone workshop."),
     ("L6", "W-R end", "arles.jpg", "The residency cohort standing in front of a limestone quarry wall in the sun", 1600, 1600, "The cohort, Arles."),
 ]
-PAGES.append(dict(path="looking", title="Looking · Rodrigo Penide Lema", room="looking", body=top(
-    "Looking", "Photographs from a residency on stone and earth in Provence, summer 2026.", room=True)
+PAGES.append(dict(path="photography", title="Photography · Rodrigo Penide Lema", room="photography", body=top(
+    "Photography", "Photographs from a residency on stone and earth in Provence, summer 2026.", room=True)
     + '<section class="wrap" aria-label="Photographs">' + "".join(
         f'<div class="row grid">{shot(sc, src, alt, w, h, lazy=k > 1)}{words(wc, f"<p class=\"plain\">{cap}</p>")}</div>'
-        for k, (sc, wc, src, alt, w, h, cap) in enumerate(LOOK)) + "</section>"
-    + nxt("Hosting", "hosting/")))
+        for k, (sc, wc, src, alt, w, h, cap) in enumerate(LOOK)) + "</section>"))
 
-# ---------- Hosting ----------
-PAGES.append(dict(path="hosting", title="Hosting · Rodrigo Penide Lema", room="hosting", body=top(
-    "Hosting", "Making room for other people: the roles I have been trusted with.", room=True)
+# ---------- Leadership ----------
+PAGES.append(dict(path="leadership", title="Leadership · Rodrigo Penide Lema", room="leadership", body=top(
+    "Leadership", "Making room for other people: the roles I have been trusted with.", room=True)
     + '<section class="wrap"><div class="row grid roles">' + roles([
         ("Class president", "Harvey Mudd, Class of 2028, since 2026", "Elected by my classmates."),
         ("Philanthropy", "Director, Board of Trustees, since 2025", "Five fundraising campaigns designed for student initiatives and clubs, and a seat on the branding group for the College's major campaign."),
         ("Mentoring", "New International Students and Scholars, since 2025", "A cohort of fourteen first-year students, one to one and in monthly gatherings."),
         ("Student affairs", "Representative to the Board of Trustees, since 2024", "The student voice on the Board's Student Affairs Committee."),
         ("Volunteering", "Mudders Making a Difference, since 2024", "Blood drives, tutoring at Claremont High School, and campaigns for local charities."),
-    ]) + "</div></section>"
-    + nxt("Journal", "journal/")))
+    ]) + "</div></section>"))
 
 # ---------- Journal ----------
 PAGES.append(dict(path="journal", title="Journal · Rodrigo Penide Lema", room="journal", body=top(
-    "Journal", "Notes, newest first. The first entry is on its way.", room=True)
-    + nxt("Add a line to the drawing", "plus/")))
+    "Journal", "Notes, newest first. The first entry is on its way.", room=True)))
 
 # ---------- + ----------
 PAGES.append(dict(path="plus", title="+ · Rodrigo Penide Lema", room="plus", body=top(
@@ -443,14 +415,34 @@ PAGES.append(dict(path="about", title="About · Rodrigo Penide Lema", room="abou
 """ + text("""
     <h2>Study</h2><p>B.S. Engineering, Harvey Mudd College. B.A. Art History, Pomona College. Class of 2028.</p>
     <h2>Languages</h2><p>Spanish, Galician and Portuguese, natively. English and French.</p>
-    <h2>Honours</h2><p>Randal Lewis Fellow in Innovation and Entrepreneurship. Emerging Leader Award, Harvey Mudd, 2025 and 2026.</p>""")
-    + nxt("Making", "making/")))
+    <h2>Honours</h2><p>Randal Lewis Fellow in Innovation and Entrepreneurship. Emerging Leader Award, Harvey Mudd, 2025 and 2026.</p>""")))
 
 # ---------- 404 ----------
 PAGES.append(dict(path="404.html", title="Not found · Rodrigo Penide Lema", body=top(
-    "This page is not here", "The line goes on somewhere else.") + nxt("Back to the beginning", "")))
+    "This page is not here", 'The line goes on somewhere else. <a href="{p}">Back to the beginning</a>.')))
+
+def moved(old, new):
+    """A page that has changed address: send the visitor on, at once."""
+    out = ROOT / old / "index.html"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(f"""<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Moved · Rodrigo Penide Lema</title>
+<meta http-equiv="refresh" content="0; url=../{new}/">
+<link rel="canonical" href="https://penidelema.com/{new}/">
+<meta name="robots" content="noindex">
+<style>body{{margin:24px;background:#fff;color:#000;font:13px/1.4 Arial,"Helvetica Neue",Helvetica,sans-serif}}</style>
+</head>
+<body><p>This page is now at <a href="../{new}/">{new}</a>.</p></body>
+</html>
+""")
+
 
 if __name__ == "__main__":
     for page in PAGES:
         frame(page["path"], page["title"], page["body"], page.get("room"), home=page.get("home", False))
-    print(f"Built {len(PAGES)} pages")
+    for old, new in MOVED.items():
+        moved(old, new)
+    print(f"Built {len(PAGES)} pages and {len(MOVED)} redirects")
