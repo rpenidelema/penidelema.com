@@ -287,8 +287,12 @@ function L105N(){ // the property wall, 26 ft, from the west end
     {k:"41a",kind:"grid24",x:171-35,b:37,w:70,h:46},
     {k:"41b",x:258-35,b:37,w:70,h:54},
     {k:"41d",kind:"rest",x:278,b:26,w:14,h:9}];}
-function L105E(){ // 7 x 2; the label takes the last place in the bottom row
-  return grid([[43,44,45,46,47,48,49],[50,51,52,53,54,55,null]],{cx:189,cy:60,gap:4});}
+function L105E(){ // the nine upright views (#4 to #12) as one band, the four wide ones (#1 to #3, #13) centred above
+  const grp="g"+(++GRP),gap=4,vg=9,band=[46,47,48,49,50,51,52,53,54],cap=[43,44,45,55];
+  const bH=Math.max(...band.map(k=>osz(k)[1])),cH=Math.max(...cap.map(k=>osz(k)[1]));
+  const bandCy=60-(cH+vg)/2,capCy=bandCy+bH/2+vg+cH/2;
+  const put=(ks,cy,g0,nt)=>row(ks,{x0:189-rowW(ks,gap)/2,gap,cy,nolab:true,grp}).map((it,i)=>({...it,gc:g0+i,nt}));
+  return [...put(cap,capCy,(band.length-cap.length)/2,"above"),...put(band,bandCy,0,"")];}
 function L104(){ // 30'4", read east to west: left to right facing south
   const W=k=>osz(k)[0],sw=W(60),used=W(56)+W(57)+W(58)+W(59)+sw,g=(364-used)/6;let x=g;const out=[];
   [56,57,58,59].forEach(k=>{out.push(at(k,x+W(k)/2,60));x+=W(k)+g;});
@@ -393,9 +397,9 @@ function groupsOf(items){const G={};items.forEach(i=>{if(i.grp)(G[i.grp]=G[i.grp
   return Object.values(G).filter(g=>g.length>2).map(ms=>{
     const xs=[],ys=[],near=(a,v)=>{let i=a.findIndex(u=>Math.abs(u-v)<3);if(i<0){a.push(v);i=a.length-1;}return i;};
     const cx=ms.map(i=>i.x+i.w/2),cy=ms.map(i=>i.b+i.h/2);[...new Set(cx)].sort((a,b)=>a-b).forEach(v=>near(xs,v));[...new Set(cy)].sort((a,b)=>b-a).forEach(v=>near(ys,v));
-    const cells=ms.map((i,n)=>({k:i.k,c:near(xs,cx[n]),r:near(ys,cy[n])}));
+    const cells=ms.map((i,n)=>({k:i.k,c:i.gc!=null?i.gc:near(xs,cx[n]),r:near(ys,cy[n])}));
     const x1=Math.max(...ms.map(i=>i.x+i.w)),b=Math.min(...ms.map(i=>i.b));
-    return {ms,cells,cols:xs.length,rows:ys.length,x1,b};});}
+    return {ms,cells,cols:ms.some(i=>i.gc!=null)?Math.max(...cells.map(c=>Math.ceil(c.c+.5))):xs.length,rows:ys.length,x1,b};});}
 /* a wall seen straight on: inches, 0 at the left end, the floor at the bottom. The drawing is cut
    to the hang, with a little wall around it, so the works fill the page. */
 function drawWall(v){
