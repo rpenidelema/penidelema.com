@@ -100,6 +100,7 @@ main{min-height:100%;display:flex;align-items:center;justify-content:center;padd
 /* one work alone */
 .obj{padding-block:90px 170px;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px));display:grid;justify-items:center;gap:16px}
 .obj .fig{width:min(1100px,100%);display:flex;justify-content:center;align-items:center;gap:24px}
+.obj video.film{display:block;width:100%;max-height:min(66vh,720px);background:#000}
 .obj img{display:block;width:100%;height:min(66vh,720px);object-fit:contain}
 .obj .pair>*{flex:1 1 0;min-width:0}
 .obj .ph{height:min(56vh,600px);max-width:100%;background:var(--block);display:grid;place-items:center;color:var(--grey)}
@@ -222,7 +223,7 @@ const C={
   64:{a:"Mimmo Capone",t:"Photograph of Suzanne Harris, Between Force & Form",d:"1978",L:20,F:[26,22],views:[{img:"64"},{img:"64-2"}]},
   65:{a:"Richard Wilson",t:"20:50",d:"1987",m:"Photograph of the installation",L:40},
   66:{a:"Rirkrit Tiravanija",t:"Untitled (free/still)",d:"1992/1995/2007/2011–",m:"Refrigerator, table, chairs, wood, drywall, food and other materials",s:"Dimensions variable",cr:"MoMA PS1",W:40,H:28},
-  67:{a:GMC,t:"Splitting",d:"1974",m:"Super 8mm film on HD video, black and white and color, silent, 10:50",video:"",W:32,H:18,views:[{cap:"Still"}]},
+  67:{a:GMC,t:"Splitting",d:"1974",m:"Super 8mm film on HD video, black and white and color, silent, 10:50",video:"video/67.mp4",W:32,H:18,views:[{cap:"Film"}]},
   68:{a:GMC,t:"Open House",d:"1972",m:"Super 8mm film on HD video, color, silent, 41:00",video:"",W:32,H:18,views:[{cap:"Still"}]},
   /* a second copy of 24, in the case in 103 */
   "24b":{fr:"none",a:"Anarchitecture group",t:"Flash Art, the 1974 exhibition",d:"1974",m:"Magazine, open to the collective spread",note:"Second copy, in a shallow case. Status and credit to confirm",img:"24",L:15},
@@ -460,6 +461,7 @@ function drawOptions(v){
   return wrap;
 }
 function figure(k,view={}){
+  if(!view.img&&C[k].video){const v=document.createElement("video");v.src=C[k].video;v.controls=true;v.muted=true;v.playsInline=true;v.preload="metadata";v.className="film";return v;}
   const src=view.ph?null:view.img?`img/${view.img}.jpg`:pic(k);
   if(src){const im=new Image();im.src=src;im.alt=`${C[k].t}`;return im;}
   const d=document.createElement("div");d.className="ph";const [w,h]=sz(k);d.style.aspectRatio=`${w} / ${h}`;d.textContent=num(k)||"";return d;
@@ -690,7 +692,7 @@ function drawRoom(w){
   const P=[RW/2,11,RD*.85]; // projector lens, hung from the ceiling
   // source picture: the video when there is one, a flickering stand-in otherwise
   const src=document.createElement("canvas");src.width=192;src.height=108;const sg=src.getContext("2d");
-  const vids=KS.map(k=>{if(!C[k].video)return null;const v=document.createElement("video");v.src=C[k].video;v.loop=true;v.playsInline=true;v.preload="metadata";return v;});
+  const vids=KS.map(k=>{if(!C[k].video)return null;const v=document.createElement("video");v.src=C[k].video;v.loop=true;v.muted=true;v.playsInline=true;v.preload="metadata";return v;});
   let vid=vids[0];
   function standIn(t){ // grain and a slow band of light: a stand-in until the video arrives
     const im=sg.createImageData(192,108),d=im.data,band=(Math.sin(t/(si?2200:900))*.5+.5)*192;
@@ -729,7 +731,7 @@ function drawRoom(w){
       g.setTransform(dpr,0,0,dpr,0,0);
       const N=8;for(let i=0;i<N;i++)for(let j=0;j<N;j++){
         const a=[i/N,j/N],b=[(i+1)/N,j/N],c=[(i+1)/N,(j+1)/N],d=[i/N,(j+1)/N];
-        const S=q=>[q[0]*iw,q[1]*ih],Dp=q=>sp(q[0],q[1]);
+        const ch=Math.min(ih,iw*9/16),oy=(ih-ch)/2,S=q=>[q[0]*iw,oy+q[1]*ch],Dp=q=>sp(q[0],q[1]); // a 4:3 film is cut to the 16:9 screen, top and bottom
         tri(img,iw,ih,[S(a),S(b),S(c)],[Dp(a),Dp(b),Dp(c)]);tri(img,iw,ih,[S(a),S(c),S(d)],[Dp(a),Dp(c),Dp(d)]);
       }
       // the beam: a faint wedge of light and four lines from the lens
