@@ -52,7 +52,7 @@
       return d;
     };
     // lens[i] is a length along the line; low[i] the lowest point the line reaches before it.
-    var lens = [], low = [], total = 0, drawn = 0, shown = 0, ready = instant, running = false, lastW = 0, lastH = 0;
+    var trailStops = [], lens = [], low = [], total = 0, drawn = 0, shown = 0, ready = instant, running = false, lastW = 0, lastH = 0;
 
     var layout = function () {
       var W = root.clientWidth, H = page.offsetHeight;
@@ -65,7 +65,7 @@
       var e = [ox + END[0] * s, oy + END[1] * s], lead = hero ? 46 * s : 60 * s;
       // From the corner, the pen drops straight down the margin first, clear of the name beside it.
       var pts = hero ? [e, [e[0] + DIR[0] * lead, e[1] + DIR[1] * lead]] : [e, [e[0] + 3, e[1] + 22], [e[0] + 4, e[1] + 70]];
-      var n = 0, small = phone.matches;
+      var n = 0, small = phone.matches; trailStops = [];
       // Beside the words themselves, on their emptier side: close enough to follow, never on top.
       var lane = function (r, el) {
         var a = Infinity, z = -Infinity;
@@ -84,6 +84,21 @@
           var pic = el.querySelector('img, canvas'); if (pic) { r = box(pic); cx = r.x + r.w / 2; }
           var ox2 = small ? r.x + r.w * .93 : r.x + r.w * (.7 + .06 * (wob(++n) - .5));
           pts.push([cx + r.w * .06 * (wob(++n) - .5), r.y + r.h * .3], [ox2, r.y + r.h * .74], [ox2, r.y + r.h + (small ? 14 : 56)]);
+        } else if (kind === 'trail') {
+          // Home: zigzag down the block, through a + for every piece of work.
+          // A slow meander, not a zigzag: the +s sit along long, loose curves, unevenly spaced.
+          var stops = el.querySelectorAll('li'), step = r.h / Math.max(stops.length, 1), sy = r.y - step * .4;
+          [].forEach.call(stops, function (li, k) {
+            var sx, wave = Math.sin(k * 1.05 + .9) * .7 + Math.sin(k * .43 + 2.1) * .3;
+            if (small) sx = W * (.3 + .14 * wave + .04 * (wob(++n) - .5));
+            else sx = W * (.5 + .27 * wave + .05 * (wob(++n) - .5));
+            sy += step * (.7 + .6 * wob(++n));
+            sy = Math.min(sy, r.y + r.h - step * .3);
+            li.style.left = (sx - r.x).toFixed(1) + 'px'; li.style.top = (sy - r.y).toFixed(1) + 'px';
+            li.classList.toggle('flip', !small && sx > W * .6);
+            li.__y = sy; trailStops.push(li);
+            pts.push([sx, sy]);
+          });
         } else if (kind === 'behind') {
           // Down through a wall of pictures, in the gap between two of them nearest the pen.
           var figs = [].map.call(el.querySelectorAll('figure'), box), bx = r.x + r.w / 2, bd = Infinity, prevX = pts[pts.length - 1][0];
@@ -148,7 +163,12 @@
       cont.style.strokeDashoffset = total - shown;
       if (shown < drawn) requestAnimationFrame(tick); else running = false;
     };
-    var wake = function () { if (!ready || !lens.length) return; reach(); if (!running && shown < drawn) { running = true; requestAnimationFrame(tick); } };
+    // A + shows once the pen has come down to it.
+    var reveal = function () {
+      var T = scrollY + innerHeight * .82, all = still || scrollY + innerHeight >= root.scrollHeight - 4;
+      trailStops.forEach(function (li) { if (all || li.__y <= T) li.classList.add('on'); });
+    };
+    var wake = function () { if (!ready || !lens.length) return; reveal(); reach(); if (!running && shown < drawn) { running = true; requestAnimationFrame(tick); } };
     window.addEventListener('scroll', wake, { passive: true });
 
     // The signature writes itself: on the home page once a visit, in the corner in half a second.
@@ -228,6 +248,23 @@
     });
     window.addEventListener('resize', size); size();
     if (document.fonts) document.fonts.ready.then(size);
+  }
+
+  // ---------- A picture follows the pointer over an index row ----------
+  var peekRows = document.querySelectorAll('[data-peek]');
+  if (peekRows.length && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    var peek = document.createElement('img'); peek.className = 'peek'; peek.alt = ''; peek.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(peek);
+    var place = function (e) {
+      var w = peek.offsetWidth || 240, h = peek.offsetHeight || 180;
+      var x = Math.min(e.clientX + 18, innerWidth - w - 12), y = Math.min(e.clientY + 18, innerHeight - h - 12);
+      peek.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+    };
+    peekRows.forEach(function (row) {
+      row.addEventListener('mouseenter', function (e) { peek.src = row.dataset.peek; place(e); peek.classList.add('on'); });
+      row.addEventListener('mousemove', place);
+      row.addEventListener('mouseleave', function () { peek.classList.remove('on'); });
+    });
   }
 
   // ---------- Copy the address ----------
