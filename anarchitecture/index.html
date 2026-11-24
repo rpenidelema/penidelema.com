@@ -41,8 +41,8 @@ main{min-height:100%;display:flex;align-items:center;justify-content:center;padd
 .tomb .t{font-style:italic}
 .tomb .long{margin-top:14px;max-width:38ch}
 .tomb .where{color:var(--grey)}
-.wallbox{padding-block:120px 60px;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px));display:flex;justify-content:safe center;align-items:flex-start;overflow-x:auto}
-.wallbox svg{display:block;width:min(1200px,100%);height:auto;min-width:520px;overflow:visible}
+.wallbox{min-height:100vh;min-height:100svh;box-sizing:border-box;padding-block:96px 120px;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px));display:flex;justify-content:safe center;align-items:center;overflow-x:auto}
+.wallbox svg{display:block;width:min(1500px,100%);height:auto;min-width:560px;overflow:visible}
 .e-line{stroke:var(--black);stroke-width:1px;vector-effect:non-scaling-stroke;fill:none}
 .e-floor{stroke:var(--black);stroke-width:2px;vector-effect:non-scaling-stroke}
 .e-work{cursor:pointer;outline:none;transition:opacity .25s}
@@ -75,7 +75,10 @@ main{min-height:100%;display:flex;align-items:center;justify-content:center;padd
 .el .num{fill:var(--grey)}
 .el .ttl{fill:var(--black)}
 .el .ph{fill:var(--block)}
-.el .frm{fill:#fff;stroke:#111;stroke-width:1.5px;vector-effect:non-scaling-stroke}
+.el .frm{fill:#1c1c1c}
+.el .mat{fill:#fff}
+.el .lbl{fill:#fff}
+.el .lbn{fill:var(--grey)}
 .el .bar{fill:var(--grey)}
 .el .lab{fill:none;stroke:var(--grey);stroke-width:.75px;vector-effect:non-scaling-stroke}
 .el .glass{fill:rgba(0,0,0,.035);stroke:var(--black);stroke-width:1px;vector-effect:non-scaling-stroke}
@@ -83,7 +86,7 @@ main{min-height:100%;display:flex;align-items:center;justify-content:center;padd
 .el .mon{fill:var(--black)}
 .el .wire{stroke:var(--black);stroke-width:.5px;vector-effect:non-scaling-stroke;fill:none}
 .el .hit{fill:transparent}
-.wallbox svg.el{max-height:calc(100vh - 190px)}
+.wallbox svg.el{max-height:calc(100vh - 230px);overflow:hidden}
 .wallbox svg.top{width:auto;min-width:0;height:min(calc(100vh - 190px),820px);max-width:100%}
 .tomb .tb+.tb{margin-top:14px}
 .tomb .n{color:var(--grey)}
@@ -106,50 +109,6 @@ main{min-height:100%;display:flex;align-items:center;justify-content:center;padd
 .grp:first-child{padding-top:120px}
 .grp .list{padding-block:14px 48px}
 .list .t{font-style:italic}
-/* perspective rooms */
-.stage{position:absolute;inset:0;overflow:hidden;background:#fafafa;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
-.stage.drag{cursor:grabbing}
-.world{position:absolute;left:50%;top:50%;width:0;height:0;transform-style:preserve-3d}
-.world div,.world img{position:absolute;left:0;top:0;transform-origin:0 0;box-sizing:border-box}
-.world .g3{transform-style:preserve-3d;width:0;height:0}
-.wl{border:1px solid rgba(0,0,0,.5)}
-.fl{background:#e9e8e6 repeating-linear-gradient(90deg,rgba(0,0,0,.045) 0 1px,transparent 1px 36px);border:1px solid rgba(0,0,0,.5)}
-.cl{background:#f3f3f3;border:1px solid rgba(0,0,0,.4)}
-.fw{background:#fff;border:6px solid #1c1c1c;box-shadow:0 7px 16px rgba(0,0,0,.22),0 1px 3px rgba(0,0,0,.3);cursor:pointer}
-.fw.bare{background:none;border:0;box-shadow:0 4px 12px rgba(0,0,0,.2)}
-.pic3{display:block;pointer-events:none;image-rendering:auto}
-.book .pic3{position:static!important;transform:none!important}
-.ph3,.in3{background:#e4e4e4;color:#9a9a9a;display:grid;place-items:center;font-size:18px}
-.fw .ph3{width:100%;height:100%;position:absolute;inset:0}
-.lb{background:#fff;box-shadow:0 2px 5px rgba(0,0,0,.28),0 0 1px rgba(0,0,0,.35);background-image:linear-gradient(#bbb,#bbb),linear-gradient(#ccc,#ccc),linear-gradient(#ccc,#ccc);background-size:55% 2px,70% 2px,40% 2px;background-position:4px 5px,4px 10px,4px 15px;background-repeat:no-repeat}
-.ttl3{white-space:nowrap;line-height:1;color:#000;font-family:var(--font);cursor:pointer}
-.tx3{cursor:pointer}.tx3 svg{display:block}.tx3 rect{fill:#8a8a8a}
-.tile{background:#e4e4e4 center/cover;border:3px solid #1c1c1c;box-shadow:0 4px 9px rgba(0,0,0,.22);cursor:pointer}
-.mon3{background:#1a1a1a;border:1px solid #000}
-.scr{background:#2b2b2b center/cover;cursor:pointer}
-.hs{border:4px solid #222;border-bottom:0;border-radius:40px 40px 0 0}
-.leg{background:#d9d9d9;border:1px solid rgba(0,0,0,.55)}
-.case3,.shelf,.rest3{background:#f1f1f1;border:1px solid rgba(0,0,0,.6)}
-.glass3{background:rgba(200,225,225,.16);border:1px solid rgba(0,0,0,.55);pointer-events:none}
-.in3,.bk3,.book{background:#e4e4e4 center/cover;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.25)}
-.glassp{cursor:pointer}.glassp svg{display:block;overflow:visible}
-.glassp polygon{fill:rgba(170,215,210,.32);stroke:#111;stroke-width:2px;vector-effect:non-scaling-stroke}
-.wire{background:rgba(0,0,0,.55)}
-.tbl{background:#f4f4f2;border:1px solid rgba(0,0,0,.65)}
-.cap3{color:#444;white-space:nowrap;line-height:1.2;font-family:var(--font)}.cap3 span{color:#999}
-.bx{background:#fff;border:1px solid #000}
-.clap{background:#fff repeating-linear-gradient(transparent 0 23px,rgba(0,0,0,.35) 23px 24px);border:1px solid #000;cursor:pointer}
-.cutf{background:#f2efe9 repeating-linear-gradient(90deg,transparent 0 14px,rgba(0,0,0,.18) 14px 15px);border:1px solid #000;cursor:pointer}
-.svgf{cursor:pointer}.svgf svg{display:block}
-.svgf .cut0{fill:#fff;stroke:#000;stroke-width:1.2px;vector-effect:non-scaling-stroke}
-.svgf .cut1{fill:#f2efe9;stroke:#000;stroke-width:1.2px;vector-effect:non-scaling-stroke}
-.roof3{background:#cfcfcf repeating-linear-gradient(transparent 0 29px,rgba(0,0,0,.45) 29px 31px);border:1px solid #000;cursor:pointer}
-.fascia{background:#9aa79a;border:1px solid #000}
-.hatch3{background:repeating-linear-gradient(45deg,rgba(0,0,0,.18) 0 1px,transparent 1px 22px);border:1px dashed rgba(0,0,0,.5)}
-.piece{background:#d8d5cf center/cover;border:1px solid rgba(0,0,0,.7);cursor:pointer}
-.cloth{background:repeating-linear-gradient(45deg,rgba(150,60,60,.25) 0 10px,transparent 10px 26px),repeating-linear-gradient(-45deg,rgba(40,80,140,.2) 0 6px,transparent 6px 30px),#f1ebdf;border:2px dashed rgba(0,0,0,.55);cursor:pointer;opacity:.9}
-.rug{background:#ece6da center/cover;border:2px dashed rgba(0,0,0,.6);cursor:pointer;opacity:.92}
-.hit3:hover{filter:brightness(1.04)}
 body.open .corner{display:none}
 @media (max-width:640px){.corner-r{gap:12px}.tomb{max-width:calc(100vw - 48px);font-size:12px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
@@ -344,18 +303,18 @@ const VIEWS=[
   {id:"106-E",label:"106, east wall",at:[878.3,1114.5],len:464,h:180,items:L106E},
   {id:"106-W",label:"106, west wall",at:[688,1159.8],len:343,h:180,items:L106W},
   {id:"106-N",label:"106, north wall",at:[736.8,962.5],len:188,h:180,items:L106N},
-  {id:"106-T",label:"106, the table",at:[783,1162.5],table:true,room:"106"},
-  {id:"106-F",label:"106, Splitting: Four Corners",at:[765,1020],room:"106",key:"15"},
+  {id:"106-T",label:"106, the table",at:[783,1162.5],scene:"table"},
+  {id:"106-F",label:"106, Splitting: Four Corners",at:[765,1020],scene:"corners",key:"15"},
   {id:"105-W",label:"105, west wall",at:[688,802.8],len:278,h:180,items:L105W},
   {id:"105-S",label:"105, south wall",at:[736.8,885.4],len:189,h:180,items:L105S},
   {id:"105-N",label:"105, north wall",at:[783.1,645.5],len:312,h:180,items:L105N},
-  {id:"105-F",label:"105, Floor Pieces",at:[815,695],room:"105",key:"41c"},
-  {id:"105-B",label:"105, booklet",at:[879,651],room:"105",key:"41d"},
+  {id:"105-F",label:"105, Floor Pieces",at:[815,695],scene:"floor",key:"41c"},
+  {id:"105-B",label:"105, booklet",at:[879,651],go:"41d"},
   {id:"105-E",label:"105, east wall",at:[878.3,765.5],len:378,h:180,items:L105E},
   {id:"104",label:"104, south wall",at:[439.5,687.5],len:364,h:180,items:L104},
   {id:"103-N",label:"103, north wall",at:[551.5,752],len:364,h:180,items:L103N},
   {id:"103-W",label:"103, west wall",at:[325,920],len:458,h:180,items:L103W},
-  {id:"103-C",label:"103, textile",at:[522,937.5],room:"103",key:"p-girouard"},
+  {id:"103-C",label:"103, textile",at:[522,937.5],scene:"cloth",key:"p-girouard"},
   {id:"103-E",label:"103, east wall",at:[629.3,845.8],len:323,h:180,items:L103E},
   {id:"102",label:"102",at:[422.5,1195],options:["p-suh",65,66]},
   {id:"patio",label:"Courtyard",at:[1321,793.5],court:true},
@@ -402,59 +361,54 @@ function drawItem(it,g,H){
     case "monitor":el("rect",{x,y,width:w,height:h,class:"mon"},g);el("path",{d:`M${x+w/2-3} ${y+h+10} a3 3 0 0 1 6 0 M${x+w/2-3} ${y+h+10} v2 M${x+w/2+3} ${y+h+10} v2`,class:"e-line"},g);break;
     case "case":{el("path",{d:`M${x+2} ${H} V${y+8} M${x+w-2} ${H} V${y+8}`,class:"e-line"},g);el("rect",{x,y,width:w,height:8,class:"glass"},g);
       const iw=w*.7,ih=4;src?el("image",{href:src,x:x+(w-iw)/2,y:y+2,width:iw,height:ih,preserveAspectRatio:"xMidYMid slice"},g):placeholder(g,x+(w-iw)/2,y+2,iw,ih);break;}
-    case "rest":el("path",{d:`M${x-1} ${y+h+1.5} H${x+w+1}`,class:"e-line"},g);placeholder(g,x,y,w,h);break;
+    case "rest":el("path",{d:`M${x-1} ${y+h+1.5} H${x+w+1}`,class:"e-line"},g);src?el("image",{href:src,x,y,width:w,height:h,preserveAspectRatio:"xMidYMid meet"},g):placeholder(g,x,y,w,h);break;
     case "tri2":el("path",{d:`M${x} ${H} V${H-h} L${x+24} ${H} Z M${x+w} ${H} V${H-h} L${x+w-24} ${H} Z`,class:"glass"},g);break;
     case "plate":el("path",{d:`M${x+3} ${H-180} V${y} M${x+w-3} ${H-180} V${y}`,class:"wire"},g);el("path",{d:`M${x} ${y+h} H${x+w} L${x} ${y} Z`,class:"solid"},g);break;
     case "imgtext":placeholder(g,x,y,20,h);for(let i=0;i<8;i++)el("rect",{x:x+24,y:y+i*2,width:i===7?6:10,height:.8,class:"bar"},g);break;
     case "sheets":for(let i=0;i<3;i++)placeholder(g,x+i*13,y,10,h);break;
-    default:if(C[k].fr!=="none"){el("rect",{x,y,width:w,height:h,class:"frm"},g);
-        const [iw0,ih0]=sz(k),s=Math.min(1,(w-3)/iw0,(h-3)/ih0),iw=iw0*s,ih=ih0*s,ix=x+(w-iw)/2,iy=y+(h-ih)/2;
+    default:if(C[k].fr!=="none"){const M=.9;el("rect",{x,y,width:w,height:h,class:"frm",filter:"url(#shF)"},g);
+        el("rect",{x:x+M,y:y+M,width:w-2*M,height:h-2*M,class:"mat"},g);
+        const [iw0,ih0]=sz(k),s=Math.min(1,(w-2*M-.5)/iw0,(h-2*M-.5)/ih0),iw=iw0*s,ih=ih0*s,ix=x+(w-iw)/2,iy=y+(h-ih)/2;
         src?el("image",{href:src,x:ix,y:iy,width:iw,height:ih,preserveAspectRatio:"xMidYMid meet"},g):placeholder(g,ix,iy,iw,ih);}
-      else src?el("image",{href:src,x,y,width:w,height:h,preserveAspectRatio:"xMidYMid meet"},g):placeholder(g,x,y,w,h);
+      else src?el("image",{href:src,x,y,width:w,height:h,preserveAspectRatio:"xMidYMid meet",filter:kind?null:"url(#shF)"},g):placeholder(g,x,y,w,h);
   }
-  // a small caption below or at the lower right
-  if(it.cap==="below")el("rect",{x:x+w/2-2.5,y:y+h+3,width:5,height:2,class:"lab"},g);
-  if(it.cap==="right")el("rect",{x:x+w+2,y:y+h-2,width:4,height:2,class:"lab"},g);
 }
-/* a wall seen straight on: inches, 0 at the left end, the floor at the bottom */
+/* where a work's wall label goes: to its right, low, or below it. Groups get one label (lab items). */
+function labelOf(it){const k=it.k,c=C[k];if(it.lab||it.nolab||!c||c.intro||it.kind==="tri2"||it.kind==="plate")return null;
+  return it.cap==="below"?{x:it.x+it.w/2-2.5,b:it.b-6.5,w:5,h:3.5}:{x:it.x+it.w+3.5,b:Math.min(it.b,52),w:5,h:3.5};}
+/* a wall seen straight on: inches, 0 at the left end, the floor at the bottom. The drawing is cut
+   to the hang, with a little wall around it, so the works fill the page. */
 function drawWall(v){
-  const L=v.len,H=v.h,items=v.items(),pad=Math.max(L,H)*.03;
-  const s=el("svg",{viewBox:`${-pad} ${-pad} ${L+2*pad} ${H+2*pad}`,role:"img","aria-label":v.label,class:"el"});
-  el("path",{d:`M0 ${H} V0 H${L} V${H}`,class:"e-line"},s);
-  el("line",{x1:-pad,y1:H,x2:L+pad,y2:H,class:"e-floor"},s);
-  items.filter(i=>i.lab).forEach(i=>el("rect",{x:i.x,y:H-i.b-i.h,width:i.w,height:i.h,class:"lab"},s));
-  picks=items.filter(i=>!i.lab).map(i=>i.k);
-  items.filter(i=>!i.lab).forEach((it,i)=>{
+  const L=v.len,H=v.h,items=v.items(),labs=items.map(labelOf);
+  const box=[...items,...labs.filter(Boolean)];
+  const x0=Math.min(...box.map(i=>i.x)),x1=Math.max(...box.map(i=>i.x+i.w)),top=Math.max(...box.map(i=>i.b+i.h)),bot=Math.min(...box.map(i=>i.b));
+  const m=Math.max(9,(x1-x0)*.05),floor=bot<16;
+  const vx=Math.max(-m*.6,x0-m),vw=Math.min(L+m*.6,x1+m)-vx,vy=H-top-m,vh=(floor?H+3:H-bot+m)-vy;
+  const s=el("svg",{viewBox:`${vx} ${vy} ${vw} ${vh}`,role:"img","aria-label":v.label,class:"el"});
+  const defs=el("defs",{},s);
+  const sh=(id,dy,sd,op)=>{const f=el("filter",{id,x:"-30%",y:"-30%",width:"160%",height:"170%"},defs);el("feDropShadow",{dx:0,dy,stdDeviation:sd,"flood-color":"#000","flood-opacity":op},f);};
+  sh("shF",.45,.7,.22);sh("shL",.18,.28,.32);
+  el("path",{d:`M0 ${floor?H:vy+vh} V${vy} M${L} ${floor?H:vy+vh} V${vy}`,class:"e-line"},s);
+  if(floor)el("line",{x1:vx,y1:H,x2:vx+vw,y2:H,class:"e-floor"},s);
+  const card=(p,l,n)=>{el("rect",{x:l.x,y:H-l.b-l.h,width:l.w,height:l.h,class:"lbl",filter:"url(#shL)"},p);
+    if(n){const t=el("text",{x:l.x+l.w/2,y:H-l.b-l.h/2,class:"lbn","text-anchor":"middle","dominant-baseline":"central"},p);t.textContent=n;}};
+  items.filter(i=>i.lab).forEach(i=>card(s,i));
+  const works=items.filter(i=>!i.lab);picks=works.map(i=>i.k);
+  works.forEach((it,i)=>{
     const g=el("g",{class:"e-work",tabindex:"0",role:"button","aria-label":`${num(it.k)} ${C[it.k].a||""}, ${C[it.k].t}`},s);
     drawItem(it,g,H);
     el("rect",{x:it.x-1,y:H-it.b-it.h-1,width:it.w+2,height:it.h+2,class:"hit"},g);
-    const n=num(it.k);if(n&&!C[it.k].prop){const up=it.nt==="above",t=el("text",{x:it.x+it.w/2,y:up?H-it.b-it.h-1.5:H-it.b+(it.cap==="below"?7:3),class:"num","dominant-baseline":up?"auto":"hanging","text-anchor":"middle"},g);t.textContent=n;}
+    const n=num(it.k),l=labelOf(it),shown=n&&!C[it.k].prop;
+    if(l)card(g,l,shown?n:"");
+    else if(shown){const up=it.nt==="above",t=el("text",{x:it.x+it.w/2,y:up?H-it.b-it.h-1.5:H-it.b+3,class:"num","dominant-baseline":up?"auto":"hanging","text-anchor":"middle"},g);t.textContent=n;}
     hook(g,i);
   });
-  fit=()=>fitText(s,L+2*pad,H+2*pad);
+  fit=()=>fitText(s,vw,vh,10);
   return s;
 }
 function hook(g,i){g.addEventListener("click",()=>{sel===i?openObj(picks[i]):pick(i);});
   g.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();sel===i?openObj(picks[i]):pick(i);}});}
 function openObj(k){location.hash="#o-"+k;}
-
-/* 106: the handling table seen from above, north up. 7 ft x 3 ft. */
-function drawTable(v){
-  const TW=36,TH=84,m=12,s=el("svg",{viewBox:`${-m} ${-m} ${TW+2*m} ${TH+2*m}`,role:"img","aria-label":"The table in 106, from above, north up",class:"el top"});
-  el("rect",{x:0,y:0,width:TW,height:TH,class:"e-line"},s);
-  const q=[[23,0,0],[24,1,0],[25,0,1],[26,1,1]];picks=q.map(a=>a[0]);
-  q.forEach(([k,cx,cy],i)=>{
-    const [w0,h0]=sz(k),f=Math.min(1,15/w0,14/h0),w=w0*f,h=h0*f,x=cx*18+(18-w)/2,y=cy*42+(30-h)/2+4;
-    const g=el("g",{class:"e-work",tabindex:"0",role:"button","aria-label":`${k} ${C[k].t}`},s);
-    if(k===24)el("rect",{x:x-1,y:y-1,width:w+2,height:h+2,class:"lab"},g); // the sloped rest
-    const src=pic(k);src?el("image",{href:src,x,y,width:w,height:h,preserveAspectRatio:"xMidYMid meet"},g):placeholder(g,x,y,w,h);
-    el("rect",{x:x-1,y:y-1,width:w+2,height:h+10,class:"hit"},g);
-    const t=el("text",{x:cx*18+9,y:y+h+2,class:"num","text-anchor":"middle","dominant-baseline":"hanging"},g);t.textContent=k;
-    hook(g,i);
-  });
-  fit=()=>fitText(s,TW+2*m,TH+2*m);
-  return s;
-}
 
 /* 102: one work at a time. The commission is the working option. */
 function drawOptions(v){
@@ -486,227 +440,193 @@ function drawObj(k){
   wrap.append(fig,cap,bar);show(0);
   return wrap;
 }
-
-/* =====================================================================
-   PERSPECTIVE. Each gallery is built as a room in CSS 3D, at 1 inch = U px.
-   World axes: x east, z south, y up, in inches, from the plan's own origin.
-   ===================================================================== */
-const U=6,S3=4/3; // S3: inches per plan unit (9 plan units to the foot)
-const WX=X=>(X-265)*S3,WZ=Y=>(Y-405)*S3;
-/* rooms: interior rectangle in plan units, height in inches, and the solid stretches of wall */
-const ROOMS={
-  "106":{r:[666,940.5,900.3,1288.5],h:180,seg:[[666,940.5,807,940.5],[888,940.5,900.3,940.5],[900.3,940.5,900.3,1288.5],[900.3,1288.5,889,1288.5],[808,1288.5,666,1288.5],[666,1288.5,666,1031.5],[666,967,666,940.5]]},
-  "105":{r:[666,623.5,900.3,907.4],h:180,seg:[[666,623.5,900.3,623.5],[900.3,623.5,900.3,907.4],[900.3,907.4,888,907.4],[807.5,907.4,666,907.4],[666,907.4,666,698.5]]},
-  "104":{r:[302,623.5,666,709.5],h:180,seg:[[302,623.5,666,623.5],[575,709.5,302,709.5],[302,709.5,302,623.5],[651,698.5,651,709.5]]},
-  "103":{r:[303,723.8,651.3,1066],h:180,seg:[[303,723.8,575,723.8],[651.3,723.8,651.3,967],[558,1066,303,1066],[651.3,1066,640,1066],[303,1066,303,723.8]]},
-  "lobby":{r:[760,1395,995.5,1700],h:144,seg:[[995.5,1395,995.5,1651.5]],open:1}
-};
-/* the wall faces with works: the room, then the left and right ends for someone facing the wall */
+/* ---------- the pieces that stand in a room: line drawings in perspective, like the pavilion ----------
+   Inches. x east, z south, y up. A plan unit is 4/3 in. */
+const S3=4/3,WX=X=>(X-265)*S3,WZ=Y=>(Y-405)*S3;
 const FACES={
-  "intro":["lobby",[995.5,1395],[995.5,1651.5]],
-  "106-S":["106",[808,1288.5],[666,1288.5]],"106-E":["106",[900.3,940.5],[900.3,1288.5]],
-  "106-W":["106",[666,1288.5],[666,1031.5]],"106-N":["106",[666,940.5],[807,940.5]],
-  "105-W":["105",[666,907.4],[666,698.5]],"105-S":["105",[807.5,907.4],[666,907.4]],
-  "105-N":["105",[666,623.5],[900.3,623.5]],"105-E":["105",[900.3,623.5],[900.3,907.4]],
-  "104":["104",[575,709.5],[302,709.5]],
-  "103-N":["103",[303,723.8],[575,723.8]],"103-W":["103",[303,1066],[303,723.8]],"103-E":["103",[651.3,723.8],[651.3,966.8]]
+  "105-W":[[666,907.4],[666,698.5]],"105-N":[[666,623.5],[900.3,623.5]],"105-E":[[900.3,623.5],[900.3,907.4]],
+  "103-N":[[303,723.8],[575,723.8]],"103-W":[[303,1066],[303,723.8]],"103-E":[[651.3,723.8],[651.3,966.8]]
 };
-function frameOf(face){const [room,a,b]=FACES[face];const x0=WX(a[0]),z0=WZ(a[1]),dx=WX(b[0])-x0,dz=WZ(b[1])-z0,L=Math.hypot(dx,dz);
-  const u=[dx/L,dz/L],n=[-u[1],u[0]];return {room,x0,z0,u,n,L,phi:Math.atan2(-u[1],u[0]),side:FACES[face][3]||1};}
-const toWorld=(F,x,y,z)=>[F.x0+F.u[0]*x+F.n[0]*z,y,F.z0+F.u[1]*x+F.n[1]*z];
+const ROOM={"105":[666,623.5,900.3,907.4],"103":[303,723.8,651.3,1066]},CEIL=180;
+function wallAt(face){const [a,b]=FACES[face],x0=WX(a[0]),z0=WZ(a[1]),dx=WX(b[0])-x0,dz=WZ(b[1])-z0,L=Math.hypot(dx,dz);
+  return (x,y,z=0)=>[x0+dx/L*x-dz/L*z,y,z0+dz/L*x+dx/L*z];}
 
-/* ---------- small DOM helpers ---------- */
-const mk=(cls,p,tag="div")=>{const e=document.createElement(tag);if(cls)e.className=cls;p&&p.appendChild(e);return e;};
-function place(e,x,y,z,w,h,rot=""){e.style.width=w*U+"px";e.style.height=h*U+"px";e.style.transform=`translate3d(${x*U}px,${-y*U}px,${z*U}px)${rot}`;return e;}
-const vplane=(e,x,y,z,w,h)=>place(e,x,y+h,z,w,h);                      // upright, facing +z: x..x+w, y..y+h
-const hplane=(e,x,z,w,d,y)=>place(e,x,y,z,w,d," rotateX(90deg)");        // lying flat at height y: x..x+w, z..z+d
-const xplane=(e,x,z,d,y,h)=>place(e,x,y+h,z+d,d,h," rotateY(90deg)");    // upright, facing +x: z..z+d
-function box(p,x,y,z,w,h,d,cls="bx"){ // an open-bottomed box: x,y,z is its lowest corner
-  vplane(mk(cls,p),x,y,z+d,w,h);vplane(mk(cls,p),x,y,z,w,h);hplane(mk(cls,p),x,z,w,d,y+h);
-  xplane(mk(cls,p),x,z,d,y,h);xplane(mk(cls,p),x+w,z,d,y,h);}
-const svgEl=(w,h,inner,cls="")=>`<svg class="${cls}" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" width="100%" height="100%">${inner}</svg>`;
-const shade=n=>{const l=.5+.5*(n[0]*-.45+n[1]*.9);return `rgb(${Math.round(242+12*l)},${Math.round(242+12*l)},${Math.round(242+12*l)})`;};
-
-/* ---------- the stage: viewport, world, camera ---------- */
-function Stage(host){
-  const st=mk("stage",host),world=mk("world",st);
-  const S={st,world,cam:{x:0,y:60,z:0,yaw:0,pitch:0},P:900,W:1,H:1,tw:null,raf:0,on:true};
-  S.size=()=>{const r=st.getBoundingClientRect();S.W=r.width||1;S.H=r.height||1;S.P=Math.min(.8*S.W,1.15*S.H);st.style.perspective=S.P+"px";};
-  S.apply=()=>{const c=S.cam;world.style.transform=`translateZ(${S.P}px) rotateX(${-c.pitch}rad) rotateY(${c.yaw}rad) translate3d(${-c.x*U}px,${c.y*U}px,${-c.z*U}px)`;};
-  S.project=(p,c=S.cam)=>{let x=p[0]-c.x,y=-(p[1]-c.y),z=p[2]-c.z;
-    const cy=Math.cos(c.yaw),sy=Math.sin(c.yaw);[x,z]=[x*cy+z*sy,-x*sy+z*cy];
-    const cp=Math.cos(-c.pitch),sp=Math.sin(-c.pitch);[y,z]=[y*cp-z*sp,y*sp+z*cp];
-    const d=-z;return d>1?[S.W/2+x*S.P/d,S.H/2+y*S.P/d,d]:null;};
-  // move the camera smoothly. `to` is a camera, or {orbit:{t,th,ph,r}} that is turned into one on each frame
-  S.go=(to,ms=900)=>{cancelAnimationFrame(S.raf);const from={...S.cam},o0=S.orbit;S.orbit=to.orbit||null;
-    if(ms<=0||matchMedia("(prefers-reduced-motion: reduce)").matches){S.cam=to.orbit?orbitCam(to.orbit):{...to};S.apply();return;}
-    const t0=performance.now(),e=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
-    const lerpA=(a,b,t)=>{let d=b-a;while(d>Math.PI)d-=2*Math.PI;while(d<-Math.PI)d+=2*Math.PI;return a+d*t;};
-    const step=now=>{const t=Math.min(1,(now-t0)/ms),k=e(t);
-      if(to.orbit&&o0&&to.arc){const o={t:o0.t.map((v,i)=>v+(to.orbit.t[i]-v)*k),th:lerpA(o0.th,to.orbit.th,k),ph:o0.ph+(to.orbit.ph-o0.ph)*k,r:o0.r+(to.orbit.r-o0.r)*k};S.cam=orbitCam(o);}
-      else{const b=to.orbit?orbitCam(to.orbit):to;S.cam={x:from.x+(b.x-from.x)*k,y:from.y+(b.y-from.y)*k,z:from.z+(b.z-from.z)*k,yaw:lerpA(from.yaw,b.yaw,k),pitch:from.pitch+(b.pitch-from.pitch)*k};}
-      S.apply();if(t<1)S.raf=requestAnimationFrame(step);};
-    S.raf=requestAnimationFrame(step);};
-  // looking around: drag turns the head (or orbits), the wheel walks forward and back
-  let drag=null;S.moved=false;
-  st.addEventListener("pointerdown",e=>{drag={x:e.clientX,y:e.clientY,cam:{...S.cam},orbit:S.orbit&&{...S.orbit}};S.moved=false;});
-  st.addEventListener("pointermove",e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;
-    if(!S.moved&&Math.hypot(dx,dy)<5)return;if(!S.moved){S.moved=true;st.setPointerCapture(e.pointerId);st.classList.add("drag");cancelAnimationFrame(S.raf);}
-    if(drag.orbit){const o={...drag.orbit,th:drag.orbit.th-dx*.006,ph:Math.max(-.3,Math.min(Math.PI/2,drag.orbit.ph+dy*.004))};S.orbit=o;S.cam=orbitCam(o);}
-    else S.cam={...drag.cam,yaw:drag.cam.yaw-dx*.0035,pitch:Math.max(-.6,Math.min(.9,drag.cam.pitch-dy*.0025))};
-    S.apply();});
-  const up=()=>{drag=null;st.classList.remove("drag");};st.addEventListener("pointerup",up);st.addEventListener("pointercancel",up);
-  st.addEventListener("wheel",e=>{e.preventDefault();cancelAnimationFrame(S.raf);const s=Math.max(-40,Math.min(40,-e.deltaY*.15));
-    if(S.orbit){S.orbit={...S.orbit,r:Math.max(30,Math.min(900,S.orbit.r-s*2))};S.cam=orbitCam(S.orbit);}
-    else{const c=S.cam;S.cam={...c,x:c.x+Math.sin(c.yaw)*s,z:c.z-Math.cos(c.yaw)*s};if(S.clamp)S.cam=S.clamp(S.cam);}
-    S.apply();},{passive:false});
-  const ro=new ResizeObserver(()=>{S.size();S.apply();});ro.observe(st);
-  S.stop=()=>{cancelAnimationFrame(S.raf);ro.disconnect();S.on=false;CLAMP=null;};
-  S.size();S.apply();
-  return S;
+/* a scene: faces filled white and drawn far to near, so near things hide far ones */
+function sceneKit(){
+  const faces=[],lines=[],top=[];
+  const face=(p,o={})=>{faces.push({p,...o});};
+  const seg=(alpha,pts,o={})=>(o.top?top:lines).push({a:alpha,p:pts,dash:o.dash});
+  // a box with optional open bottom
+  const box=(x0,y0,z0,x1,y1,z1,o={})=>{
+    const v=(i,j,k)=>[[x0,x1][i],[y0,y1][j],[z0,z1][k]];
+    face([v(0,1,0),v(1,1,0),v(1,1,1),v(0,1,1)],o);           // top
+    face([v(0,0,1),v(1,0,1),v(1,1,1),v(0,1,1)],o);           // south
+    face([v(1,0,0),v(0,0,0),v(0,1,0),v(1,1,0)],o);           // north
+    face([v(1,0,1),v(1,0,0),v(1,1,0),v(1,1,1)],o);           // east
+    face([v(0,0,0),v(0,0,1),v(0,1,1),v(0,1,0)],o);           // west
+    if(!o.open)face([v(0,0,0),v(1,0,0),v(1,0,1),v(0,0,1)],o); // bottom
+  };
+  // the room around it: floor, the walls in the distance light, the works on them as outlines
+  const room=(id,walls,o={})=>{const [a,b,c,d]=ROOM[id],x0=WX(a),z0=WZ(b),x1=WX(c),z1=WZ(d),h=CEIL;
+    const P=[[x0,z0],[x1,z0],[x1,z1],[x0,z1]],L=[];
+    for(let i=0;i<4;i++){const [p,q]=[P[i],P[(i+1)%4]];L.push([p[0],0,p[1]],[q[0],0,q[1]]);}
+    P.forEach(([x,z])=>L.push([x,0,z],[x,h,z]));
+    if(o.ceiling)for(let i=0;i<4;i++){const [p,q]=[P[i],P[(i+1)%4]];L.push([p[0],h,p[1]],[q[0],h,q[1]]);}
+    seg(.28,L);
+    const W=[];walls.forEach(f=>{const v=VIEWS.find(x=>x.id===f);if(!v)return;const at=wallAt(f),y0=0;
+      v.items().filter(i=>!i.lab&&!(C[i.k]&&C[i.k].intro)).forEach(i=>{const q=[at(i.x,i.b,.5),at(i.x+i.w,i.b,.5),at(i.x+i.w,i.b+i.h,.5),at(i.x,i.b+i.h,.5)];
+        for(let j=0;j<4;j++)W.push(q[j],q[(j+1)%4]);});});
+    seg(.22,W);
+  };
+  return {faces,lines,top,face,seg,box,room};
 }
-let CLAMP=null;
-function orbitCam(o){const [tx,ty,tz]=o.t,c=Math.cos(o.ph);
-  const cam={x:tx+o.r*Math.sin(o.th)*c,y:ty+o.r*Math.sin(o.ph),z:tz+o.r*Math.cos(o.th)*c,yaw:-o.th,pitch:o.ph};return CLAMP?CLAMP(cam):cam;}
 
-/* ---------- a room, its walls and what hangs on them ---------- */
-function buildRoom(S,id){
-  const R=ROOMS[id],w=S.world,[a,b,c,d]=R.r,x0=WX(a),z0=WZ(b),x1=WX(c),z1=WZ(d);
-  const fl=hplane(mk("fl",w),x0-(R.open?240:0),z0,x1-x0+(R.open?240:0),z1-z0+(R.open?120:0),0);
-  if(!R.open)hplane(mk("cl",w),x0,z0,x1-x0,z1-z0,R.h);
-  R.seg.forEach(([p,q,r,s])=>{const X0=WX(p),Z0=WZ(q),dx=WX(r)-X0,dz=WZ(s)-Z0,L=Math.hypot(dx,dz),n=[-dz/L,dx/L];
-    const e=mk("wl",w);e.style.width=L*U+"px";e.style.height=R.h*U+"px";e.style.background=shade(n);
-    e.style.transform=`translate3d(${X0*U}px,${-R.h*U}px,${Z0*U}px) rotateY(${Math.atan2(-dz,dx)}rad)`;});
-  S.room={id,R,x0,z0,x1,z1};
-  S.clamp=c=>({...c,x:Math.max(x0+10,Math.min(x1-10,c.x)),z:Math.max(z0+10,Math.min(z1-10+(R.open?100:0),c.z)),y:Math.min(R.h-8,c.y)});CLAMP=S.clamp;
-}
-/* a group of elements aligned with a wall face: x along the wall, y up, z out of the wall */
-function faceGroup(S,face){const F=frameOf(face),g=mk("g3",S.world);
-  g.style.transform=`translate3d(${F.x0*U}px,0px,${F.z0*U}px) rotateY(${F.phi}rad)`;return {g,F};}
+const SCENES={
+  /* 106: the handling table, seen from its long side. The four copies sit in a row, at their own size. */
+  table(){const K=sceneKit(),TH=30,tx=WX(783),tz=WZ(1162.5),T=(x,y,z)=>[tx+x,y,tz+z];
+    const bx=(x0,y0,z0,x1,y1,z1,o)=>K.box(tx+x0,y0,tz+z0,tx+x1,y1,tz+z1,o);
+    bx(-18,TH-1.5,-42,18,TH,42,{L:1});
+    [[-17,-41],[15,-41],[-17,39],[15,39]].forEach(([x,z])=>bx(x,0,z,x+2,TH-1.5,z+2,{L:0,open:1}));
+    // seen from the east: the top of each picture points west, its left edge to the south
+    const ks=[23,24,25,26];
+    ks.forEach((k,i)=>{const [w0,h0]=sz(k),s=Math.min(1,17/w0,26/h0),w=w0*s,h=h0*s,cz=31.5-i*21,src=pic(k);
+      if(k===24){const a=20*Math.PI/180,d=h*Math.cos(a),r=h*Math.sin(a),y=TH+.3;
+        // a low rest, rising away from the viewer, the copy lying on its slope
+        const fw=T(-d/2,y+r,cz+w/2),fm=T(-d/2,y+r,cz-w/2),m=T(d/2,y,cz-w/2),n=T(d/2,y,cz+w/2),bw=T(-d/2,TH,cz+w/2),bm=T(-d/2,TH,cz-w/2),nb=T(d/2,TH,cz+w/2),mb=T(d/2,TH,cz-w/2);
+        K.face([bw,bm,fm,fw],{L:2,k,f:"#f4f4f4"});K.face([nb,bw,fw,n],{L:2,k,f:"#f4f4f4"});K.face([mb,bm,fm,m],{L:2,k,f:"#f4f4f4"});K.face([nb,mb,m,n],{L:2,k,f:"#f4f4f4"});
+        K.face([fw,fm,m,n],{L:3,k,img:src&&{src}});
+        return;}
+      // a copy lying flat: its sides, then its top with the picture (corners: west-south, west-north, east-north, east-south)
+      const y=TH+.35,A=T(-h/2,y,cz+w/2),B=T(-h/2,y,cz-w/2),Cc=T(h/2,y,cz-w/2),D=T(h/2,y,cz+w/2),dn=q=>[q[0],TH,q[2]];
+      [[A,B],[B,Cc],[Cc,D],[D,A]].forEach(([p,q])=>K.face([dn(p),dn(q),q,p],{L:2,k}));
+      K.face([A,B,Cc,D],{L:3,k,img:src&&{src}});
+    });
+    return {K,T:[tx,TH,tz],R:48,yaw:Math.PI/2,pitch:.95,sway:.22,pmin:.04,pmax:1.45,intro:{pitch:.05,dist:2.1,ms:2600},keys:ks};},
 
-const MOLD=.85; // frame moulding, inches
-function framedWork(g,it){
-  const {k,x,b,w,h}=it,c=C[k],f=mk("fw"+(c.fr==="none"?" bare":""),g);vplane(f,x,b,1.4,w,h);
-  const m=c.fr==="none"?0:MOLD;f.style.borderWidth=m*U+"px";
-  const [iw0,ih0]=sz(k),aw=w-2*m-(c.fr==="none"?0:1),ah=h-2*m-(c.fr==="none"?0:1),s=Math.min(1,aw/iw0,ah/ih0),iw=iw0*s,ih=ih0*s;
-  const src=pic(k);
-  if(src){const im=mk("pic3",g,"img");im.src=src;im.alt="";im.draggable=false;vplane(im,x+(w-iw)/2,b+(h-ih)/2,1.45,iw,ih);return [f,im];}
-  const ph=mk("ph3",f);Object.assign(ph.style,{position:"absolute",left:((w-2*m-iw)/2)*U+"px",top:((h-2*m-ih)/2)*U+"px",width:iw*U+"px",height:ih*U+"px"});ph.textContent=num(k);
-  return [f];
-}
-function sharpText(e,K=4){e.style.transform+=` scale(${1/K})`;e.style.width=parseFloat(e.style.width)*K+"px";e.style.height=parseFloat(e.style.height)*K+"px";e.style.fontSize=parseFloat(e.style.fontSize)*K+"px";}
-function wallLabel(g,x,b,w=5,h=3.5){const e=mk("lb",g);vplane(e,x,b,.2,w,h);return e;}
-/* build one wall's works. Returns the clickable things, with what the camera should do for each */
-function buildWall(S,face,v){
-  const {g,F}=faceGroup(S,face),items=v.items(),out=[];
-  items.forEach(it=>{
-    if(it.lab){wallLabel(g,it.x,it.b,it.w,Math.max(it.h,1.5));return;}
-    const els=[];const {k,x,b,w,h,kind}=it;
-    switch(kind){
-      case "title":{const e=mk("ttl3",g);vplane(e,x,b,.05,w*1.6,h);e.style.fontSize=h*U*.9+"px";sharpText(e);e.textContent=C[k].t;els.push(e);break;}
-      case "text":{const e=mk("tx3",g);vplane(e,x,b,.05,w,h);let s="",y=1;for(let i=0;y<h-1;i++){const lw=i%7===6?w*.45:w*(.82+.18*Math.abs(Math.sin(i*2.3)));if(i%7!==3)s+=`<rect x="0" y="${y}" width="${lw}" height=".55"/>`;y+=1.75;}e.innerHTML=svgEl(w,h,s);els.push(e);break;}
-      case "grid24":{const s=(w-5*2)/6;const src=pic(k);for(let r=0;r<4;r++)for(let q=0;q<6;q++){const e=mk("tile",g);vplane(e,x+q*(s+2),b+h-(r+1)*s-r*2,1,s,s);
-        if(src){e.style.backgroundImage=`url(${src})`;e.style.backgroundSize=`${6*s*U+10*U}px ${4*s*U+6*U}px`;e.style.backgroundPosition=`${-q*(s+2)*U}px ${-r*(s+2)*U}px`;}els.push(e);}break;}
-      case "monitor":{const p=mk("g3",g);box(p,x,b,0,w,h,3,"mon3");const s=mk("scr",p);vplane(s,x+1,b+1,3.05,w-2,h-2);
-        const src=pic(k);if(src)s.style.backgroundImage=`url(${src})`;
-        const hs=mk("hs",g);vplane(hs,x+w/2-3,b-11,1,6,5);els.push(p,hs);break;}
-      case "case":{const p=mk("g3",g),D=16,top=38;[[x+1,1],[x+w-3,1],[x+1,D-3],[x+w-3,D-3]].forEach(([lx,lz])=>box(p,lx,0,lz,2,top-8,2,"leg"));
-        box(p,x,top-8,0,w,7,D,"case3");const it2=mk("in3",p);hplane(it2,x+w*.15,D*.2,w*.7,D*.6,top-.9);const src=pic(k);
-        if(src)it2.style.backgroundImage=`url(${src})`;else it2.textContent=num(k);const gl=mk("glass3",p);hplane(gl,x,0,w,D,top);els.push(p);break;}
-      case "rest":{const p=mk("g3",g);box(p,x-1,b-1.2,0,w+2,1.2,5,"shelf");const bk=mk("bk3",p);place(bk,x,b+h*.94,.6,w,h," rotateX(20deg)");
-        const src=pic(k);if(src)bk.style.backgroundImage=`url(${src})`;els.push(p);break;}
-      case "tri2":{const p=mk("g3",g),ax=x+w/2,top=86,H=72,a=38*Math.PI/180;
-        [[a-Math.PI,"0,0 24,0 24,72"],[-a,"0,0 24,0 24,72"]].forEach(([th,pts])=>{const e=mk("glassp",p);e.innerHTML=svgEl(24,72,`<polygon points="${pts}"/>`);
-          e.style.width=24*U+"px";e.style.height=H*U+"px";e.style.transform=`translate3d(${ax*U}px,${-top*U}px,${10*U}px) rotateY(${th}rad)`;});
-        [[ax+Math.cos(a-Math.PI)*24,10+Math.sin(Math.PI-a)*24],[ax+Math.cos(-a)*24,10+Math.sin(a)*24]].forEach(([wx,wz])=>{const wi=mk("wire",p);vplane(wi,wx,top,wz,.12,180-top);});
-        els.push(p);break;}
-      case "plate":{const p=mk("g3",g),y=54;const e=mk("glassp",p);e.innerHTML=svgEl(60,24,`<polygon points="0,0 60,0 0,24"/>`);hplane(e,x,0,60,24,y);
-        const wi=mk("wire",p);vplane(wi,x,y,24,.12,180-y);els.push(p);break;}
-      case "imgtext":{els.push(...framedWork(g,{k,x,b,w:20,h}));const t=mk("tx3",g);vplane(t,x+24,b,.4,10,h);els.push(t);break;}
-      case "sheets":for(let i=0;i<3;i++){const e=mk("fw",g);vplane(e,x+i*13,b,1,10,h);e.style.borderWidth=.5*U+"px";mk("ph3",e);els.push(e);}break;
-      default:els.push(...framedWork(g,it));
+  /* 106: Splitting: Four Corners, the four roof corners of the house on the floor, outside corners out */
+  corners(){const K=sceneKit(),fx=WX(765),fz=WZ(1020);
+    const pieces=[[-34,-28,-90],[34,-30,180],[32,28,90],[-32,30,0]],jit=[8,-6,4,-10];
+    pieces.forEach(([px,pz,rot],i)=>{
+      const a=[30,27,32,28][i],d=[27,30,26,29][i],h=[34,30,36,32][i],rise=[18,16,20,17][i],o=6,H=h+rise,th=(rot+jit[i])*Math.PI/180;
+      const c=Math.cos(th),s=Math.sin(th),P=([x,y,z])=>[fx+px+x*c+z*s,y,fz+pz-x*s+z*c];
+      const F=(pts,opt)=>K.face(pts.map(P),{k:"15",...opt});
+      const zAt=y=>y<=h?-d/2:d/2-(y-h)/(H-h)*d; // where the sloped top of a side face reaches height y
+      const sid=(x)=>{const L=[];for(let y=4;y<H;y+=4)L.push([x,y,d/2],[x,y,y<=h?-d/2:d/2-(y-h)/(H-h)*d]);return L;};
+      // front: clapboard, with its siding lines
+      F([[-a/2,0,d/2],[a/2,0,d/2],[a/2,h,d/2],[-a/2,h,d/2]],{det:Array.from({length:Math.floor(h/4)},(_,j)=>[[-a/2,4*(j+1),d/2],[a/2,4*(j+1),d/2]]).flat().map(P)});
+      // left: the outside of the gable end, also clapboard
+      F([[-a/2,0,d/2],[-a/2,0,-d/2],[-a/2,H,-d/2],[-a/2,h,d/2]],{det:sid(-a/2).map(([x,y,z])=>[x,y,Math.max(-d/2,Math.min(d/2,z))]).map(P)});
+      // back and right: the sawn faces, with the studs
+      F([[a/2,0,-d/2],[-a/2,0,-d/2],[-a/2,H,-d/2],[a/2,H,-d/2]],{f:"#f3f3f3",det:[-a/2+8,-a/2+24].filter(x=>x<a/2).flatMap(x=>[[x,0,-d/2],[x,H,-d/2]]).map(P)});
+      F([[a/2,0,d/2],[a/2,h,d/2],[a/2,H,-d/2],[a/2,0,-d/2]],{f:"#f3f3f3",det:[[a/2,0,d/2-8],[a/2,h+(H-h)*8/d,d/2-8]].map(P)});
+      // the roof, overhanging the front and the left, with its shingle courses
+      const yF=h-rise*o/d,rs=[[-a/2-o,H,-d/2],[a/2,H,-d/2],[a/2,yF,d/2+o],[-a/2-o,yF,d/2+o]];
+      const det=[];for(let t=.18;t<1;t+=.18){const z=-d/2+(d+o)*t,y=H+(yF-H)*t;det.push([-a/2-o,y,z],[a/2,y,z]);}
+      F(rs,{f:"#fbfbfb",det:det.map(P),L:1});
+    });
+    return {K,T:[fx,20,fz],R:92,yaw:.55,pitch:.42,sway:.32,pmin:.04,pmax:1.2,keys:["15"]};},
+
+  /* 105: the twenty Floor Pieces, set back from the north wall, the north wall behind them */
+  floor(){const K=sceneKit(),x0=WX(765),z0=WZ(668),zw=100*S3,zd=54*S3;
+    K.room("105",["105-N","105-W","105-E"]);
+    const Z=[];for(let t=-zd;t<zw;t+=10){const a=[Math.max(0,t),Math.max(0,t)-t],b=[Math.min(zw,t+zd),Math.min(zw,t+zd)-t];Z.push([x0+a[0],.05,z0+a[1]],[x0+b[0],.05,z0+b[1]]);}
+    K.seg(.12,Z);K.seg(.6,[[x0,0,z0],[x0+zw,0,z0],[x0+zw,0,z0],[x0+zw,0,z0+zd],[x0+zw,0,z0+zd],[x0,0,z0+zd],[x0,0,z0+zd],[x0,0,z0]],{dash:[4,4]});
+    const cols=5,rows=4,g=4,pw=(zw-(cols+1)*g)/cols,pd=(zd-(rows+1)*g)/rows;
+    for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){const x=x0+g+c*(pw+g),z=z0+g+r*(pd+g);K.box(x,0,z,x+pw,.6,z+pd,{k:"41c",open:1,L:1});}
+    return {K,T:[x0+zw/2,24,z0+zd/2-6],R:100,yaw:0,pitch:.5,sway:.28,pmin:.08,pmax:1.35,keys:["41c"]};},
+
+  /* 103: the Girouard cloth, proposed, three layers hung parallel to the ceiling */
+  cloth(){const K=sceneKit(),x=WX(495),z=WZ(915),w=54*S3,d=45*S3,W=[];
+    // a slice of the room around it: the floor and the ceiling it hangs from
+    const m=26,X0=x-5-m,X1=x+8+w+m,Z0=z-m,Z1=z+12+d+m,P=[[X0,Z0],[X1,Z0],[X1,Z1],[X0,Z1]],fl=[],cl=[],up=[];
+    for(let i=0;i<4;i++){const [p,q]=[P[i],P[(i+1)%4]];fl.push([p[0],0,p[1]],[q[0],0,q[1]]);cl.push([p[0],CEIL,p[1]],[q[0],CEIL,q[1]]);up.push([p[0],0,p[1]],[p[0],CEIL,p[1]]);}
+    K.seg(.55,fl);K.seg(.2,cl);K.seg(.14,up);
+    [[0,0,84],[8,6,90],[-5,12,96]].forEach(([dx,dz,y],i)=>{const a=x+dx,b=z+dz,det=[];
+      for(let t=6;t<w+d;t+=6+(i*2)){const p=[a+Math.max(0,t-d),y,b+Math.min(d,t)],q=[a+Math.min(w,t),y,b+Math.max(0,t-w)];det.push(p,q);}
+      K.face([[a,y,b],[a+w,y,b],[a+w,y,b+d],[a,y,b+d]],{k:"p-girouard",f:"rgba(255,255,255,.82)",det,da:.22,L:1+i});
+      [[a,b],[a+w,b],[a,b+d],[a+w,b+d]].forEach(([p,q])=>W.push([p,y,q],[p,CEIL,q]));});
+    K.seg(.45,W,{top:1});
+    return {K,T:[x+w/2,92,z+d/2],R:104,yaw:.8,pitch:.2,sway:.3,pmin:-.3,pmax:1.1,keys:["p-girouard"]};}
+};
+
+function drawScene(v){
+  const S=SCENES[v.scene](),K=S.K;
+  const wrap=document.createElement("div");wrap.className="room3d scene";
+  const cv=document.createElement("canvas");cv.setAttribute("role","img");cv.setAttribute("aria-label",v.label+", drawn in perspective");
+  const ctl=document.createElement("div");ctl.className="ctl";
+  ctl.innerHTML=S.keys.map(k=>`<a href="#o-${esc(k)}">${esc(num(k)==="Proposal"?C[k].a:num(k))} ${esc(C[k].t)}</a>`).join("");
+  wrap.append(cv,ctl);
+  const g=cv.getContext("2d"),dpr=Math.min(2,window.devicePixelRatio||1);let W=0,H=0;
+  const size=()=>{const r=cv.getBoundingClientRect();W=r.width;H=r.height;cv.width=W*dpr;cv.height=H*dpr;};
+  const imgs={};const getImg=src=>{if(!imgs[src]){const im=new Image();im.src=src;imgs[src]=im;}const im=imgs[src];return im.complete&&im.naturalWidth?im:null;};
+  const reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let yaw=S.yaw,pitch=S.pitch,dist=S.R*3.4,drag=null,auto=!reduce,raf=0,selK=null,hover=null,drawn=[];
+  const back=lastKey!=null&&S.keys.some(k=>String(k)===String(lastKey)); // coming back from a work: no approach
+  const I=S.intro&&!reduce&&!back?S.intro:null,t0=performance.now();let introDone=!I;
+  const NEAR=6;
+  function cam([x,y,z]){let a=x-S.T[0],b=y-S.T[1],c=z-S.T[2];
+    const cy=Math.cos(yaw),sy=Math.sin(yaw);[a,c]=[a*cy-c*sy,a*sy+c*cy];
+    const cp=Math.cos(pitch),sp=Math.sin(pitch);[b,c]=[b*cp-c*sp,b*sp+c*cp];return [a,b,dist-c];}
+  const scr=([a,b,z])=>{const f=.42*Math.min(W,H*1.6)*3.4;return [W/2+f*a/z,H*.54-f*b/z];};
+  // clip to the near plane, in camera space
+  const cut=(p,q)=>{const t=(NEAR-p[2])/(q[2]-p[2]);return [p[0]+(q[0]-p[0])*t,p[1]+(q[1]-p[1])*t,NEAR];};
+  function clipPoly(P){const out=[];for(let i=0;i<P.length;i++){const p=P[i],q=P[(i+1)%P.length],pi=p[2]>=NEAR,qi=q[2]>=NEAR;
+    if(pi)out.push(p);if(pi!==qi)out.push(cut(p,q));}return out;}
+  function strokeSegs(pts){for(let i=0;i<pts.length;i+=2){let p=cam(pts[i]),q=cam(pts[i+1]);
+    if(p[2]<NEAR&&q[2]<NEAR)continue;if(p[2]<NEAR)p=cut(p,q);else if(q[2]<NEAR)q=cut(q,p);
+    const u=scr(p),w=scr(q);g.moveTo(u[0],u[1]);g.lineTo(w[0],w[1]);}}
+  function tri(img,iw,ih,s,d){const [[u0,v0],[u1,v1],[u2,v2]]=s,[[x0,y0],[x1,y1],[x2,y2]]=d;
+    const mx=(x0+x1+x2)/3,my=(y0+y1+y2)/3,grow=(x,y)=>{const dx=x-mx,dy=y-my,l=Math.hypot(dx,dy)||1;return [x+dx/l*.6,y+dy/l*.6];};
+    const e0=grow(x0,y0),e1=grow(x1,y1),e2=grow(x2,y2);
+    g.save();g.beginPath();g.moveTo(e0[0],e0[1]);g.lineTo(e1[0],e1[1]);g.lineTo(e2[0],e2[1]);g.closePath();g.clip();
+    const den=u0*(v2-v1)-u1*v2+u2*v1+(u1-u2)*v0;if(!den){g.restore();return;}
+    const a=-(v0*(x2-x1)-v1*x2+v2*x1+(v1-v2)*x0)/den,b=(v1*y2+v0*(y1-y2)-v2*y1+(v2-v1)*y0)/den,
+      c=(u0*(x2-x1)-u1*x2+u2*x1+(u1-u2)*x0)/den,dd=-(u1*y2+u0*(y1-y2)-u2*y1+(u2-u1)*y0)/den,
+      e=(u0*(v2*x1-v1*x2)+v0*(u1*x2-u2*x1)+(u2*v1-u1*v2)*x0)/den,f=(u0*(v2*y1-v1*y2)+v0*(u1*y2-u2*y1)+(u2*v1-u1*v2)*y0)/den;
+    g.transform(a,b,c,dd,e,f);g.drawImage(img,0,0,iw,ih);g.restore();}
+  function picture(F,im){const N=3,[p0,p1,p2,p3]=F.p,iw=im.naturalWidth,ih=im.naturalHeight;
+    const at=(u,v)=>{const lerp=(a,b,t)=>a.map((x,i)=>x+(b[i]-x)*t),top=lerp(p0,p1,u),bot=lerp(p3,p2,u),q=cam(lerp(top,bot,v));return q[2]<NEAR?null:scr(q);};
+    for(let i=0;i<N;i++)for(let j=0;j<N;j++){const A=[i/N,j/N],B=[(i+1)/N,j/N],Cc=[(i+1)/N,(j+1)/N],D=[i/N,(j+1)/N];
+      const s=q=>[q[0]*iw,q[1]*ih],P=[A,B,Cc,D].map(q=>at(q[0],q[1]));if(P.some(x=>!x))continue;
+      tri(im,iw,ih,[s(A),s(B),s(Cc)],[P[0],P[1],P[2]]);tri(im,iw,ih,[s(A),s(Cc),s(D)],[P[0],P[2],P[3]]);}}
+  const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+  function frame(now){
+    const t=now-t0;
+    if(!introDone){const e=ease(Math.min(1,t/I.ms));pitch=I.pitch+(S.pitch-I.pitch)*e;dist=S.R*3.4*(I.dist+(1-I.dist)*e);if(t>=I.ms)introDone=true;}
+    else if(auto&&!drag)yaw=S.yaw+Math.sin((t-(I?I.ms:0))/7000)*S.sway;
+    g.setTransform(dpr,0,0,dpr,0,0);g.clearRect(0,0,W,H);
+    const runs=list=>list.forEach(l=>{g.strokeStyle=`rgba(0,0,0,${l.a})`;g.lineWidth=l.a<1?.7:1;g.setLineDash(l.dash||[]);g.beginPath();strokeSegs(l.p);g.stroke();});
+    runs(K.lines);g.setLineDash([]);
+    // faces, far to near within each layer
+    drawn=K.faces.map(F=>{const c=F.p.map(cam),P=clipPoly(c);return {F,P:P.map(scr),z:c.reduce((s,q)=>s+q[2],0)/c.length,n:P.length};})
+      .filter(o=>o.n>=3).sort((a,b)=>(a.F.L||0)-(b.F.L||0)||b.z-a.z);
+    for(const {F,P} of drawn){
+      const path=()=>{g.beginPath();P.forEach((q,i)=>i?g.lineTo(q[0],q[1]):g.moveTo(q[0],q[1]));g.closePath();};
+      path();g.fillStyle=F.f||"#fff";g.fill();
+      const im=F.img&&F.img.src&&getImg(F.img.src);if(im)picture(F,im);
+      if(F.det){g.strokeStyle=`rgba(0,0,0,${F.da||.3})`;g.lineWidth=.6;g.beginPath();strokeSegs(F.det);g.stroke();}
+      if(F.a!==0){const on=F.k!=null&&(String(F.k)===selK||String(F.k)===hover);path();g.strokeStyle=`rgba(0,0,0,${F.a??1})`;g.lineWidth=on?1.8:1;g.stroke();}
     }
-    // a label beside it, unless the plan groups it under one label
-    if(!it.nolab&&!C[k].intro&&kind!=="tri2"&&kind!=="plate"){
-      if(it.cap==="below")wallLabel(g,x+w/2-2.5,b-6.5);else wallLabel(g,x+w+3.5,Math.min(b,52));}
-    const cx=x+w/2,cy=(kind==="plate"||kind==="tri2")?(kind==="plate"?54:50):b+h/2;
-    out.push({k,els,focus:()=>focusWall(S,F,cx,cy,Math.max(w,12),Math.max(h,12),kind==="tri2"||kind==="plate"?40:0)});
-  });
-  return {F,items,out};
-}
-/* where to stand for a whole wall: as close as the room allows, a little to one side so the wall recedes */
-function wallView(S,F,items){
-  let x0=1e9,x1=-1e9,b0=1e9,b1=-1e9;items.forEach(i=>{x0=Math.min(x0,i.x);x1=Math.max(x1,i.x+i.w);b0=Math.min(b0,i.b);b1=Math.max(b1,i.b+i.h);});
-  if(x1<x0){x0=0;x1=F.L;b0=36;b1=96;}
-  const pad=Math.max(12,(x1-x0)*.08);x0-=pad;x1+=pad;
-  const cx=(x0+x1)/2,cy=Math.max(54,Math.min(66,(b0+b1)/2)),R=S.room,depth=roomDepth(S,F);
-  let d=Math.max((x1-x0)*S.P/(.84*S.W),(b1-b0+24)*S.P/(.6*S.H),60);d=Math.min(d,depth-14);
-  const ends=[[x0,cy,0],[x1,cy,0]];let best=null;
-  for(let s=.22;s<=3;s+=.04){const lx=cx+s*d*F.side,c=camAt(F,lx,cy,d,cx,cy);const p=ends.map(e=>S.project(toWorld(F,...e),c));
-    if(p.every(q=>q&&q[0]>S.W*.05&&q[0]<S.W*.95)){best=c;break;}best=c;}
-  return S.clamp?S.clamp(best):best;
-}
-function roomDepth(S,F){const R=S.room;let t=1e9;
-  if(Math.abs(F.n[0])>.5)t=F.n[0]>0?R.x1-F.x0:F.x0-R.x0;else t=F.n[1]>0?R.z1-F.z0:F.z0-R.z0;return R.R.open?420:t;}
-/* a camera at (lx, ly, lz) in the wall's frame, looking at (tx, ty) on the wall */
-function camAt(F,lx,ly,lz,tx,ty){const p=toWorld(F,lx,ly,lz),yl=Math.atan2(tx-lx,lz);
-  return {x:p[0],y:p[1],z:p[2],yaw:yl-F.phi,pitch:Math.atan2(ly-ty,lz)};}
-function focusWall(S,F,cx,cy,w,h,extra=0){
-  let d=Math.max(w*S.P/(.46*S.W),h*S.P/(.56*S.H),28)+extra;d=Math.min(d,roomDepth(S,F)-12);
-  S.go(camAt(F,cx+d*.06,cy,d,cx,cy),1000);
-}
-
-/* ---------- 106: the handling table, and Splitting: Four Corners ---------- */
-function build106(S){
-  const out=[],w=S.world,tx=WX(783),tz=WZ(1162.5),TH=30;
-  const tb=mk("g3",w);tb.style.transform=`translate3d(${tx*U}px,0,${tz*U}px)`;
-  box(tb,-18,TH-1.5,-42,36,1.5,84,"tbl");
-  [[-17,-41],[15,-41],[-17,39],[15,39]].forEach(([x,z])=>box(tb,x,0,z,2,TH-1.5,2,"leg"));
-  // the four handling copies, north up: NW 23, NE 24 on a sloped rest, SW 25, SE 26
-  [[23,-9,-21],[24,9,-21],[25,-9,21],[26,9,21]].forEach(([k,cx,cz])=>{
-    const [w0,h0]=sz(k),s=Math.min(1,15/w0,13/h0),iw=w0*s,ih=h0*s,src=pic(k);let e;
-    if(k===24){box(tb,cx-iw/2,TH,cz-ih/2+ih*.1,iw,2,ih*.8,"rest3");e=mk("book",tb);place(e,cx-iw/2,TH+ih*.5,cz-ih/2,iw,ih," rotateX(62deg)");}
-    else{e=mk("book",tb);hplane(e,cx-iw/2,cz-ih/2-1,iw,ih,TH+.15);}
-    if(src){const im=mk("pic3",e,"img");im.src=src;im.alt="";im.draggable=false;Object.assign(im.style,{width:"100%",height:"100%"});}else e.textContent=k;
-    const cap=mk("cap3",tb);hplane(cap,cx-8,cz+ih/2+.2,16,3,TH+.1);cap.innerHTML=`<span>${k}</span> ${esc(C[k].t.length>28?C[k].t.slice(0,26)+"…":C[k].t)}`;cap.style.fontSize=1.25*U+"px";sharpText(cap);
-    out.push({k,els:[e,cap],focus:()=>S.go({orbit:{t:[tx+cx,TH,tz+cz],th:0,ph:Math.PI/2,r:Math.max(ih,iw)*S.P/(.42*Math.min(S.W,S.H))}},900)});
-  });
-  // Splitting: Four Corners, four roof corners of the house, sketched
-  const fx=WX(765),fz=WZ(1020),fr=mk("g3",w);fr.style.transform=`translate3d(${fx*U}px,0,${fz*U}px)`;
-  const pieces=[[-34,-28,-90],[34,-30,180],[32,28,90],[-32,30,0]];const fe=[];
-  pieces.forEach(([px,pz,rot],i)=>{const g=mk("g3",fr);g.style.transform=`translate3d(${px*U}px,0,${pz*U}px) rotateY(${rot+[8,-6,4,-10][i]}deg)`;corner(g,i);fe.push(g);});
-  out.push({k:"15",els:fe,floor:true,focus:()=>S.go({orbit:{t:[fx,26,fz],th:.55,ph:.42,r:230}},1000)});
-  return out;
-}
-/* one roof corner: two clapboard walls meeting at the outside corner (front and left),
-   two sawn faces (back and right), and the pitched roof with its eave over the front */
-function corner(g,i){
-  const a=[30,27,32,28][i],d=[27,30,26,29][i],h=[34,30,36,32][i],rise=[18,16,20,17][i],o=6,H=h+rise;
-  const gable=(e,cls)=>{e.innerHTML=svgEl(d,H,`<polygon points="0,${rise} ${d},0 ${d},${H} 0,${H}" class="${cls}"/>`);e.classList.add("svgf");return e;};
-  vplane(mk("clap",g),-a/2,0,d/2,a,h);                                   // front, outside
-  gable(xplane(mk("",g),-a/2,-d/2,d,0,H),"cut0");                         // left, outside (gable end)
-  vplane(mk("cutf",g),-a/2,0,-d/2,a,H);                                   // back, sawn
-  gable(xplane(mk("",g),a/2,-d/2,d,0,H),"cut1");                          // right, sawn
-  const run=d+o,len=Math.hypot(run,rise*run/d),ang=Math.atan2(d,rise);
-  place(mk("roof3",g),-a/2-o,H,-d/2,a+o,len,` rotateX(${ang}rad)`);
-  place(mk("fascia",g),-a/2-o,h-rise*o/d+.1,d/2+o,a+o,2.4);
-}
-
-/* ---------- 105: the twenty Floor Pieces, set back from the north wall ---------- */
-function build105(S){
-  const w=S.world,zx0=WX(765),zz0=WZ(668),zw=100*S3,zd=54*S3,g=mk("g3",w),els=[];
-  const zone=mk("hatch3",w);hplane(zone,zx0,zz0,zw,zd,.05);
-  const cols=5,rows=4,gx=4,gz=4,pw=(zw-(cols+1)*gx)/cols,pd=(zd-(rows+1)*gz)/rows,src=pic("41c");
-  for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){const e=mk("piece",w);hplane(e,zx0+gx+c*(pw+gx),zz0+gz+r*(pd+gz),pw,pd,.4);
-    if(src){e.style.backgroundImage=`url(${src})`;e.style.backgroundSize=`${cols*100}% ${rows*100}%`;e.style.backgroundPosition=`${c/(cols-1)*100}% ${r/(rows-1)*100}%`;}els.push(e);}
-  return [{k:"41c",els,floor:true,focus:()=>S.go({orbit:{t:[zx0+zw/2,0,zz0+zd/2],th:0,ph:.85,r:200}},1000)}];
-}
-/* ---------- 103: the Girouard cloth, proposed, hung in layers parallel to the ceiling ---------- */
-function build103(S){
-  const x=WX(495),z=WZ(915),w=54*S3,d=45*S3,src=pic("p-girouard"),els=[];
-  [[0,0,84],[8,6,90],[-5,12,96]].forEach(([dx,dz,y],i)=>{const e=mk("cloth",S.world);hplane(e,x+dx,z+dz,w,d,y);if(src)e.style.backgroundImage=`url(${src})`;els.push(e);
-    [[0,0],[w,0],[0,d],[w,d]].forEach(([a,b])=>{const wi=mk("wire",S.world);place(wi,x+dx+a,180,z+dz+b,.12,180-y);});});
-  return [{k:"p-girouard",els,floor:true,focus:()=>S.go({orbit:{t:[x+w/2,88,z+d/2],th:-2.4,ph:-.22,r:150}},1000)}];
+    runs(K.top);g.setLineDash([]);
+    raf=requestAnimationFrame(frame);
+  }
+  const inside=(P,x,y)=>{let c=false;for(let i=0,j=P.length-1;i<P.length;j=i++){const [xi,yi]=P[i],[xj,yj]=P[j];
+    if((yi>y)!==(yj>y)&&x<(xj-xi)*(y-yi)/(yj-yi)+xi)c=!c;}return c;};
+  const hitAt=e=>{const r=cv.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
+    for(let i=drawn.length-1;i>=0;i--){const o=drawn[i];if(o.F.k!=null&&inside(o.P,x,y))return String(o.F.k);}return null;};
+  cv.addEventListener("pointerdown",e=>{drag={x:e.clientX,y:e.clientY,yaw,pitch,moved:false};cv.setPointerCapture(e.pointerId);});
+  cv.addEventListener("pointermove",e=>{
+    if(!drag){hover=hitAt(e);cv.style.cursor=hover?"pointer":"grab";return;}
+    if(Math.hypot(e.clientX-drag.x,e.clientY-drag.y)>4){drag.moved=true;auto=false;introDone=true;}
+    if(drag.moved){yaw=drag.yaw+(e.clientX-drag.x)*.006;pitch=Math.max(S.pmin,Math.min(S.pmax,drag.pitch+(e.clientY-drag.y)*.004));}});
+  cv.addEventListener("pointerup",e=>{const d=drag;drag=null;if(d&&!d.moved){const k=hitAt(e);if(!k)return;
+    if(selK===k){openObj(k);return;}const i=picks.findIndex(p=>String(p)===k);if(i>=0)pick(i);}});
+  cv.addEventListener("pointerleave",()=>{hover=null;});
+  picks=S.keys.slice();wrap.mark=k=>{selK=k==null?null:String(k);};
+  const ro=new ResizeObserver(size);ro.observe(cv);
+  requestAnimationFrame(()=>{size();raf=requestAnimationFrame(frame);});
+  roomStop=()=>{cancelAnimationFrame(raf);ro.disconnect();};
+  return wrap;
 }
 /* ---------- the pavilion: a room drawn in perspective, turning slowly, with a projector ---------- */
 let roomStop=null;
@@ -887,59 +807,29 @@ function drawCourt(w){
   return wrap;
 }
 
-let cleanup=null,S3D=null,flat=false;
-function stop(){stopRoom();if(S3D){S3D.stop();S3D=null;}if(cleanup){cleanup();cleanup=null;}}
+let cleanup=null;
+function stop(){stopRoom();if(cleanup){cleanup();cleanup=null;}}
 function pick(i){
   if(!picks.length)return;sel=(i+picks.length)%picks.length;lastKey=String(picks[sel]);
-  if(current&&current.hits){const h=current.hits.find(o=>String(o.k)===lastKey);if(h){tombstone(h.k);h.focus();}return;}
   const o=body.querySelector(".obj");if(current&&current.options&&o){o.show(sel);tombstone(picks[sel],true);return;}
+  const sc=body.querySelector(".scene");if(sc){sc.mark(picks[sel]);tombstone(picks[sel]);return;}
   body.querySelectorAll(".e-work").forEach((g,j)=>g.classList.toggle("dim",j!==sel));
   tombstone(picks[sel]);
 }
 function show(label){page.setAttribute("aria-label",label);page.hidden=false;document.body.classList.add("open");page.scrollTop=0;}
-/* the corner links: the flat elevation is still there for the walls */
-function corners(v){const t=v&&(v.items||v.table)?`<button type="button" id="flat">${flat?"Perspective":"Elevation"}</button>`:"";
-  cr.innerHTML=t+`<a href="#">Close</a>`;const b=document.getElementById("flat");if(b)b.addEventListener("click",()=>{flat=!flat;openView(v.id);});}
-/* a view in perspective: the whole room is built, the camera stands where this + asks */
-function open3D(v){
-  const roomId=v.room||FACES[v.id][0];
-  S3D=Stage(body);buildRoom(S3D,roomId);
-  const hits=[],walls={};
-  VIEWS.filter(w=>w.items&&FACES[w.id]&&FACES[w.id][0]===roomId).forEach(w=>{const r=buildWall(S3D,w.id,w);walls[w.id]=r;r.out.forEach(o=>hits.push({...o,view:w.id}));});
-  if(roomId==="106")build106(S3D).forEach(o=>hits.push({...o,view:o.k==="15"?"106-F":"106-T"}));
-  if(roomId==="105")build105(S3D).forEach(o=>hits.push({...o,view:"105-F"}));
-  if(roomId==="103")build103(S3D).forEach(o=>hits.push({...o,view:"103-C"}));
-  const choose=o=>{if(lastKey===String(o.k)&&tomb.innerHTML){openObj(o.k);return;}lastKey=String(o.k);sel=picks.findIndex(p=>String(p)===lastKey);tombstone(o.k);o.focus();};
-  hits.forEach(o=>o.els.forEach(e=>{e.classList.add("hit3");e.addEventListener("click",ev=>{if(S3D.moved)return;ev.stopPropagation();choose(o);});}));
-  const home=()=>{lastKey=null;sel=-1;tombstone(null);v.home();};
-  S3D.st.addEventListener("click",()=>{if(!S3D.moved)home();});
-  current={...v,hits};
-  picks=hits.filter(o=>o.view===v.id).map(o=>o.k);if(!picks.length)picks=hits.map(o=>o.k);
-  // where to stand
-  if(walls[v.id])v.home=()=>S3D.go(wallView(S3D,walls[v.id].F,walls[v.id].items),900);
-  else if(v.table){const tx=WX(783),tz=WZ(1162.5),r=()=>Math.max(84*S3D.P/(.8*S3D.H),36*S3D.P/(.8*S3D.W));
-    v.home=()=>S3D.go({orbit:{t:[tx,30,tz],th:0,ph:Math.PI/2-1e-4,r:r()},arc:true},900);
-    S3D.go({orbit:{t:[tx,30,tz],th:0,ph:.1,r:290}},0); // stand in front of the table, then rise over it
-    setTimeout(()=>{if(current&&current.id===v.id&&S3D)S3D.go({orbit:{t:[tx,30,tz],th:0,ph:Math.PI/2-1e-4,r:r()},arc:true},2600);},350);}
-  else{const h=hits.find(o=>String(o.k)===String(v.key));v.home=()=>h&&h.focus();}
-  if(!v.table){S3D.go(walls[v.id]?wallView(S3D,walls[v.id].F,walls[v.id].items):{x:(S3D.room.x0+S3D.room.x1)/2,y:60,z:(S3D.room.z0+S3D.room.z1)/2,yaw:0,pitch:0},0);v.home&&(walls[v.id]?null:v.home());}
-  if(v.key){lastKey=String(v.key);tombstone(v.key);}
-  const back=lastKey&&picks.some(p=>String(p)===lastKey)&&hits.find(o=>String(o.k)===lastKey);if(back&&!v.key){tombstone(back.k);back.focus();sel=picks.findIndex(p=>String(p)===lastKey);}
-}
 function openView(id){
   const v=VIEWS.find(x=>x.id===id);if(!v)return closePage();
   if(v.go){location.replace("#o-"+v.go);return;}
   const keep=lastKey;stop();current=v;sel=-1;picks=[];tombstone(null);body.innerHTML="";prevView=id;lastKey=keep;
   if(v.options)body.appendChild(drawOptions(v));
-  else if(v.room&&v.room.w||v.court){const box=document.createElement("div");box.className="wallbox";box.appendChild(v.court?drawCourt(v):drawRoom(v));body.appendChild(box);}
-  else if(flat&&(v.items||v.table)){const box=document.createElement("div");box.className="wallbox";box.appendChild(v.table?drawTable(v):drawWall(v));body.appendChild(box);}
-  else open3D(v);
+  else{const box=document.createElement("div");box.className="wallbox";
+    box.appendChild(v.court?drawCourt(v):v.room&&v.room.w?drawRoom(v):v.scene?drawScene(v):drawWall(v));body.appendChild(box);}
   if(fit){cleanup=fit();fit=null;}
   if(v.room&&v.room.w)tombstone([67,68]);
   else if(v.court)tombstone("p-blackwell");
   else if(v.options)pick(0);
-  else if(!S3D){const i=picks.findIndex(p=>String(p)===lastKey);if(i>=0)pick(i);}
-  show(v.label);corners(v);
+  else{let i=picks.findIndex(p=>String(p)===lastKey);if(i<0&&v.key)i=picks.findIndex(p=>String(p)===String(v.key));if(i>=0)pick(i);}
+  show(v.label);cr.innerHTML=`<a href="#">Close</a>`;
 }
 function openObject(k){
   if(!C[k])return closePage();
@@ -971,7 +861,7 @@ document.addEventListener("keydown",e=>{
   if(page.hidden)return;
   if(e.key==="Escape"){const b=cr.querySelector("a");location.hash=b?b.getAttribute("href"):"";}
   if(picks.length&&(e.key==="ArrowRight"||e.key==="ArrowLeft")){const d=e.key==="ArrowRight"?1:-1;pick(sel<0?(d>0?0:picks.length-1):sel+d);}
-  if(e.key==="Enter"&&S3D&&lastKey)openObj(lastKey);
+  if(e.key==="Enter"&&body.querySelector(".scene")&&sel>=0)openObj(picks[sel]);
 });
 window.addEventListener("hashchange",route);route();
 </script>
