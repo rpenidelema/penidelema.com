@@ -394,7 +394,7 @@ function groupsOf(items){const G={};items.forEach(i=>{if(i.grp)(G[i.grp]=G[i.grp
     const cx=ms.map(i=>i.x+i.w/2),cy=ms.map(i=>i.b+i.h/2);[...new Set(cx)].sort((a,b)=>a-b).forEach(v=>near(xs,v));[...new Set(cy)].sort((a,b)=>b-a).forEach(v=>near(ys,v));
     const cells=ms.map((i,n)=>({k:i.k,c:near(xs,cx[n]),r:near(ys,cy[n])}));
     const x1=Math.max(...ms.map(i=>i.x+i.w)),b=Math.min(...ms.map(i=>i.b));
-    return {ms,cells,cols:xs.length,rows:ys.length,x:x1+3.5,b};});}
+    return {ms,cells,cols:xs.length,rows:ys.length,x1,b};});}
 /* a wall seen straight on: inches, 0 at the left end, the floor at the bottom. The drawing is cut
    to the hang, with a little wall around it, so the works fill the page. */
 function drawWall(v){
@@ -403,11 +403,11 @@ function drawWall(v){
   const availW=Math.min(1800,innerWidth-48),availH=Math.max(260,innerHeight-(innerWidth>640?270:150)),CW=24,CH=16,PAD=7;
   let box=[...items,...labs.filter(Boolean)],ext,sc=4;
   const extent=bx=>{const x0=Math.min(...bx.map(i=>i.x)),x1=Math.max(...bx.map(i=>i.x+i.w)),top=Math.max(...bx.map(i=>i.b+i.h)),bot=Math.min(...bx.map(i=>i.b));
-    const m=Math.max(5,(x1-x0)*.03),floor=bot<16;let vx=Math.max(-m*.5,x0-m),vw=Math.min(L+m*.5,x1+m)-vx,vy=H-top-m,vh=(floor?H+3:H-bot+m)-vy;
+    const m=Math.max(5,(x1-x0)*.03),floor=Math.min(...items.map(i=>i.b))<16;let vx=Math.max(-m*.5,x0-m),vw=Math.min(L+m*.5,x1+m)-vx,vy=H-top-m,vh=(floor?H+3:H-bot+m)-vy;
     // never closer than a wall about 6 ft by 3.5 ft: a single small work is not blown up
     if(vw<72){vx-=(72-vw)/2;vw=72;}if(vh<42){if(floor){vy-=42-vh;}else{vy-=(42-vh)/2;}vh=42;}
     return {vx,vw,vy,vh,floor};};
-  for(let it=0;it<3;it++){ext=extent([...box,...groups.map(g=>({x:g.x,b:g.b,w:(2*PAD+g.cols*CW)/sc,h:(2*PAD+g.rows*CH)/sc}))]);sc=Math.min(availW/ext.vw,availH/ext.vh);}
+  for(let it=0;it<3;it++){ext=extent([...box,...groups.map(g=>{const w=(2*PAD+g.cols*CW)/sc,h=(2*PAD+g.rows*CH)/sc;return {x:g.x1-w,b:g.b-3-h,w,h};})]);sc=Math.min(availW/ext.vw,availH/ext.vh);}
   const {vx,vw,vy,vh,floor}=ext;
   const s=el("svg",{viewBox:`${vx} ${vy} ${vw} ${vh}`,role:"img","aria-label":v.label,class:"el"});
   const defs=el("defs",{},s);
@@ -434,8 +434,8 @@ function drawWall(v){
     const ts=G.cells.map(c=>{const t=el("text",{class:"lbn","text-anchor":"middle","dominant-baseline":"central"},p);t.textContent=num(c.k);
       t.addEventListener("click",e=>{e.stopPropagation();const i=picks.findIndex(k=>String(k)===String(c.k));sel===i?openObj(c.k):pick(i);});return t;});
     return {G,r,ts};});
-  const layout=sc=>gl.forEach(({G,r,ts})=>{const u=1/sc,w=(2*PAD+G.cols*CW)*u,h=(2*PAD+G.rows*CH)*u,y=H-G.b-h;
-    r.setAttribute("x",G.x);r.setAttribute("y",y);r.setAttribute("width",w);r.setAttribute("height",h);
+  const layout=sc=>gl.forEach(({G,r,ts})=>{const u=1/sc,w=(2*PAD+G.cols*CW)*u,h=(2*PAD+G.rows*CH)*u,y=H-G.b+3,X=G.x1-w;G.x=X;
+    r.setAttribute("x",X);r.setAttribute("y",y);r.setAttribute("width",w);r.setAttribute("height",h);
     G.cells.forEach((c,n)=>{ts[n].setAttribute("x",G.x+(PAD+(c.c+.5)*CW)*u);ts[n].setAttribute("y",y+(PAD+(c.r+.5)*CH)*u);});});
   layout(sc);
   s.addEventListener("click",e=>{if(e.target.closest(".e-work,.glab"))return;leave();});
@@ -830,8 +830,8 @@ function drawCourt(w){
   /* the proposed commission, after Blackwell's Model for a Public Space [knot] (2010): plywood bleachers
      wound into a spiral that fills the open court. It starts at the ground on the outside, climbs as it
      turns inward, and passes over its own first turn, so every seat faces the centre and one another. */
-  const CC=[X(896),0,Z(352)],TURN=2.35*Math.PI,STEPS=4,TD=2.4,RISE=1.5;
-  const rad=t=>29-17*t/TURN,lift=t=>9.5*Math.pow(t/TURN,1.15),a0=-.6;
+  const CC=[X(890),0,Z(352)],TURN=2.35*Math.PI,STEPS=4,TD=2,RISE=1.5; // clear of the portico, the planting and the pavilion
+  const rad=t=>22-12*t/TURN,lift=t=>9.5*Math.pow(t/TURN,1.15),a0=-.6;
   const pt=(t,j,up)=>{const r=rad(t)+j*TD,th=a0+t;return [CC[0]+r*Math.cos(th),lift(t)+j*RISE+(up?RISE:0),CC[2]+r*Math.sin(th)];};
   const knot=[];// [alpha, polyline]
   const N=220;
