@@ -287,12 +287,12 @@ function L105N(){ // the property wall, 26 ft, from the west end
     {k:"41a",kind:"grid24",x:171-35,b:37,w:70,h:46},
     {k:"41b",x:258-35,b:37,w:70,h:54},
     {k:"41d",kind:"rest",x:278,b:26,w:14,h:9}];}
-function L105E(){ // the nine upright views (#4 to #12) as one band, the four wide ones (#1 to #3, #13) centred above
-  const grp="g"+(++GRP),gap=4,vg=9,band=[46,47,48,49,50,51,52,53,54],cap=[43,44,45,55];
-  const bH=Math.max(...band.map(k=>osz(k)[1])),cH=Math.max(...cap.map(k=>osz(k)[1]));
-  const bandCy=60-(cH+vg)/2,capCy=bandCy+bH/2+vg+cH/2;
-  const put=(ks,cy,g0,nt)=>row(ks,{x0:189-rowW(ks,gap)/2,gap,cy,nolab:true,grp}).map((it,i)=>({...it,gc:g0+i,nt}));
-  return [...put(cap,capCy,(band.length-cap.length)/2,"above"),...put(band,bandCy,0,"")];}
+function L105E(){ // the nine upright views (#4 to #12) as one band; #1 to #3 above its left end, #13 above its right
+  const grp="g"+(++GRP),gap=4,vg=9,band=[46,47,48,49,50,51,52,53,54];
+  const bH=Math.max(...band.map(k=>osz(k)[1])),cH=osz(43)[1],bandCy=60-(cH+vg)/2,capB=bandCy+bH/2+vg;
+  const B=row(band,{x0:189-rowW(band,gap)/2,gap,cy:bandCy,nolab:true,grp}),end=B[B.length-1];
+  const L=row([43,44,45],{x0:B[0].x,gap,base:capB,nolab:true,grp}),[w13,h13]=osz(55);
+  return [...L,{k:55,x:end.x+end.w-w13,b:capB,w:w13,h:h13,nolab:true,grp},...B];}
 function L104(){ // 30'4", read east to west: left to right facing south
   const W=k=>osz(k)[0],sw=W(60),used=W(56)+W(57)+W(58)+W(59)+sw,g=(364-used)/6;let x=g;const out=[];
   [56,57,58,59].forEach(k=>{out.push(at(k,x+W(k)/2,60));x+=W(k)+g;});
@@ -393,6 +393,7 @@ function drawItem(it,g,H){
 function labelOf(it){const k=it.k,c=C[k];if(it.lab||it.nolab||!c||c.intro||it.kind==="tri2"||it.kind==="plate")return null;
   return it.cap==="below"?{x:it.x+it.w/2-2.5,b:it.b-6.5,w:5,h:3.5}:{x:it.x+it.w+3.5,b:it.lb!=null?it.lb:Math.min(it.b,52),w:5,h:3.5};}
 /* a group of three or more works has one label at its bottom right, its numbers laid out like the works */
+const glabOf=g=>({x:g.x1-5,b:g.b-3-3.5,w:5,h:3.5});
 function groupsOf(items){const G={};items.forEach(i=>{if(i.grp)(G[i.grp]=G[i.grp]||[]).push(i);});
   return Object.values(G).filter(g=>g.length>2).map(ms=>{
     const xs=[],ys=[],near=(a,v)=>{let i=a.findIndex(u=>Math.abs(u-v)<3);if(i<0){a.push(v);i=a.length-1;}return i;};
@@ -412,7 +413,7 @@ function drawWall(v){
     // never closer than a wall about 6 ft by 3.5 ft: a single small work is not blown up
     if(vw<72){vx-=(72-vw)/2;vw=72;}if(vh<42){if(floor){vy-=42-vh;}else{vy-=(42-vh)/2;}vh=42;}
     return {vx,vw,vy,vh,floor};};
-  for(let it=0;it<3;it++){ext=extent([...box,...groups.map(g=>{const w=(2*PAD+g.cols*CW)/sc,h=(2*PAD+g.rows*CH)/sc;return {x:g.x1-w,b:g.b-3-h,w,h};})]);sc=Math.min(availW/ext.vw,availH/ext.vh);}
+  for(let it=0;it<3;it++){ext=extent([...box,...groups.map(glabOf)]);sc=Math.min(availW/ext.vw,availH/ext.vh);}
   const {vx,vw,vy,vh,floor}=ext;
   const s=el("svg",{viewBox:`${vx} ${vy} ${vw} ${vh}`,role:"img","aria-label":v.label,class:"el"});
   const defs=el("defs",{},s);
@@ -429,22 +430,13 @@ function drawWall(v){
     const g=el("g",{class:"e-work",tabindex:"0",role:"button","aria-label":`${num(it.k)} ${C[it.k].a||""}, ${C[it.k].t}`},s);
     drawItem(it,g,H);
     el("rect",{x:it.x-1,y:H-it.b-it.h-1,width:it.w+2,height:it.h+2,class:"hit"},g);
-    const n=num(it.k),l=labelOf(it),shown=n&&!C[it.k].prop&&!inG.has(it);
-    if(l)card(g,l,shown?n:"");
-    else if(shown){const up=it.nt==="above",t=el("text",{x:it.x+it.w/2,y:up?H-it.b-it.h-1.5:H-it.b+3,class:"num","dominant-baseline":up?"auto":"hanging","text-anchor":"middle"},g);t.textContent=n;}
+    const l=labelOf(it);if(l)card(g,l,"");
     hook(g,i);
   });
-  // group labels: one card, the numbers where the works are
-  const gl=groups.map(G=>{const p=el("g",{class:"glab"},s),r=el("rect",{class:"lbl",filter:"url(#shL)"},p);
-    const ts=G.cells.map(c=>{const t=el("text",{class:"lbn","text-anchor":"middle","dominant-baseline":"central"},p);t.textContent=num(c.k);
-      t.addEventListener("click",e=>{e.stopPropagation();const i=picks.findIndex(k=>String(k)===String(c.k));sel===i?openObj(c.k):pick(i);});return t;});
-    return {G,r,ts};});
-  const layout=sc=>gl.forEach(({G,r,ts})=>{const u=1/sc,w=(2*PAD+G.cols*CW)*u,h=(2*PAD+G.rows*CH)*u,y=H-G.b+3,X=G.x1-w;G.x=X;
-    r.setAttribute("x",X);r.setAttribute("y",y);r.setAttribute("width",w);r.setAttribute("height",h);
-    G.cells.forEach((c,n)=>{ts[n].setAttribute("x",G.x+(PAD+(c.c+.5)*CW)*u);ts[n].setAttribute("y",y+(PAD+(c.r+.5)*CH)*u);});});
-  layout(sc);
+  // a group of works shares one blank label under its bottom right
+  groups.forEach(G=>card(s,glabOf(G)));
   s.addEventListener("click",e=>{if(e.target.closest(".e-work,.glab"))return;leave();});
-  fit=()=>fitText(s,vw,vh,10,layout);
+  fit=()=>fitText(s,vw,vh,10);
   return s;
 }
 /* clicking the wall, or the empty drawing, lets go of the work */
