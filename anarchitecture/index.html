@@ -108,8 +108,7 @@ const WALLS = [
   {id:"106-E", label:"106, east wall",  len:38.67, h:15, at:[878.3,1114.5]},
   {id:"106-W", label:"106, west wall",  len:28.58, h:15, at:[688,1159.8]},
   {id:"106-S", label:"106, south wall", len:15.67, h:15, at:[736.6,1266.5]},
-  {id:"117",   label:"117, window wall",len:79.58, h:10, at:[1385.5,1327.5]},
-  {id:"patio", label:"Patio",           len:70,    h:0,  at:[1320.8,793.5], centre:true, open:true},
+  {id:"patio", label:"Courtyard", court:true, at:[1320.8,793.5]},
   /* the pavilion opens as a room you can turn, with the projector running */
   {id:"pavilion", label:"133, pavilion", room:{w:26.5, d:27, h:14.5}, at:[1766.3,884]}
 ];
@@ -140,7 +139,6 @@ const WORKS = [
   {wall:"106-E", artist:"Gordon Matta-Clark", title:"Day’s End", date:"1975", medium:"Photograph", w:48, h:36},
   {wall:"106-W", artist:"Benton Museum of Art", title:"Work from the collection, to be selected", date:"", medium:"", w:48, h:60, lender:"Benton Museum of Art at Pomona College"},
   {wall:"106-S", artist:"Gordon Matta-Clark", title:"Office Baroque", date:"1977", medium:"Photographs", w:60, h:42},
-  {wall:"117", artist:"Chronology", title:"112 Greene Street to the present", date:"2026", medium:"Print on wall", w:480, h:30},
   {wall:"patio", artist:"To be selected", title:"Outdoor work", date:"", medium:"", w:96, h:120, floor:true},
   /* video: path to the video file, e.g. "media/pavilion.mp4". Empty shows a stand-in. */
   {wall:"pavilion", artist:"To be selected", title:"Video installation", date:"", medium:"Video, projected", video:""}
@@ -285,6 +283,78 @@ function drawRoom(w){
   roomStop=()=>{cancelAnimationFrame(raf);ro.disconnect();if(vid)vid.pause();};
   return wrap;
 }
+/* ---------- the courtyard: the same kind of drawing, opened up to the sky ----------
+   Traced from the plan: the portico along the west side, the glazed Art Hall along the south,
+   the pavilion and its trellis on the east. The north side stays open. Units are feet. */
+function drawCourt(w){
+  const k=on(w.id)[0]||{};
+  const wrap=document.createElement("div");wrap.className="room3d";
+  const cv=document.createElement("canvas");cv.setAttribute("role","img");cv.setAttribute("aria-label","The courtyard drawn in perspective, with the work at its centre");
+  wrap.append(cv);
+  const g=cv.getContext("2d"),dpr=Math.min(2,window.devicePixelRatio||1);let W=0,H=0;
+  const size=()=>{const r=cv.getBoundingClientRect();W=r.width;H=r.height;cv.width=W*dpr;cv.height=H*dpr;};
+  const F=d=>d*1.175/9; // plan drawing (2000-wide copy) to feet
+  const X=dx=>F(dx-557),Z=dy=>F(dy-10);
+  const T=[55,4,48]; // look at the middle of the courtyard
+  let yaw=2.55,pitch=.42,drag=null,auto=true,t0=performance.now(),raf=0;
+  function proj([x,y,z]){let a=x-T[0],b=y-T[1],c=z-T[2];
+    const cy=Math.cos(yaw),sy=Math.sin(yaw);[a,c]=[a*cy-c*sy,a*sy+c*cy];
+    const cp=Math.cos(pitch),sp=Math.sin(pitch);[b,c]=[b*cp-c*sp,b*sp+c*cp];
+    const zc=230-c,f=Math.min(W,H*1.6)*1.4;return [W/2+f*a/zc,H*.55-f*b/zc];}
+  let path=[];const L=(p,q)=>path.push(p,q);
+  const box=(x0,z0,x1,z1,h,o={})=>{const c=[[x0,z0],[x1,z0],[x1,z1],[x0,z1]];
+    for(let i=0;i<4;i++){const [a,b]=c[i],[d,e]=c[(i+1)%4];L([a,0,b],[d,0,e]);L([a,h,b],[d,h,e]);if(!o.noPosts)L([a,0,b],[a,h,b]);}};
+  function geometry(){ path=[];const lines=[];const put=(alpha,fn)=>{path=[];fn();lines.push([alpha,path]);};
+    const bay=F(72.5);
+    put(1,()=>{ // the buildings around it
+      // west portico: posts on both edges, beams on top
+      const x0=X(557),x1=X(627);for(let z=Z(10);z<=Z(740)+.1;z+=bay){L([x0,0,z],[x0,12,z]);L([x1,0,z],[x1,12,z]);L([x0,12,z],[x1,12,z]);}
+      L([x0,12,Z(10)],[x0,12,Z(740)]);L([x1,12,Z(10)],[x1,12,Z(740)]);
+      // Art Hall along the south: a glass volume
+      box(X(557),Z(663),X(1280),Z(740),12,{noPosts:true});
+      for(let x=X(627);x<=X(1280)+.1;x+=bay)L([x,0,Z(663)],[x,12,Z(663)]);
+      L([X(557),0,Z(740)],[X(557),12,Z(740)]);L([X(1280),0,Z(740)],[X(1280),12,Z(740)]);
+      // pavilion, its trellis to the north and the glass link to the south
+      box(X(1165),Z(300),X(1395),Z(520),15.5);
+      box(X(1195),Z(520),X(1280),Z(663),12);
+      const px0=X(1210),px1=X(1500);for(let x=px0;x<=px1+.1;x+=(px1-px0)/4){L([x,0,Z(225)],[x,11,Z(225)]);L([x,0,Z(300)],[x,11,Z(300)]);L([x,11,Z(225)],[x,11,Z(300)]);}
+      L([px0,11,Z(225)],[px1,11,Z(225)]);L([px0,11,Z(300)],[px1,11,Z(300)]);
+    });
+    put(.28,()=>{ // light lines: trellis slats, mullions, planting edge
+      const x0=X(557),x1=X(627);for(let z=Z(10);z<=Z(740);z+=2)L([x0,12,z],[x1,12,z]);
+      for(let x=X(1210);x<=X(1500);x+=2)L([x,11,Z(225)],[x,11,Z(300)]);
+      for(let z=Z(300)+4;z<Z(520);z+=4)L([X(1165),0,z],[X(1165),15.5,z]);
+      L([x1+4,0,Z(40)],[x1+4,0,Z(663)-4]);L([x1+4,0,Z(663)-4],[X(1195),0,Z(663)-4]); // planting along the building edges
+    });
+    put(.1,()=>{ // open-joint paving
+      const x1=X(627);for(let x=x1;x<X(1165);x+=8)L([x,0,Z(40)],[x,0,Z(663)]);
+      for(let z=Z(40);z<Z(663);z+=8)L([x1,0,z],[X(1165),0,z]);
+    });
+    return lines;
+  }
+  const lines=geometry();
+  const C=[X(898.6),0,Z(330.6)],sw=(k.w||96)/12,sh=(k.h||120)/12,sd=Math.min(sw,4);
+  function frame(now){
+    if(auto&&!drag)yaw=2.55+Math.sin((now-t0)/7000)*.35;
+    g.setTransform(dpr,0,0,dpr,0,0);g.clearRect(0,0,W,H);
+    for(const [a,p] of lines){g.strokeStyle=`rgba(0,0,0,${a})`;g.lineWidth=a<1?.6:1;g.beginPath();
+      for(let i=0;i<p.length;i+=2){const u=proj(p[i]),v=proj(p[i+1]);g.moveTo(u[0],u[1]);g.lineTo(v[0],v[1]);}g.stroke();}
+    // the work, a solid block at the centre
+    const x0=C[0]-sw/2,x1=C[0]+sw/2,z0=C[2]-sd/2,z1=C[2]+sd/2;
+    const faces=[[[x0,0,z1],[x1,0,z1],[x1,sh,z1],[x0,sh,z1]],[[x1,0,z0],[x1,0,z1],[x1,sh,z1],[x1,sh,z0]],[[x0,0,z0],[x0,0,z1],[x0,sh,z1],[x0,sh,z0]],[[x0,sh,z0],[x1,sh,z0],[x1,sh,z1],[x0,sh,z1]]];
+    g.fillStyle="#e9e9e9";g.strokeStyle="#000";g.lineWidth=1;
+    faces.forEach(f=>{g.beginPath();f.map(proj).forEach((p,i)=>i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]));g.closePath();g.fill();g.stroke();});
+    raf=requestAnimationFrame(frame);
+  }
+  cv.addEventListener("pointerdown",e=>{drag={x:e.clientX,y:e.clientY,yaw,pitch};auto=false;cv.setPointerCapture(e.pointerId);});
+  cv.addEventListener("pointermove",e=>{if(!drag)return;yaw=drag.yaw+(e.clientX-drag.x)*.006;pitch=Math.max(.08,Math.min(1.2,drag.pitch+(e.clientY-drag.y)*.004));});
+  cv.addEventListener("pointerup",()=>{drag=null;});
+  const ro=new ResizeObserver(size);ro.observe(cv);
+  if(window.matchMedia("(prefers-reduced-motion: reduce)").matches)auto=false;
+  requestAnimationFrame(()=>{size();raf=requestAnimationFrame(frame);});
+  roomStop=()=>{cancelAnimationFrame(raf);ro.disconnect();};
+  return wrap;
+}
 function pick(i){
   const ws=on(current.id);sel=(i+ws.length)%ws.length;
   body.querySelectorAll(".e-work").forEach((g,j)=>g.classList.toggle("dim",j!==sel));
@@ -294,8 +364,8 @@ function openWall(id){
   const w=WALLS.find(x=>x.id===id);if(!w)return closePage();
   current=w;sel=-1;tombstone(null);
   stopRoom();body.innerHTML="";const box=document.createElement("div");box.className="wallbox";
-  box.appendChild(w.room?drawRoom(w):drawWall(w));body.appendChild(box);
-  if(w.room)pick(0);
+  box.appendChild(w.room?drawRoom(w):w.court?drawCourt(w):drawWall(w));body.appendChild(box);
+  if(w.room||w.court)pick(0);
   page.setAttribute("aria-label",w.label);page.hidden=false;document.body.classList.add("open");
   cr.innerHTML=`<a href="#">Close</a>`;
 }
