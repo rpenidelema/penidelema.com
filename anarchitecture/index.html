@@ -41,8 +41,8 @@ main{min-height:100%;display:flex;align-items:center;justify-content:center;padd
 .tomb .t{font-style:italic}
 .tomb .long{margin-top:14px;max-width:38ch}
 .tomb .where{color:var(--grey)}
-.wallbox{min-height:100vh;min-height:100svh;box-sizing:border-box;padding-block:96px 120px;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px));display:flex;justify-content:safe center;align-items:center;overflow-x:auto}
-.wallbox svg{display:block;width:min(1500px,100%);height:auto;min-width:560px;overflow:visible}
+.wallbox{min-height:100vh;min-height:100svh;box-sizing:border-box;padding-block:64px 200px;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px));display:flex;justify-content:safe center;align-items:center;overflow-x:auto}
+.wallbox svg{display:block;width:min(1800px,100%);height:auto;min-width:560px;overflow:visible}
 .e-line{stroke:var(--black);stroke-width:1px;vector-effect:non-scaling-stroke;fill:none}
 .e-floor{stroke:var(--black);stroke-width:2px;vector-effect:non-scaling-stroke}
 .e-work{cursor:pointer;outline:none;transition:opacity .25s}
@@ -52,7 +52,7 @@ main{min-height:100%;display:flex;align-items:center;justify-content:center;padd
 .e-work:focus-visible{outline:none}
 .e-work:focus-visible rect{stroke:var(--black);stroke-width:1px;vector-effect:non-scaling-stroke}
 
-.room3d{width:min(1000px,100%);display:grid;gap:18px;justify-items:center}
+.room3d{width:min(1100px,100%,calc((100vh - 330px) * 1.6));display:grid;gap:18px;justify-items:center}
 .room3d canvas{display:block;width:100%;aspect-ratio:16/10;cursor:grab;touch-action:none}
 .room3d canvas:active{cursor:grabbing}
 .play{text-decoration:none}.play:hover{text-decoration:underline}
@@ -81,12 +81,16 @@ main{min-height:100%;display:flex;align-items:center;justify-content:center;padd
 .el .lbn{fill:var(--grey)}
 .el .bar{fill:var(--grey)}
 .el .lab{fill:none;stroke:var(--grey);stroke-width:.75px;vector-effect:non-scaling-stroke}
-.el .glass{fill:rgba(0,0,0,.035);stroke:var(--black);stroke-width:1px;vector-effect:non-scaling-stroke}
+.el .glass{fill:rgba(150,200,190,.22);stroke:var(--black);stroke-width:1px;vector-effect:non-scaling-stroke}
 .el .solid{fill:var(--black)}
 .el .mon{fill:var(--black)}
 .el .wire{stroke:var(--black);stroke-width:.5px;vector-effect:non-scaling-stroke;fill:none}
 .el .hit{fill:transparent}
-.wallbox svg.el{max-height:calc(100vh - 230px);overflow:hidden}
+.el .bg{fill:transparent}
+.el .edge{stroke:#111;stroke-width:1.6px;vector-effect:non-scaling-stroke;fill:none}
+.el .shade{stroke:rgba(0,0,0,.12);stroke-width:.6px;vector-effect:non-scaling-stroke;fill:none}
+.el .glab{cursor:pointer}
+.wallbox svg.el{max-height:calc(100vh - 270px);overflow:hidden}
 .wallbox svg.top{width:auto;min-width:0;height:min(calc(100vh - 190px),820px);max-width:100%}
 .tomb .tb+.tb{margin-top:14px}
 .tomb .n{color:var(--grey)}
@@ -110,7 +114,8 @@ main{min-height:100%;display:flex;align-items:center;justify-content:center;padd
 .grp .list{padding-block:14px 48px}
 .list .t{font-style:italic}
 body.open .corner{display:none}
-@media (max-width:640px){.corner-r{gap:12px}.tomb{max-width:calc(100vw - 48px);font-size:12px}}
+@media (max-width:640px){.corner-r{gap:12px}.page{grid-template-rows:auto auto;align-content:start}.tomb{position:static;grid-row:2;margin:0 24px 32px;max-width:none;font-size:12px}#pagebody{grid-row:1}.wallbox{min-height:0;padding-block:72px 24px}.room3d{width:100%}.wallbox svg.el{max-height:none}}
+.obj{cursor:pointer}.obj button,.obj a{cursor:pointer}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -250,14 +255,15 @@ const num=k=>C[k].prop?"Proposal":C[k].intro?"":k==="24b"?"24, second copy":Stri
 /* layout helpers. Every item: k, x = inches from the left end of the wall, b = height of its
    bottom above the floor, w and h. Left and right are for someone facing the wall. */
 function at(k,cx,cy,o={}){const [w,h]=osz(k);return {k,x:cx-w/2,b:cy-h/2,w,h,...o};}
-function row(keys,{x0,gap,cy,base,cap,nolab}){let x=x0;return keys.map(k=>{const [w,h]=osz(k);const it={k,x,w,h,b:base!=null?base:cy-h/2,cap,nolab};x+=w+gap;return it;});}
+function row(keys,{x0,gap,cy,base,cap,nolab,grp}){let x=x0;return keys.map(k=>{const [w,h]=osz(k);const it={k,x,w,h,b:base!=null?base:cy-h/2,cap,nolab,grp};x+=w+gap;return it;});}
 const rowW=(keys,gap)=>keys.reduce((a,k)=>a+osz(k)[0],0)+gap*(keys.length-1);
-function grid(rows,{cx,x0,right,cy,gap}){
+let GRP=0;
+function grid(rows,{cx,x0,right,cy,gap}){const grp="g"+(++GRP);
   const cw=[],rh=[];rows.forEach((r,i)=>r.forEach((k,j)=>{const [w,h]=k?osz(k):[0,0];cw[j]=Math.max(cw[j]||0,w);rh[i]=Math.max(rh[i]||0,h);}));
   const GW=cw.reduce((a,b)=>a+b,0)+gap*(cw.length-1),GH=rh.reduce((a,b)=>a+b,0)+gap*(rh.length-1);
   const left=x0!=null?x0:right!=null?right-GW:cx-GW/2,top=cy+GH/2,out=[],cells=[];let yt=top;
   rows.forEach((r,i)=>{let x=left;r.forEach((k,j)=>{cells.push({i,j,x,b:yt-rh[i],w:cw[j],h:rh[i]});
-    if(k){const [w,h]=osz(k);out.push({k,nolab:true,x:x+(cw[j]-w)/2,b:yt-rh[i]+(rh[i]-h)/2,w,h,nt:rows.length===2&&i===0?"above":""});}x+=cw[j]+gap;});yt-=rh[i]+gap;});
+    if(k){const [w,h]=osz(k);out.push({k,nolab:true,grp,x:x+(cw[j]-w)/2,b:yt-rh[i]+(rh[i]-h)/2,w,h,nt:rows.length===2&&i===0?"above":""});}x+=cw[j]+gap;});yt-=rh[i]+gap;});
   out.box={x:left,w:GW,b:top-GH,h:GH,cells};return out;}
 const LAB=(x,b,o={})=>({lab:1,x,b,w:o.w||5,h:o.h||3.5});
 
@@ -265,30 +271,31 @@ const LAB=(x,b,o={})=>({lab:1,x,b,w:o.w||5,h:o.h||3.5});
 function L106E(){ // 38'8": the ten Splitting photographs nearest the entrance (right), then 3 ft, then the pair
   const g=grid([[4,5,6,7,8],[9,10,11,12,13]],{right:416,cy:60,gap:3});
   const pairR=g.box.x-36,[w3]=osz(3),[w2]=osz(2);
-  return [at(2,pairR-w3-6-w2/2,60,{cap:"below"}),at(3,pairR-w3/2,60,{cap:"below"}),...g,LAB(422,58.25)];}
+  return [at(2,pairR-w3-6-w2/2,60,{cap:"below"}),at(3,pairR-w3/2,60,{cap:"below"}),...g];}
 function L106W(){ // 28'7": left to right, wider intervals, then the two Sliced Brick Building prints 4 in. apart
   const ks=[14,16,20,21,22],used=ks.reduce((a,k)=>a+osz(k)[0],0)+4,g=(343-used)/5;
   let x=g;return ks.map((k,i)=>{const [w,h]=osz(k),it={k,x,w,h,b:60-h/2,nolab:k===21};x+=w+(i===3?4:g);return it;});}
 function L106N(){ // one row, one baseline, one date line for the group
-  const ks=[17,19,18],W=rowW(ks,8),x0=(188-W)/2;return [...row(ks,{x0,gap:8,base:50,nolab:true}),LAB(94-7,42,{w:14,h:3})];}
+  const ks=[17,19,18],W=rowW(ks,8),x0=(188-W)/2;return row(ks,{x0,gap:8,base:50,nolab:true,grp:"dayend"});}
 function L105W(){ // 3 x 3, centred; columns and rows set by the largest frame in each; label level with the middle row
-  const g=grid([[28,32,33],[27,30,29],[35,34,31]],{cx:139,cy:60,gap:6});return [...g,LAB(g.box.x+g.box.w+12,58.25)];}
+  const g=grid([[28,32,33],[27,30,29],[35,34,31]],{cx:139,cy:60,gap:6});return g;}
 function L105S(){const ks=[36,37,38,39];return row(ks,{x0:(189-rowW(ks,7.5))/2,gap:7.5,cy:60,cap:"below"});}
 function L105N(){ // the property wall, 26 ft, from the west end
   return [{k:42,kind:"monitor",x:15,b:52,w:30,h:18},
     {k:40,...(()=>{const [w,h]=osz(40);return {x:90-w/2,b:60-h/2,w,h};})()},
-    {k:"41a",kind:"grid24",x:171-35,b:37,w:70,h:46,nolab:true},
-    LAB(212.5,58.25),
+    {k:"41a",kind:"grid24",x:171-35,b:37,w:70,h:46},
     {k:"41b",x:258-35,b:37,w:70,h:54},
     {k:"41d",kind:"rest",x:278,b:26,w:14,h:9}];}
 function L105E(){ // 7 x 2; the label takes the last place in the bottom row
-  const g=grid([[43,44,45,46,47,48,49],[50,51,52,53,54,55,null]],{cx:189,cy:60,gap:4});const c=g.box.cells.find(c=>c.i===1&&c.j===6);
-  return [...g,LAB(c.x+c.w/2-2.5,c.b+c.h/2-1.75)];}
+  return grid([[43,44,45,46,47,48,49],[50,51,52,53,54,55,null]],{cx:189,cy:60,gap:4});}
 function L104(){ // 30'4", read east to west: left to right facing south
-  const a=[at(57,24,60),at(58,60,60),at(56,132,62)];const lb=LAB(129.5,a[2].b-7);
-  const ks=[59,60,61],g=(120-rowW(ks,0))/4;return [...a,lb,...row(ks,{x0:180+g,gap:g,cy:60})];}
+  const W=k=>osz(k)[0],sw=W(60),used=W(56)+W(57)+W(58)+W(59)+sw,g=(364-used)/6;let x=g;const out=[];
+  [56,57,58,59].forEach(k=>{out.push(at(k,x+W(k)/2,60));x+=W(k)+g;});
+  const gap=4,[,h60]=osz(60),[,h61]=osz(61),top=60+(h60+h61+gap)/2; // the stack, centred on the drawing
+  out.push({...at(61,x+sw/2,top-h61/2),lb:top-h61},{...at(60,x+sw/2,top-h61-gap-h60/2)});
+  return out;}
 const L103N=()=>[{k:"24b",kind:"case",x:300,b:0,w:36,h:38}];
-const L103W=()=>[at(64,100,60),{k:62,kind:"tri2",x:257,b:0,w:60,h:72},{k:63,kind:"plate",x:353,b:52,w:60,h:3}];
+const L103W=()=>[at(64,100,60),{k:62,kind:"tri2",x:250,b:26,w:40,h:72},{k:63,kind:"plate",x:458-60,b:46,w:60,h:12}];
 const L103E=()=>[{k:"p-notebook",kind:"case",x:40,b:0,w:30,h:38},{k:"p-anderson",kind:"imgtext",x:100,b:52,w:34,h:16},
   {k:"p-swept",x:170,b:50,w:16,h:20},{k:"p-contact",kind:"sheets",x:228,b:56,w:36,h:8}];
 /* 28'6": the title in the left third, the visual in the middle, the introduction on the right */
@@ -347,8 +354,8 @@ function tombstone(ks,open=true){
   tomb.innerHTML=[].concat(ks).map(k=>`<div class="tb">${tombLines(k,open)}</div>`).join("");}
 
 /* text stays the same small size whatever the scale of the drawing */
-function fitText(svg,vbw,vbh,px=10){const f=()=>{const r=svg.getBoundingClientRect();if(!r.width)return;
-  const s=Math.min(r.width/vbw,r.height/vbh);svg.style.fontSize=px/s+"px";svg.style.setProperty("--u",1/s);};
+function fitText(svg,vbw,vbh,px=10,cb){const f=()=>{const r=svg.getBoundingClientRect();if(!r.width)return;
+  const s=Math.min(r.width/vbw,r.height/vbh);svg.style.fontSize=px/s+"px";svg.style.setProperty("--u",1/s);cb&&cb(s);};
   f();const ro=new ResizeObserver(f);ro.observe(svg);return ()=>ro.disconnect();}
 
 function placeholder(g,x,y,w,h){el("rect",{x,y,width:w,height:h,class:"ph"},g);}
@@ -362,8 +369,12 @@ function drawItem(it,g,H){
     case "case":{el("path",{d:`M${x+2} ${H} V${y+8} M${x+w-2} ${H} V${y+8}`,class:"e-line"},g);el("rect",{x,y,width:w,height:8,class:"glass"},g);
       const iw=w*.7,ih=4;src?el("image",{href:src,x:x+(w-iw)/2,y:y+2,width:iw,height:ih,preserveAspectRatio:"xMidYMid slice"},g):placeholder(g,x+(w-iw)/2,y+2,iw,ih);break;}
     case "rest":el("path",{d:`M${x-1} ${y+h+1.5} H${x+w+1}`,class:"e-line"},g);src?el("image",{href:src,x,y,width:w,height:h,preserveAspectRatio:"xMidYMid meet"},g):placeholder(g,x,y,w,h);break;
-    case "tri2":el("path",{d:`M${x} ${H} V${H-h} L${x+24} ${H} Z M${x+w} ${H} V${H-h} L${x+w-24} ${H} Z`,class:"glass"},g);break;
-    case "plate":el("path",{d:`M${x+3} ${H-180} V${y} M${x+w-3} ${H-180} V${y}`,class:"wire"},g);el("path",{d:`M${x} ${y+h} H${x+w} L${x} ${y} Z`,class:"solid"},g);break;
+    case "tri2":{const c=x+w/2;el("path",{d:`M${x} ${y} V${H-180} M${x+w} ${y} V${H-180}`,class:"wire"},g);
+      el("path",{d:`M${c} ${y} H${x} V${y+h} Z M${c} ${y} H${x+w} V${y+h} Z`,class:"glass"},g);
+      el("path",{d:`M${c} ${y} L${x} ${y+h} M${c} ${y} L${x+w} ${y+h}`,class:"edge"},g);break;}
+    case "plate":{const yb=y+h*.35;el("path",{d:`M${x+w*.62} ${H-180} V${yb+1}`,class:"wire"},g);
+      el("path",{d:`M${x} ${yb} L${x+w} ${y} L${x+w} ${y+h} Z`,class:"glass"},g);el("path",{d:`M${x} ${yb} L${x+w} ${y}`,class:"edge"},g);
+      el("path",{d:`M${x+w} ${y+h} L${x+w} ${H-40} M${x+w} ${y+h} L${x+w-20} ${H-40}`,class:"shade"},g);break;}
     case "imgtext":placeholder(g,x,y,20,h);for(let i=0;i<8;i++)el("rect",{x:x+24,y:y+i*2,width:i===7?6:10,height:.8,class:"bar"},g);break;
     case "sheets":for(let i=0;i<3;i++)placeholder(g,x+i*13,y,10,h);break;
     default:if(C[k].fr!=="none"){const M=.9;el("rect",{x,y,width:w,height:h,class:"frm",filter:"url(#shF)"},g);
@@ -375,19 +386,34 @@ function drawItem(it,g,H){
 }
 /* where a work's wall label goes: to its right, low, or below it. Groups get one label (lab items). */
 function labelOf(it){const k=it.k,c=C[k];if(it.lab||it.nolab||!c||c.intro||it.kind==="tri2"||it.kind==="plate")return null;
-  return it.cap==="below"?{x:it.x+it.w/2-2.5,b:it.b-6.5,w:5,h:3.5}:{x:it.x+it.w+3.5,b:Math.min(it.b,52),w:5,h:3.5};}
+  return it.cap==="below"?{x:it.x+it.w/2-2.5,b:it.b-6.5,w:5,h:3.5}:{x:it.x+it.w+3.5,b:it.lb!=null?it.lb:Math.min(it.b,52),w:5,h:3.5};}
+/* a group of three or more works has one label at its bottom right, its numbers laid out like the works */
+function groupsOf(items){const G={};items.forEach(i=>{if(i.grp)(G[i.grp]=G[i.grp]||[]).push(i);});
+  return Object.values(G).filter(g=>g.length>2).map(ms=>{
+    const xs=[],ys=[],near=(a,v)=>{let i=a.findIndex(u=>Math.abs(u-v)<3);if(i<0){a.push(v);i=a.length-1;}return i;};
+    const cx=ms.map(i=>i.x+i.w/2),cy=ms.map(i=>i.b+i.h/2);[...new Set(cx)].sort((a,b)=>a-b).forEach(v=>near(xs,v));[...new Set(cy)].sort((a,b)=>b-a).forEach(v=>near(ys,v));
+    const cells=ms.map((i,n)=>({k:i.k,c:near(xs,cx[n]),r:near(ys,cy[n])}));
+    const x1=Math.max(...ms.map(i=>i.x+i.w)),b=Math.min(...ms.map(i=>i.b));
+    return {ms,cells,cols:xs.length,rows:ys.length,x1,b};});}
 /* a wall seen straight on: inches, 0 at the left end, the floor at the bottom. The drawing is cut
    to the hang, with a little wall around it, so the works fill the page. */
 function drawWall(v){
-  const L=v.len,H=v.h,items=v.items(),labs=items.map(labelOf);
-  const box=[...items,...labs.filter(Boolean)];
-  const x0=Math.min(...box.map(i=>i.x)),x1=Math.max(...box.map(i=>i.x+i.w)),top=Math.max(...box.map(i=>i.b+i.h)),bot=Math.min(...box.map(i=>i.b));
-  const m=Math.max(9,(x1-x0)*.05),floor=bot<16;
-  const vx=Math.max(-m*.6,x0-m),vw=Math.min(L+m*.6,x1+m)-vx,vy=H-top-m,vh=(floor?H+3:H-bot+m)-vy;
+  const L=v.len,H=v.h,items=v.items(),labs=items.map(labelOf),groups=groupsOf(items),inG=new Set(groups.flatMap(g=>g.ms));
+  // the scale the drawing will show at, so a group label can be sized in screen terms
+  const availW=Math.min(1800,innerWidth-48),availH=Math.max(260,innerHeight-(innerWidth>640?270:150)),CW=24,CH=16,PAD=7;
+  let box=[...items,...labs.filter(Boolean)],ext,sc=4;
+  const extent=bx=>{const x0=Math.min(...bx.map(i=>i.x)),x1=Math.max(...bx.map(i=>i.x+i.w)),top=Math.max(...bx.map(i=>i.b+i.h)),bot=Math.min(...bx.map(i=>i.b));
+    const m=Math.max(5,(x1-x0)*.03),floor=Math.min(...items.map(i=>i.b))<16;let vx=Math.max(-m*.5,x0-m),vw=Math.min(L+m*.5,x1+m)-vx,vy=H-top-m,vh=(floor?H+3:H-bot+m)-vy;
+    // never closer than a wall about 6 ft by 3.5 ft: a single small work is not blown up
+    if(vw<72){vx-=(72-vw)/2;vw=72;}if(vh<42){if(floor){vy-=42-vh;}else{vy-=(42-vh)/2;}vh=42;}
+    return {vx,vw,vy,vh,floor};};
+  for(let it=0;it<3;it++){ext=extent([...box,...groups.map(g=>{const w=(2*PAD+g.cols*CW)/sc,h=(2*PAD+g.rows*CH)/sc;return {x:g.x1-w,b:g.b-3-h,w,h};})]);sc=Math.min(availW/ext.vw,availH/ext.vh);}
+  const {vx,vw,vy,vh,floor}=ext;
   const s=el("svg",{viewBox:`${vx} ${vy} ${vw} ${vh}`,role:"img","aria-label":v.label,class:"el"});
   const defs=el("defs",{},s);
   const sh=(id,dy,sd,op)=>{const f=el("filter",{id,x:"-30%",y:"-30%",width:"160%",height:"170%"},defs);el("feDropShadow",{dx:0,dy,stdDeviation:sd,"flood-color":"#000","flood-opacity":op},f);};
   sh("shF",.45,.7,.22);sh("shL",.18,.28,.32);
+  el("rect",{x:vx,y:vy,width:vw,height:vh,class:"bg"},s); // the wall itself: a click here leaves the work
   el("path",{d:`M0 ${floor?H:vy+vh} V${vy} M${L} ${floor?H:vy+vh} V${vy}`,class:"e-line"},s);
   if(floor)el("line",{x1:vx,y1:H,x2:vx+vw,y2:H,class:"e-floor"},s);
   const card=(p,l,n)=>{el("rect",{x:l.x,y:H-l.b-l.h,width:l.w,height:l.h,class:"lbl",filter:"url(#shL)"},p);
@@ -398,14 +424,26 @@ function drawWall(v){
     const g=el("g",{class:"e-work",tabindex:"0",role:"button","aria-label":`${num(it.k)} ${C[it.k].a||""}, ${C[it.k].t}`},s);
     drawItem(it,g,H);
     el("rect",{x:it.x-1,y:H-it.b-it.h-1,width:it.w+2,height:it.h+2,class:"hit"},g);
-    const n=num(it.k),l=labelOf(it),shown=n&&!C[it.k].prop;
+    const n=num(it.k),l=labelOf(it),shown=n&&!C[it.k].prop&&!inG.has(it);
     if(l)card(g,l,shown?n:"");
     else if(shown){const up=it.nt==="above",t=el("text",{x:it.x+it.w/2,y:up?H-it.b-it.h-1.5:H-it.b+3,class:"num","dominant-baseline":up?"auto":"hanging","text-anchor":"middle"},g);t.textContent=n;}
     hook(g,i);
   });
-  fit=()=>fitText(s,vw,vh,10);
+  // group labels: one card, the numbers where the works are
+  const gl=groups.map(G=>{const p=el("g",{class:"glab"},s),r=el("rect",{class:"lbl",filter:"url(#shL)"},p);
+    const ts=G.cells.map(c=>{const t=el("text",{class:"lbn","text-anchor":"middle","dominant-baseline":"central"},p);t.textContent=num(c.k);
+      t.addEventListener("click",e=>{e.stopPropagation();const i=picks.findIndex(k=>String(k)===String(c.k));sel===i?openObj(c.k):pick(i);});return t;});
+    return {G,r,ts};});
+  const layout=sc=>gl.forEach(({G,r,ts})=>{const u=1/sc,w=(2*PAD+G.cols*CW)*u,h=(2*PAD+G.rows*CH)*u,y=H-G.b+3,X=G.x1-w;G.x=X;
+    r.setAttribute("x",X);r.setAttribute("y",y);r.setAttribute("width",w);r.setAttribute("height",h);
+    G.cells.forEach((c,n)=>{ts[n].setAttribute("x",G.x+(PAD+(c.c+.5)*CW)*u);ts[n].setAttribute("y",y+(PAD+(c.r+.5)*CH)*u);});});
+  layout(sc);
+  s.addEventListener("click",e=>{if(e.target.closest(".e-work,.glab"))return;leave();});
+  fit=()=>fitText(s,vw,vh,10,layout);
   return s;
 }
+/* clicking the wall, or the empty drawing, lets go of the work */
+function leave(){sel=-1;lastKey=null;body.querySelectorAll(".e-work").forEach(g=>g.classList.remove("dim"));const sc=body.querySelector(".scene");if(sc)sc.mark(null);tombstone(null);}
 function hook(g,i){g.addEventListener("click",()=>{sel===i?openObj(picks[i]):pick(i);});
   g.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();sel===i?openObj(picks[i]):pick(i);}});}
 function openObj(k){location.hash="#o-"+k;}
@@ -487,21 +525,25 @@ const SCENES={
     const bx=(x0,y0,z0,x1,y1,z1,o)=>K.box(tx+x0,y0,tz+z0,tx+x1,y1,tz+z1,o);
     bx(-18,TH-1.5,-42,18,TH,42,{L:1});
     [[-17,-41],[15,-41],[-17,39],[15,39]].forEach(([x,z])=>bx(x,0,z,x+2,TH-1.5,z+2,{L:0,open:1}));
-    // seen from the east: the top of each picture points west, its left edge to the south
+    // seen from the east. Every copy lies open on its own angled rest, larger than life so it reads:
+    // the top of each picture is at the high, far edge (west), its left edge to the south.
     const ks=[23,24,25,26];
-    ks.forEach((k,i)=>{const [w0,h0]=sz(k),s=Math.min(1,17/w0,26/h0),w=w0*s,h=h0*s,cz=31.5-i*21,src=pic(k);
-      if(k===24){const a=20*Math.PI/180,d=h*Math.cos(a),r=h*Math.sin(a),y=TH+.3;
-        // a low rest, rising away from the viewer, the copy lying on its slope
-        const fw=T(-d/2,y+r,cz+w/2),fm=T(-d/2,y+r,cz-w/2),m=T(d/2,y,cz-w/2),n=T(d/2,y,cz+w/2),bw=T(-d/2,TH,cz+w/2),bm=T(-d/2,TH,cz-w/2),nb=T(d/2,TH,cz+w/2),mb=T(d/2,TH,cz-w/2);
-        K.face([bw,bm,fm,fw],{L:2,k,f:"#f4f4f4"});K.face([nb,bw,fw,n],{L:2,k,f:"#f4f4f4"});K.face([mb,bm,fm,m],{L:2,k,f:"#f4f4f4"});K.face([nb,mb,m,n],{L:2,k,f:"#f4f4f4"});
-        K.face([fw,fm,m,n],{L:3,k,img:src&&{src}});
-        return;}
-      // a copy lying flat: its sides, then its top with the picture (corners: west-south, west-north, east-north, east-south)
-      const y=TH+.35,A=T(-h/2,y,cz+w/2),B=T(-h/2,y,cz-w/2),Cc=T(h/2,y,cz-w/2),D=T(h/2,y,cz+w/2),dn=q=>[q[0],TH,q[2]];
-      [[A,B],[B,Cc],[Cc,D],[D,A]].forEach(([p,q])=>K.face([dn(p),dn(q),q,p],{L:2,k}));
-      K.face([A,B,Cc,D],{L:3,k,img:src&&{src}});
+    ks.forEach((k,i)=>{const [w0,h0]=sz(k),f=Math.min(19/w0,24/h0),w=w0*f,h=h0*f,cz=31.5-i*21,src=pic(k);
+      const a=24*Math.PI/180,d=h*Math.cos(a),r=h*Math.sin(a),y=TH+1.6,x0=-d/2+2,lip=1.4,R="#f4f4f4";
+      const P=(x,yy,z)=>T(x,yy,cz+z),hw=w/2+.8;
+      // the rest: a wedge on the table, with a lip along its low edge to hold the copy
+      const fw=P(x0-d/2,y+r,hw),fm=P(x0-d/2,y+r,-hw),m=P(x0+d/2,y,-hw),n=P(x0+d/2,y,hw);
+      const bw=P(x0-d/2,TH,hw),bm=P(x0-d/2,TH,-hw),nb=P(x0+d/2,TH,hw),mb=P(x0+d/2,TH,-hw);
+      K.face([bw,bm,fm,fw],{L:2,k,f:R});K.face([nb,bw,fw,n],{L:2,k,f:R});K.face([mb,bm,fm,m],{L:2,k,f:R});K.face([nb,mb,m,n],{L:2,k,f:R});
+      K.face([fw,fm,m,n],{L:2,k,f:R});
+      const l0=P(x0+d/2,y,hw),l1=P(x0+d/2,y,-hw),l2=P(x0+d/2+lip,y,-hw),l3=P(x0+d/2+lip,y,hw),up=q=>[q[0],q[1]+1.6,q[2]];
+      // the copy, a little proud of the slope
+      const e=.25,lift=(x,yy)=>[x-e*Math.sin(a),yy+e*Math.cos(a)];
+      const [ax,ay]=lift(x0-d/2+.6*Math.cos(a),y+r-.6*Math.sin(a)),[bx2,by]=lift(x0+d/2-.2,y+.2*Math.tan(a));
+      K.face([P(ax,ay,w/2),P(ax,ay,-w/2),P(bx2,by,-w/2),P(bx2,by,w/2)],{L:3,k,img:src&&{src},f:"#fff"});
+      K.face([l0,l1,up(l1),up(l0)],{L:4,k,f:R});K.face([l0,l1,l2,l3].map(up),{L:4,k,f:R});K.face([l3,l2,up(l2),up(l3)],{L:4,k,f:R});
     });
-    return {K,T:[tx,TH,tz],R:48,yaw:Math.PI/2,pitch:.95,sway:.22,pmin:.04,pmax:1.45,intro:{pitch:.05,dist:2.1,ms:2600},keys:ks};},
+    return {K,T:[tx,TH+4,tz],R:46,yaw:Math.PI/2,pitch:.95,sway:.22,pmin:.04,pmax:1.45,intro:{pitch:.05,dist:2.1,ms:2600},keys:ks};},
 
   /* 106: Splitting: Four Corners, the four roof corners of the house on the floor, outside corners out */
   corners(){const K=sceneKit(),fx=WX(765),fz=WZ(1020);
@@ -560,7 +602,7 @@ function drawScene(v){
   const size=()=>{const r=cv.getBoundingClientRect();W=r.width;H=r.height;cv.width=W*dpr;cv.height=H*dpr;};
   const imgs={};const getImg=src=>{if(!imgs[src]){const im=new Image();im.src=src;imgs[src]=im;}const im=imgs[src];return im.complete&&im.naturalWidth?im:null;};
   const reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  let yaw=S.yaw,pitch=S.pitch,dist=S.R*3.4,drag=null,auto=!reduce,raf=0,selK=null,hover=null,drawn=[];
+  let yaw=S.yaw,pitch=S.pitch,dist=S.R*3.4,drag=null,auto=!reduce,raf=0,selK=null,hover=null,drawn=[],base=S.yaw,tb=null,d0=false;
   const back=lastKey!=null&&S.keys.some(k=>String(k)===String(lastKey)); // coming back from a work: no approach
   const I=S.intro&&!reduce&&!back?S.intro:null,t0=performance.now();let introDone=!I;
   const NEAR=6;
@@ -593,7 +635,7 @@ function drawScene(v){
   function frame(now){
     const t=now-t0;
     if(!introDone){const e=ease(Math.min(1,t/I.ms));pitch=I.pitch+(S.pitch-I.pitch)*e;dist=S.R*3.4*(I.dist+(1-I.dist)*e);if(t>=I.ms)introDone=true;}
-    else if(auto&&!drag)yaw=S.yaw+Math.sin((t-(I?I.ms:0))/7000)*S.sway;
+    else if(auto&&!drag){if(tb==null)tb=now;const k=Math.min(1,(now-tb)/2500);yaw=base+Math.sin((now-tb)/7000)*S.sway*(base===S.yaw&&!d0?1:k*k*(3-2*k));}
     g.setTransform(dpr,0,0,dpr,0,0);g.clearRect(0,0,W,H);
     const runs=list=>list.forEach(l=>{g.strokeStyle=`rgba(0,0,0,${l.a})`;g.lineWidth=l.a<1?.7:1;g.setLineDash(l.dash||[]);g.beginPath();strokeSegs(l.p);g.stroke();});
     runs(K.lines);g.setLineDash([]);
@@ -619,7 +661,8 @@ function drawScene(v){
     if(!drag){hover=hitAt(e);cv.style.cursor=hover?"pointer":"grab";return;}
     if(Math.hypot(e.clientX-drag.x,e.clientY-drag.y)>4){drag.moved=true;auto=false;introDone=true;}
     if(drag.moved){yaw=drag.yaw+(e.clientX-drag.x)*.006;pitch=Math.max(S.pmin,Math.min(S.pmax,drag.pitch+(e.clientY-drag.y)*.004));}});
-  cv.addEventListener("pointerup",e=>{const d=drag;drag=null;if(d&&!d.moved){const k=hitAt(e);if(!k)return;
+  cv.addEventListener("pointerup",e=>{const d=drag;drag=null;if(d&&d.moved&&!reduce){auto=true;base=yaw;tb=performance.now();d0=true;}
+    if(d&&!d.moved){const k=hitAt(e);if(!k){leave();return;}
     if(selK===k){openObj(k);return;}const i=picks.findIndex(p=>String(p)===k);if(i>=0)pick(i);}});
   cv.addEventListener("pointerleave",()=>{hover=null;});
   picks=S.keys.slice();wrap.mark=k=>{selK=k==null?null:String(k);};
@@ -655,7 +698,7 @@ function drawRoom(w){
       const v=40+b*150+Math.random()*38;d[i]=d[i+1]=d[i+2]=v;d[i+3]=255;}
     sg.putImageData(im,0,0);
   }
-  let playing=false,yaw=-.75,pitch=.3,drag=null,auto=true,t0=performance.now(),raf=0;
+  let playing=false,yaw=-.75,pitch=.3,drag=null,auto=true,t0=performance.now(),raf=0,base=-.75,rel=false;
   function proj([x,y,z]){
     const cx=RW/2,cy=RH*.42,cz=RD/2;let X=x-cx,Y=y-cy,Z=z-cz;
     const cyw=Math.cos(yaw),syw=Math.sin(yaw);[X,Z]=[X*cyw-Z*syw,X*syw+Z*cyw];
@@ -676,7 +719,7 @@ function drawRoom(w){
     g.transform(a,b,c,dd,e,f);g.drawImage(img,0,0,iw,ih);g.restore();
   }
   function frame(now){
-    if(auto&&!drag)yaw=-.75+Math.sin((now-t0)/6000)*.3;
+    if(auto&&!drag){const k=rel?Math.min(1,(now-t0)/2500):1;yaw=base+Math.sin((now-t0)/6000)*.3*k*k*(3-2*k);};
     g.setTransform(dpr,0,0,dpr,0,0);g.clearRect(0,0,W,H);
     // the picture on the wall
     const sp=(x,y)=>proj([SX+x*SW,SY+(1-y)*SH,0]);
@@ -722,11 +765,11 @@ function drawRoom(w){
   }
   btn.addEventListener("click",()=>{playing=!playing;btn.textContent=playing?"Pause":"Play";
     if(vid){playing?vid.play().catch(()=>{}):vid.pause();}});
-  function pickStill(i){if(vid)vid.pause();si=i;vid=vids[i];if(vid&&playing)vid.play().catch(()=>{});sb.forEach((b,j)=>b.setAttribute("aria-pressed",j===i));}
+  function pickStill(i){tombstone(KS[i]);if(vid)vid.pause();si=i;vid=vids[i];if(vid&&playing)vid.play().catch(()=>{});sb.forEach((b,j)=>b.setAttribute("aria-pressed",j===i));}
   pickStill(0);
   cv.addEventListener("pointerdown",e=>{drag={x:e.clientX,y:e.clientY,yaw,pitch};auto=false;cv.setPointerCapture(e.pointerId);});
   cv.addEventListener("pointermove",e=>{if(!drag)return;yaw=drag.yaw+(e.clientX-drag.x)*.006;pitch=Math.max(-.1,Math.min(.8,drag.pitch+(e.clientY-drag.y)*.004));});
-  cv.addEventListener("pointerup",()=>{drag=null;});
+  cv.addEventListener("pointerup",()=>{if(drag&&!window.matchMedia("(prefers-reduced-motion: reduce)").matches){auto=true;base=yaw;t0=performance.now();rel=true;}drag=null;});
   const ro=new ResizeObserver(size);ro.observe(cv);
   requestAnimationFrame(()=>{size();raf=requestAnimationFrame(frame);});
   if(window.matchMedia("(prefers-reduced-motion: reduce)").matches)auto=false;
@@ -747,7 +790,7 @@ function drawCourt(w){
   const F=d=>d*1.175/9; // plan drawing (2000-wide copy) to feet
   const X=dx=>F(dx-557),Z=dy=>F(dy-10);
   const T=[55,4,48]; // look at the middle of the courtyard
-  let yaw=2.55,pitch=.42,drag=null,auto=true,t0=performance.now(),raf=0;
+  let yaw=2.55,pitch=.42,drag=null,auto=true,t0=performance.now(),raf=0,base=2.55,rel=false;
   function proj([x,y,z]){let a=x-T[0],b=y-T[1],c=z-T[2];
     const cy=Math.cos(yaw),sy=Math.sin(yaw);[a,c]=[a*cy-c*sy,a*sy+c*cy];
     const cp=Math.cos(pitch),sp=Math.sin(pitch);[b,c]=[b*cp-c*sp,b*sp+c*cp];
@@ -784,22 +827,35 @@ function drawCourt(w){
     return lines;
   }
   const lines=geometry();
-  const CC=[X(898.6),0,Z(330.6)],sw=10,sh=9,sd=7;
+  /* the proposed commission, after Blackwell's Model for a Public Space [knot] (2010): plywood bleachers
+     wound into a spiral that fills the open court. It starts at the ground on the outside, climbs as it
+     turns inward, and passes over its own first turn, so every seat faces the centre and one another. */
+  const CC=[X(890),0,Z(352)],TURN=2.35*Math.PI,STEPS=4,TD=2,RISE=1.5; // clear of the portico, the planting and the pavilion
+  const rad=t=>22-12*t/TURN,lift=t=>9.5*Math.pow(t/TURN,1.15),a0=-.6;
+  const pt=(t,j,up)=>{const r=rad(t)+j*TD,th=a0+t;return [CC[0]+r*Math.cos(th),lift(t)+j*RISE+(up?RISE:0),CC[2]+r*Math.sin(th)];};
+  const knot=[];// [alpha, polyline]
+  const N=220;
+  for(let j=0;j<=STEPS;j++){ // each tread: its front edge, and the riser top above it
+    const lo=[],hi=[];for(let i=0;i<=N;i++){const t=TURN*i/N;lo.push(pt(t,j,false));if(j<STEPS)hi.push(pt(t,j,true));}
+    knot.push([1,lo]);if(j<STEPS)knot.push([.55,hi]);}
+  const foot=[];for(let i=0;i<=N;i++){const t=TURN*i/N,r=rad(t)+STEPS*TD,th=a0+t;foot.push([CC[0]+r*Math.cos(th),0,CC[2]+r*Math.sin(th)]);}
+  knot.push([.3,foot]);
+  for(let i=0;i<=Math.round(TURN/(Math.PI/14));i++){ // the plywood ribs, a profile every few feet
+    const t=Math.min(TURN,i*Math.PI/14),pr=[];for(let j=0;j<STEPS;j++){pr.push(pt(t,j,false),pt(t,j,true));}pr.push(pt(t,STEPS,false));
+    const back=pt(t,STEPS,false);pr.push([back[0],0,back[2]]);const fr=pt(t,0,false);pr.push([fr[0],0,fr[2]],fr);knot.push([.4,pr]);}
   function frame(now){
-    if(auto&&!drag)yaw=2.55+Math.sin((now-t0)/7000)*.35;
+    if(auto&&!drag){const k=rel?Math.min(1,(now-t0)/2500):1;yaw=base+Math.sin((now-t0)/7000)*.35*k*k*(3-2*k);};
     g.setTransform(dpr,0,0,dpr,0,0);g.clearRect(0,0,W,H);
     for(const [a,p] of lines){g.strokeStyle=`rgba(0,0,0,${a})`;g.lineWidth=a<1?.6:1;g.beginPath();
       for(let i=0;i<p.length;i+=2){const u=proj(p[i]),v=proj(p[i+1]);g.moveTo(u[0],u[1]);g.lineTo(v[0],v[1]);}g.stroke();}
-    // the proposed commission: a dashed volume in the open centre
-    const x0=CC[0]-sw/2,x1=CC[0]+sw/2,z0=CC[2]-sd/2,z1=CC[2]+sd/2;
-    const faces=[[[x0,0,z1],[x1,0,z1],[x1,sh,z1],[x0,sh,z1]],[[x1,0,z0],[x1,0,z1],[x1,sh,z1],[x1,sh,z0]],[[x0,0,z0],[x0,0,z1],[x0,sh,z1],[x0,sh,z0]],[[x0,sh,z0],[x1,sh,z0],[x1,sh,z1],[x0,sh,z1]]];
-    g.fillStyle="rgba(233,233,233,.6)";g.strokeStyle="#000";g.lineWidth=1;g.setLineDash([4,3]);
-    faces.forEach(f=>{g.beginPath();f.map(proj).forEach((p,i)=>i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]));g.closePath();g.fill();g.stroke();});g.setLineDash([]);
+    // the proposed commission: the spiral of bleachers
+    for(const [al,pl] of knot){g.strokeStyle=`rgba(0,0,0,${al})`;g.lineWidth=al===1?1.2:.7;g.beginPath();
+      pl.forEach((q,i)=>{const u=proj(q);i?g.lineTo(u[0],u[1]):g.moveTo(u[0],u[1]);});g.stroke();}
     raf=requestAnimationFrame(frame);
   }
   cv.addEventListener("pointerdown",e=>{drag={x:e.clientX,y:e.clientY,yaw,pitch};auto=false;cv.setPointerCapture(e.pointerId);});
   cv.addEventListener("pointermove",e=>{if(!drag)return;yaw=drag.yaw+(e.clientX-drag.x)*.006;pitch=Math.max(.08,Math.min(1.2,drag.pitch+(e.clientY-drag.y)*.004));});
-  cv.addEventListener("pointerup",()=>{drag=null;});
+  cv.addEventListener("pointerup",()=>{if(drag&&!window.matchMedia("(prefers-reduced-motion: reduce)").matches){auto=true;base=yaw;t0=performance.now();rel=true;}drag=null;});
   const ro=new ResizeObserver(size);ro.observe(cv);
   if(window.matchMedia("(prefers-reduced-motion: reduce)").matches)auto=false;
   requestAnimationFrame(()=>{size();raf=requestAnimationFrame(frame);});
@@ -823,9 +879,10 @@ function openView(id){
   const keep=lastKey;stop();current=v;sel=-1;picks=[];tombstone(null);body.innerHTML="";prevView=id;lastKey=keep;
   if(v.options)body.appendChild(drawOptions(v));
   else{const box=document.createElement("div");box.className="wallbox";
-    box.appendChild(v.court?drawCourt(v):v.room&&v.room.w?drawRoom(v):v.scene?drawScene(v):drawWall(v));body.appendChild(box);}
+    box.appendChild(v.court?drawCourt(v):v.room&&v.room.w?drawRoom(v):v.scene?drawScene(v):drawWall(v));body.appendChild(box);
+    box.addEventListener("click",e=>{if(e.target===box||e.target.classList.contains("room3d"))leave();});}
   if(fit){cleanup=fit();fit=null;}
-  if(v.room&&v.room.w)tombstone([67,68]);
+  if(v.room&&v.room.w)tombstone(67);
   else if(v.court)tombstone("p-blackwell");
   else if(v.options)pick(0);
   else{let i=picks.findIndex(p=>String(p)===lastKey);if(i<0&&v.key)i=picks.findIndex(p=>String(p)===String(v.key));if(i>=0)pick(i);}
@@ -836,6 +893,8 @@ function openObject(k){
   stop();current=null;picks=[];sel=-1;body.innerHTML="";
   body.appendChild(drawObj(k));tombstone(k,false);lastKey=String(k);
   const back=prevView||HOME[k];show(C[k].t);
+  // a click on the work, or around it, goes back to the wall it came from
+  body.firstChild.addEventListener("click",e=>{if(e.target.closest("button,a"))return;location.hash=back?"#"+back:"#";});
   cr.innerHTML=(back?`<a href="#${back}">Back</a>`:"")+`<a href="#">Close</a>`;
 }
 /* the checklist, room by room */
