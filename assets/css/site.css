@@ -1,7 +1,7 @@
-/* penidelema.com, laid out like /anarchitecture: white ground, black Arial at one small
-   size, grey for numbers and what is secondary, italic for titles. Corners, a checklist,
-   walls of pictures over a floor line, wall labels. One thin line, the signature, runs
-   down every page and stops at its bottom edge. */
+/* penidelema.com, as quiet as /anarchitecture: white ground, black Arial at one small size,
+   grey for what is secondary. Corners for the name and the rooms; plain index rows; one
+   thin line, the signature, runs down every page and stops at its bottom edge. On the home
+   page every piece of work is a + on that line. */
 :root {
   --white: #fff;
   --black: #000;
@@ -58,40 +58,53 @@ img { display: block; max-width: 100%; height: auto; }
 .js .hero-text { opacity: 0; transition: opacity .8s ease; }
 .js .hero-text.on { opacity: 1; }
 
-/* The checklist */
-.list { padding-top: 40px; }
-.list ul { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 36px 32px; }
-.list li { position: relative; z-index: 3; }
-.list a { display: block; }
-.list a:hover { text-decoration: none; }
-.list a:hover i { text-decoration: underline; }
-.list .more { margin-top: 6px; color: var(--grey); max-width: 34ch; }
-.page-home .list { padding-top: 0; }
+/* Home: the line runs on, with a + on it for every piece of work */
+.trail { position: relative; padding: 0 var(--gutter-r) 0 var(--gutter); }
+.trail ul { list-style: none; padding: 0; margin: 0 auto; max-width: 1240px; display: grid; gap: 6px; }
+.js .trail ul { display: block; height: calc(var(--n, 17) * 96px); }
+.js .trail li { position: absolute; z-index: 3; opacity: 0; transition: opacity .6s ease; }
+.js .trail li.on { opacity: 1; }
+.trail a { display: inline-flex; align-items: center; gap: 4px; }
+.trail a:hover { text-decoration: none; }
+.js .trail a { position: relative; width: 26px; height: 26px; transform: translate(-50%, -50%); }
+.plus { position: relative; width: 26px; height: 26px; flex: none; display: grid; place-items: center; }
+.plus::before, .plus::after { content: ""; position: absolute; background: var(--black); transition: transform .2s; }
+.plus::before { width: 11px; height: 1px; } .plus::after { width: 1px; height: 11px; }
+.trail a:hover .plus::before, .trail a:hover .plus::after, .trail a:focus-visible .plus::before, .trail a:focus-visible .plus::after { transform: scale(1.6); }
+.js .trail .name { position: absolute; left: 30px; top: 50%; transform: translateY(-50%); white-space: nowrap; background: var(--white); padding: 1px 4px; opacity: 0; transition: opacity .2s; pointer-events: none; }
+.js .trail li.flip .name { left: auto; right: 30px; }
+.js .trail a:hover .name, .js .trail a:focus-visible .name { opacity: 1; }
+.trail a:focus-visible { outline: none; }
+@media (hover: none) { .js .trail .name { opacity: 1; } }
+
+/* An index: one row per piece of work */
 .room-intro { padding-top: 130px; }
-.room-intro p { max-width: 46ch; }
+.room-intro p { max-width: 52ch; }
+.index { padding-top: 40px; }
+.index ul { list-style: none; padding: 0; margin: 0; max-width: 1000px; }
+.index li { position: relative; z-index: 3; }
+.index li > * { display: grid; grid-template-columns: 64px minmax(0, 220px) minmax(0, 1fr); column-gap: 24px; padding: 7px 0; }
+.index.with-room li > * { grid-template-columns: 64px minmax(0, 220px) 90px minmax(0, 1fr); }
+.index a:hover { text-decoration: none; }
+.index a:hover .t { text-decoration: underline; }
+.index .d { max-width: 60ch; }
+.peek { position: fixed; z-index: 10; left: 0; top: 0; width: 240px; pointer-events: none; opacity: 0; transition: opacity .15s; }
+.peek.on { opacity: 1; }
 
-/* A wall: the pictures hung at one height over a floor line */
-.wallbox { padding: 90px var(--gutter-r) 100px var(--gutter); overflow-x: auto; }
-.wall { --h: clamp(120px, 15vw, 210px); display: flex; align-items: center; justify-content: center; gap: clamp(32px, 5vw, 80px);
-  width: fit-content; min-width: min(100%, 1240px); margin: 0 auto; padding: 0 clamp(24px, 4vw, 64px) calc(var(--h) * .55); border-bottom: 2px solid var(--black); }
-.wall figure { position: relative; z-index: 2; flex: none; width: calc(var(--h) * var(--r)); }
-.wall img { width: 100%; height: var(--h); object-fit: cover; background: var(--block); }
-.wall figcaption { position: absolute; top: calc(100% + 8px); left: 0; white-space: nowrap; }
-.wall a:hover { text-decoration: none; }
-.wall a:hover i { text-decoration: underline; }
-
-/* A project: the wall label and words on the left, pictures on the right */
-.part { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 32px; padding-top: 110px; align-items: start; }
+/* A project: title and facts, the words in one column, the pictures large beneath */
+.part { padding-top: 90px; }
 .part.first { padding-top: 130px; }
-.part .words { position: relative; z-index: 3; grid-column: 1 / span 4; display: grid; gap: 10px; max-width: 46ch; }
-.part .pics { grid-column: 6 / span 7; display: grid; gap: 48px; }
-.part .pics:empty { display: none; }
-.tomb { display: grid; }
-.tomb .intro { display: grid; gap: 10px; margin-top: 18px; }
-.words h2 { color: var(--grey); }
+.part .words { position: relative; z-index: 3; display: grid; gap: 10px; max-width: 62ch; }
+.head h1 { margin-bottom: 2px; }
+.head .intro { display: grid; gap: 10px; margin-top: 22px; }
+.words h2 { margin-bottom: 0; }
+.pics { display: grid; gap: 24px; margin-top: 44px; max-width: 1080px; align-items: start; }
+.pics.n2 { grid-template-columns: 1fr 1fr; }
+.pics.n3 { grid-template-columns: repeat(3, 1fr); }
 .shot { position: relative; z-index: 2; }
 .shot img { width: 100%; }
 .shot.narrow { width: 62%; }
+.pics.n1 .shot.narrow { width: 46%; }
 .shot figcaption { margin-top: 8px; color: var(--grey); }
 
 /* Photography: one picture to a row, sides alternating, the caption on the far side */
@@ -106,12 +119,12 @@ img { display: block; max-width: 100%; height: auto; }
 .g-row.l figcaption { grid-column: 9 / span 3; }
 
 /* The +: a sheet each visitor adds one line to, with its label */
-.plus { padding-top: 130px; display: grid; gap: 14px; max-width: 1000px; }
+.plus-page { padding-top: 130px; display: grid; gap: 14px; max-width: 1000px; }
 .sheet { position: relative; z-index: 2; background: var(--block); }
 .sheet canvas { display: block; width: 100%; aspect-ratio: 16 / 9; cursor: crosshair; touch-action: none; }
 .sheet canvas:focus-visible { outline: 1px solid var(--black); outline-offset: -6px; }
-.plus .tomb { max-width: 52ch; }
-.plus output { margin-top: 10px; min-height: 1.4em; }
+.about-sheet { display: grid; gap: 2px; max-width: 52ch; }
+.about-sheet output { margin-top: 10px; min-height: 1.4em; }
 
 /* The foot */
 .foot { position: relative; z-index: 3; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 32px; padding-top: 160px; padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px)); }
@@ -126,19 +139,19 @@ img { display: block; max-width: 100%; height: auto; }
   .corner-r.rooms { display: none; }
   .menu-btn { display: block; }
   .logo-box { height: auto; width: min(74vw, 50svh); }
-  .list ul { grid-template-columns: 1fr 1fr; gap: 28px 18px; padding-right: 14%; }
+  .js .trail ul { height: calc(var(--n, 17) * 72px); }
   .room-intro { padding-top: 110px; }
   .room-intro p, .foot { max-width: 84%; }
-  .wallbox { padding-block: 64px 80px; }
-  .wall { --h: 110px; justify-content: flex-start; }
-  .part, .g-row { display: flex; flex-direction: column; gap: 18px; align-items: stretch; }
-  .part { padding-top: 80px; }
+  .index ul { padding-right: 12%; }
+  .index li > *, .index.with-room li > * { grid-template-columns: 44px minmax(0, 1fr); row-gap: 2px; padding: 9px 0; }
+  .index .t { grid-column: 2; } .index .r, .index .d { grid-column: 2; }
+  .part { padding-top: 70px; }
   .part.first { padding-top: 110px; }
-  .part .words { max-width: 84%; }
-  .part .pics { gap: 28px; width: 90%; }
-  .g-row { padding-top: 80px; }
+  .part .words { max-width: 86%; }
+  .pics, .pics.n2, .pics.n3 { grid-template-columns: 1fr; width: 90%; margin-top: 28px; }
+  .shot.narrow, .pics.n1 .shot.narrow { width: 70%; }
+  .g-row { display: flex; flex-direction: column; gap: 12px; align-items: stretch; padding-top: 80px; }
   .g-pic { width: 90%; }
-  .g-row.l .g-pic { align-self: flex-start; }
   .g-row figcaption { max-width: 70%; }
 }
 @media (prefers-reduced-motion: reduce) {

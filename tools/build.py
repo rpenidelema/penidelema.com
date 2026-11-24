@@ -5,23 +5,21 @@ lists below; "{p}" in content is replaced with the relative path to the site roo
 `python3 tools/build.py` from the repository root, then commit the generated .html files:
 GitHub Pages serves them as they are.
 
-Design: the site is laid out like /anarchitecture, an exhibition being planned.
-White ground, black Arial at one small size, grey for numbers and what is secondary,
-italic for titles. Nothing big, nothing bold. The name sits in the top-left corner, the
-rooms in the top-right.
+Design: as quiet as /anarchitecture. White ground, black Arial at one small size, grey
+for what is secondary. Nothing big, nothing bold. The name sits in the top-left corner,
+the rooms in the top-right.
 
-  Home         the signature alone in the middle of the screen, like the plan; below it,
-               the checklist: every piece of work on the site, numbered.
-  A room       its pictures hung in a row on a wall, above a floor line; below, its
-               part of the checklist.
-  A project    a wall label (title, date, place) and text on the left, pictures on the right.
+  Home         the signature, then its line runs on down the page with a + on it for every
+               piece of work; the name shows beside a + on hover. A plain index follows.
+  A room       a plain index: year, title, a few words. A picture follows the pointer.
+  A project    its title, a few facts in grey, the text, and large pictures underneath.
   Photography  the gallery: one picture to a row, alternating sides, a caption beside it.
 
 The line: Rodrigo's signature continues down every page as one thin pen stroke and stops
 at the bottom edge. The page marks where it goes, and assets/js/site.js draws it:
 
   data-line="through"  pass behind this picture
-  data-line="behind"   pass behind this whole block (a wall of pictures)
+  data-line="trail"    run down this block, zigzagging, through a + for each of its items
   data-line="avoid"    run down the emptier side of this block
   data-line-phone="…"  the same, on a phone only (it overrides data-line there)
 """
@@ -41,7 +39,7 @@ def img(src, alt, w, h, lazy=True):
             f'{" loading=\"lazy\"" if lazy else ""} decoding="async">')
 
 
-# ---------- The checklist: every piece of work on the site ----------
+# ---------- Every piece of work on the site ----------
 # (room, title, date, detail, link or None, picture for the room's wall or None)
 WORK = [
     ("making", "Kreios Space", "2026", "Test hardware for plasma thrusters", "making/kreios/",
@@ -79,43 +77,37 @@ MORE = {
     "Student affairs": "The student voice on the Board's Student Affairs Committee.",
     "Volunteering": "Blood drives, tutoring at Claremont High School, and campaigns for local charities.",
 }
-NUM = {w[1]: i + 1 for i, w in enumerate(WORK)}
 
 
-def entry(w, show_room=True, more=False):
-    room, title, date, detail, href, _ = w
-    head = f'<p class="n">{NUM[title]}</p>'
-    if show_room:
-        head += f'<p>{ROOM_NAME[room]}</p>'
-    t = f'<p><i>{title}</i>, {date}</p><p>{detail}</p>'
-    if more and title in MORE:
-        t += f'<p class="more">{MORE[title]}</p>'
-    inner = head + t
+def link_of(w):
+    """Where an entry leads: its own page, or else its room."""
+    return w[4] or f"{w[0]}/"
+
+
+def row(w, show_room=True, more=False):
+    room, title, date, detail, href, pic = w
+    words = MORE[title] if more and title in MORE else detail
+    cells = (f'<span class="y g">{date}</span><span class="t">{title}</span>'
+             f'{f"<span class=\"r g\">{ROOM_NAME[room]}</span>" if show_room else ""}<span class="d g">{words}</span>')
+    peek = f' data-peek="{{p}}assets/img/{pic[0]}"' if pic else ""
     if href:
-        return f'<li><a href="{{p}}{href}">{inner}</a></li>'
-    return f'<li>{inner}</li>'
+        return f'<li><a href="{{p}}{href}"{peek}>{cells}</a></li>'
+    return f'<li><div{peek}>{cells}</div></li>'
 
 
-def checklist(items, show_room=True, more=False, label="Checklist"):
-    lis = "".join(entry(w, show_room, more) for w in items)
-    return f'<section class="wrap list" aria-label="{label}" data-line="avoid"><ul>{lis}</ul></section>'
+def index(items, show_room=True, more=False, label="Index"):
+    """A plain index: one row per piece of work. A picture follows the pointer over a row."""
+    lis = "".join(row(w, show_room, more) for w in items)
+    return (f'<section class="wrap index{" with-room" if show_room else ""}" aria-label="{label}" data-line="avoid">'
+            f'<ul>{lis}</ul></section>')
 
 
-def wall(items):
-    """The room's pictures, hung in a row at one height, above a floor line."""
-    hung = []
-    for w in items:
-        room, title, date, detail, href, pic = w
-        if not pic:
-            continue
-        src, alt, pw, ph = pic
-        im = img(src, alt, pw, ph, lazy=False)
-        cap = f'<figcaption><span class="n">{NUM[title]}</span> <i>{title}</i></figcaption>'
-        body = f'<a href="{{p}}{href}">{im}{cap}</a>' if href else f'{im}{cap}'
-        hung.append(f'<figure style="--r:{pw / ph:.3f}">{body}</figure>')
-    if not hung:
-        return ""
-    return f'<section class="wallbox" aria-label="Pictures" data-line="behind"><div class="wall">{"".join(hung)}</div></section>'
+def trail(items):
+    """Home: the signature's line runs on down the page, and every piece of work is a + on it."""
+    lis = "".join(
+        f'<li><a href="{{p}}{link_of(w)}"><span class="plus" aria-hidden="true"></span>'
+        f'<span class="name">{w[1]}<span class="g">, {w[2]}</span></span></a></li>' for w in items)
+    return f'<section class="trail" aria-label="Work" data-line="trail"><ul style="--n:{len(items)}">{lis}</ul></section>'
 
 
 # ---------- The frame ----------
@@ -185,10 +177,10 @@ def frame(path, title, body, room=None, home=False, label=None):
 
 # ---------- Building blocks ----------
 def label(title, lines, intro=""):
-    """A wall label: the title in italics, then the facts, one to a line, then the text."""
+    """The top of a project: its title, a few plain facts in grey, then the text."""
     ls = "".join(f"<p>{l}</p>" for l in lines)
     i = f'<div class="intro">{intro}</div>' if intro else ""
-    return f'<div class="tomb"><p><i>{title}</i></p>{ls}{i}</div>'
+    return f'<div class="head"><h1>{title}</h1><div class="facts g">{ls}</div>{i}</div>'
 
 
 def fig(src, alt, w, h, caption="", lazy=True, cls=""):
@@ -197,10 +189,13 @@ def fig(src, alt, w, h, caption="", lazy=True, cls=""):
 
 
 def part(text, *figs, first=False):
-    """One part of a project: words on the left, its pictures on the right."""
+    """One part of a project: a column of words, then its pictures, large, underneath."""
+    n = len(figs)
+    # Side by side, the line goes behind the last picture only, so it doesn't loop between them.
+    figs = [f if k == n - 1 else f.replace(' data-line="through"', "") for k, f in enumerate(figs)]
+    pics = f'<div class="pics n{n}">{"".join(figs)}</div>' if figs else ""
     return (f'<section class="wrap part{" first" if first else ""}">'
-            f'<div class="words" data-line="avoid">{text}</div>'
-            f'<div class="pics">{"".join(figs)}</div></section>')
+            f'<div class="words" data-line="avoid">{text}</div>{pics}</section>')
 
 
 def h(t):
@@ -215,14 +210,14 @@ PAGES = []
 HOME = """<section class="hero" aria-label="Signature">
   <div class="logo-box" data-logo="hero" aria-hidden="true"></div>
 </section>
-""" + checklist(WORK)
+""" + trail(WORK)
 PAGES.append(dict(path="", title="Rodrigo Penide Lema", home=True, body=HOME))
 
 
 def room_page(slug, intro):
     items = [w for w in WORK if w[0] == slug]
     body = (f'<section class="wrap room-intro" data-line="avoid"><p class="g">{intro}</p></section>'
-            + wall(items) + checklist(items, show_room=False, more=True, label=ROOM_NAME[slug]))
+            + index(items, show_room=False, more=True, label=ROOM_NAME[slug]))
     PAGES.append(dict(path=slug, title=f"{ROOM_NAME[slug]} · Rodrigo Penide Lema", room=slug, body=body))
 
 
@@ -294,10 +289,10 @@ LOOK = [
     ("stone-workshop.jpg", "A stone workshop: shelves of offcuts and tools under a coat of white dust", 1320, 1316, "A stone workshop."),
     ("arles.jpg", "The residency cohort standing in front of a limestone quarry wall in the sun", 1600, 1600, "The cohort, Arles."),
 ]
-GALLERY = ('<section class="wrap room-intro" data-line="avoid"><p><i>Stone and earth</i>, 2026</p><p class="g">Photographs from a residency on stone and earth in Provence.</p></section>'
+GALLERY = ('<section class="wrap room-intro" data-line="avoid"><p class="g">Stone and earth: photographs from a residency in Provence, summer 2026.</p></section>'
            '<section class="wrap gallery" aria-label="Photographs">' + "".join(
                f'<figure class="g-row {"r" if k % 2 == 0 else "l"}"><div class="g-pic" data-line="through">{img(src, alt, w, h, lazy=k > 1)}</div>'
-               f'<figcaption><span class="n">{k + 1}</span><br>{cap}</figcaption></figure>'
+               f'<figcaption class="g">{cap}</figcaption></figure>'
                for k, (src, alt, w, h, cap) in enumerate(LOOK)) + "</section>")
 PAGES.append(dict(path="photography", title="Photography · Rodrigo Penide Lema", room="photography", body=GALLERY))
 
@@ -306,13 +301,12 @@ PAGES.append(dict(path="journal", title="Journal · Rodrigo Penide Lema", room="
     '<section class="wrap room-intro" data-line="avoid"><p class="g">Notes, newest first. The first entry is on its way.</p></section>'))
 
 # ---------- + ----------
-PLUS = """<section class="wrap plus" aria-label="Plus: a drawing everyone adds one line to">
+PLUS = """<section class="wrap plus-page" aria-label="Plus: a drawing everyone adds one line to">
   <div class="sheet" data-line="through">
     <canvas tabindex="0" aria-label="A shared drawing. Drag to add your line, or press Enter." aria-describedby="plus-how"></canvas>
   </div>
-  <div class="tomb">
-    <p><i>Untitled (Lines)</i>, 2026–</p>
-    <p>Rodrigo Penide Lema, with interventions by visitors from around the world</p>
+  <div class="about-sheet">
+    <p>A drawing everyone adds one line to, started in 2026.</p>
     <p class="g" id="plus-how">One line each, in one stroke. For now your line stays on your screen; soon every line will join the same drawing.</p>
     <output aria-live="polite" data-plus-status>The line on the paper is mine. Add one of yours.</output>
   </div>
