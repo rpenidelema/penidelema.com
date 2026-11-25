@@ -112,6 +112,7 @@ main{min-height:100%;display:flex;align-items:center;justify-content:center;padd
 .obj .cap,.room3d .n{color:var(--grey);margin:0}
 .views,.ctl{display:flex;gap:8px 20px;flex-wrap:wrap;justify-content:center}
 .views button,.ctl button,.ctl a{text-decoration:none}
+.ctl a.alt{color:var(--grey)}
 .views button:hover,.ctl button:hover,.ctl a:hover,.views button[aria-pressed=true],.ctl button[aria-pressed=true]{text-decoration:underline}
 .grp{max-width:1240px;margin:0 auto;width:100%}
 .grp h2{font:inherit;color:var(--grey);margin:0;padding:0 max(24px,env(safe-area-inset-left,0px))}
@@ -144,8 +145,8 @@ body.open .corner{display:none}
         <path class="z" d="M305 726 V771 L323 726 Z"/>
         <path class="z" d="M305 842 H323 M305 862 H323"/>
         <rect class="z d" x="495" y="915" width="54" height="45"/>
-        <!-- 102: the passage, on the diagonal, with the route from 103 to reception kept clear on the east -->
-        <path class="z d" d="M300 1110 H345 L545 1280 H500 Z"/>
+        <!-- 102: the passage, on the diagonal, entered from the opening out of 103; the route to reception kept clear on the east -->
+        <path class="z d" d="M548 1105.8 L564 1130.2 L343 1274.2 L327 1249.8 Z"/>
         <!-- courtyard: Blackwell commission (proposal), set back from the patio entrance -->
         <rect class="z d" x="1276" y="762" width="90" height="63"/>
         <!-- 133: projection on the east display wall, bench parallel to it -->
@@ -237,7 +238,7 @@ const C={
   "p-swept":{prop:1,a:"",t:"Swept House, document",W:16,H:20},
   "p-anderson":{prop:1,a:"Laurie Anderson",t:"Institutional Dream Series, image and text",W:34,H:16},
   "p-notebook":{prop:1,fr:"none",a:"Laurie Anderson",t:"Notebook, open to Duet for Door Jamb",note:"In a shallow case",W:16,H:10},
-  "p-suh":{prop:1,a:"Do Ho Suh",t:"Commission for gallery 102",note:"Working option, after his Hub works: a passage at full scale in translucent fabric, on the diagonal, with a parallel route kept clear between 103 and the exit to reception",W:40,H:28},
+  "p-suh":{prop:1,a:"Do Ho Suh",t:"Commission for gallery 102",m:"Translucent polyester fabric, stainless steel wire",s:"About 8 ft 4 in. × 3 ft 3 in. × 25 ft",note:"Working option, after his Hub works and the house he hung at MMCA Seoul: a passage at full scale on the diagonal, entered straight from 103, three hubs one after another, every door frame, door, switch, outlet, radiator and light sewn in deep ultramarine. A parallel route stays clear between 103 and the exit to reception",scene:"suh",W:40,H:28},
   "p-blackwell":{prop:1,a:ABL,t:"Commission for the courtyard",note:"In the open centre, set back from the patio entrance. The routes on either side stay open",W:120,H:84},
   "p-dundas":{prop:1,a:ABL,t:"Dundas Square",note:"Precedent",W:40,H:28},
   "p-model":{prop:1,a:ABL,t:"Model for a Public Space",note:"Precedent",W:40,H:28},
@@ -337,13 +338,13 @@ const VIEWS=[
   {id:"103-W",label:"103, west wall",at:[325,920],len:458,h:180,items:L103W},
   {id:"103-C",label:"103, textile",at:[522,937.5],scene:"cloth",key:"p-girouard"},
   {id:"103-E",label:"103, east wall",at:[629.3,845.8],len:323,h:180,items:L103E},
-  {id:"102",label:"102",at:[422.5,1195],options:["p-suh",65,66]},
+  {id:"102",label:"102",at:[422.5,1195],scene:"suh",key:"p-suh"},
   {id:"patio",label:"Courtyard",at:[1321,793.5],court:true},
   {id:"pavilion",label:"133, pavilion",at:[1766.3,884],room:{w:26.5,d:27,h:14.5}}
 ];
 /* where each work lives, for the way back from its object view */
 const HOME={};VIEWS.forEach(v=>{if(v.items)v.items().forEach(i=>{if(i.k!=null&&!(String(i.k) in HOME))HOME[i.k]=v.id;});if(v.go)HOME[v.go]=HOME[v.go]||null;if(v.options)v.options.forEach(k=>HOME[k]=v.id);});
-[23,24,26].forEach(k=>HOME[k]="106-T");HOME[15]="106-F";HOME["41c"]="105-F";HOME["p-girouard"]="103-C";HOME[67]=HOME[68]="pavilion";HOME["p-blackwell"]=HOME["p-dundas"]=HOME["p-model"]="patio";
+[23,24,26].forEach(k=>HOME[k]="106-T");HOME[15]="106-F";HOME["41c"]="105-F";HOME["p-girouard"]="103-C";HOME[67]=HOME[68]="pavilion";HOME["p-blackwell"]=HOME["p-dundas"]=HOME["p-model"]="patio";HOME["p-suh"]=HOME[65]=HOME[66]="102";
 /* ===================================================================== */
 const NS="http://www.w3.org/2000/svg";
 const el=(t,a={},p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);p&&p.appendChild(e);return e;};
@@ -485,6 +486,7 @@ function drawObj(k){
   const fig=document.createElement("div");fig.className="fig";const cap=document.createElement("p");cap.className="cap";
   const bar=document.createElement("div");bar.className="views";
   const show=i=>{const vw=views[i];fig.innerHTML="";fig.classList.toggle("pair",!!vw.pair);
+    if(c.scene&&!vw.img){fig.appendChild(drawScene({scene:c.scene,label:c.t,obj:1}));return;}
     (vw.pair||[k]).forEach(x=>fig.appendChild(figure(x,vw.pair?{}:vw)));
     bar.querySelectorAll("button").forEach((b,j)=>b.setAttribute("aria-pressed",j===i));
     cap.textContent=views.length>1?"":vw.cap||"";};
@@ -499,7 +501,7 @@ const FACES={
   "105-W":[[666,907.4],[666,698.5]],"105-N":[[666,623.5],[900.3,623.5]],"105-E":[[900.3,623.5],[900.3,907.4]],
   "103-N":[[303,723.8],[575,723.8]],"103-W":[[303,1066],[303,723.8]],"103-E":[[651.3,723.8],[651.3,966.8]]
 };
-const ROOM={"105":[666,623.5,900.3,907.4],"103":[303,723.8,651.3,1066]},CEIL=180;
+const ROOM={"105":[666,623.5,900.3,907.4],"103":[303,723.8,651.3,1066],"102":[303,1100,660,1288]},CEIL=180;
 function wallAt(face){const [a,b]=FACES[face],x0=WX(a[0]),z0=WZ(a[1]),dx=WX(b[0])-x0,dz=WZ(b[1])-z0,L=Math.hypot(dx,dz);
   return (x,y,z=0)=>[x0+dx/L*x-dz/L*z,y,z0+dz/L*x+dx/L*z];}
 
@@ -507,7 +509,7 @@ function wallAt(face){const [a,b]=FACES[face],x0=WX(a[0]),z0=WZ(a[1]),dx=WX(b[0]
 function sceneKit(){
   const faces=[],lines=[],top=[];
   const face=(p,o={})=>{faces.push({p,...o});};
-  const seg=(alpha,pts,o={})=>(o.top?top:lines).push({a:alpha,p:pts,dash:o.dash});
+  const seg=(alpha,pts,o={})=>(o.top?top:lines).push({a:alpha,p:pts,dash:o.dash,c:o.c,w:o.w});
   // a box with optional open bottom
   const box=(x0,y0,z0,x1,y1,z1,o={})=>{
     const v=(i,j,k)=>[[x0,x1][i],[y0,y1][j],[z0,z1][k]];
@@ -577,6 +579,84 @@ const SCENES={
     });
     return {K,T:[tx,TH+4,tz],R:46,yaw:Math.PI/2,pitch:.78,sway:.22,pmin:.04,pmax:1.45,intro:{pitch:.05,dist:2.1,ms:2600},keys:[23,24,26]};},
 
+
+  /* 102: Do Ho Suh, the commission (proposal). A passage at full scale on the diagonal, entered from 103, sewn in translucent
+     ultramarine fabric after his Hub works and the house he hung in MMCA Seoul: three hubs one after another,
+     each door frame, door, switch, outlet, radiator, window and light fitting made in the same cloth.
+     Local measures in inches: s along the passage from its entrance (north-east end), u across it (+ to the north-east), y up. */
+  suh(){const K=sceneKit(),N="22,34,118",FILL=`rgba(${N},.075)`,FILL2=`rgba(${N},.15)`,k="p-suh";
+    K.room("102",[]);
+    // from the opening out of 103, at the end of the north wall, down to the south-west corner, about 4 ft short of it
+    const E0=[556,1118],S0=[335,1262],ax=S0[0]-E0[0],az=S0[1]-E0[1],AL=Math.hypot(ax,az),A=[ax/AL,az/AL],Cv=[az/AL,-ax/AL],Wp=29.2;
+    const ox=WX(E0[0]),oz=WZ(E0[1]),LP=AL*S3,W=Wp*S3,hw=W/2,H=100,t=4.5,dw=15,dh=80;
+    const P=(s,u,y)=>[ox+s*A[0]+u*Cv[0],y,oz+s*A[1]+u*Cv[1]];
+    const F=(pts,o={})=>K.face(pts,{k,f:FILL,c:N,a:.8,...o});
+    const D=[],Dl=[],line=(...pts)=>{for(let i=0;i<pts.length-1;i++)D.push(pts[i],pts[i+1]);},loop=pts=>line(...pts,pts[0]);
+    const soft=(...pts)=>{for(let i=0;i<pts.length-1;i++)Dl.push(pts[i],pts[i+1]);};
+    // on a side wall (u = ±hw), standing off it by d toward the middle
+    const onW=(side,d=0)=>(s,y)=>P(s,side*(hw-d),y);
+    const rectW=(side,s0,s1,y0,y1,d=0)=>{const q=onW(side,d);return [q(s0,y0),q(s1,y0),q(s1,y1),q(s0,y1)];};
+    const ring=(c,r,n,at)=>Array.from({length:n},(_,i)=>at(c,r,2*Math.PI*i/n));
+    // the long walls and the ceiling, with the seams where the widths of cloth are sewn together
+    [1,-1].forEach(sd=>{F(rectW(sd,0,LP,0,H));for(let s=54;s<LP;s+=54)soft(P(s,sd*hw,0),P(s,sd*hw,H));
+      line(P(0,sd*hw,4),P(LP,sd*hw,4));soft(P(0,sd*hw,4.7),P(LP,sd*hw,4.7));          // skirting
+      line(P(0,sd*hw,H-2.6),P(LP,sd*hw,H-2.6));soft(P(0,sd*hw,H-1.3),P(LP,sd*hw,H-1.3));}); // cornice
+    F([P(0,-hw,H),P(0,hw,H),P(LP,hw,H),P(LP,-hw,H)]);
+    // cross walls with a door frame: two skins t apart, jambs and head between, architraves both sides, a threshold
+    const frame=s0=>{const s1=s0+t;
+      [s0,s1].forEach(s=>{F([P(s,dw,0),P(s,hw,0),P(s,hw,H),P(s,dw,H)]);F([P(s,-hw,0),P(s,-dw,0),P(s,-dw,H),P(s,-hw,H)]);F([P(s,-dw,dh),P(s,dw,dh),P(s,dw,H),P(s,-dw,H)]);
+        const o=s===s0?-.6:.6;line(P(s+o,dw+3,0),P(s+o,dw+3,dh+3),P(s+o,-dw-3,dh+3),P(s+o,-dw-3,0));soft(P(s+o,dw+1.2,0),P(s+o,dw+1.2,dh+1.2),P(s+o,-dw-1.2,dh+1.2),P(s+o,-dw-1.2,0));
+        line(P(s+o,dw,dh),P(s+o,dw+3,dh+3));line(P(s+o,-dw,dh),P(s+o,-dw-3,dh+3));});
+      F([P(s0,dw,0),P(s1,dw,0),P(s1,dw,dh),P(s0,dw,dh)],{f:FILL2});F([P(s0,-dw,0),P(s1,-dw,0),P(s1,-dw,dh),P(s0,-dw,dh)],{f:FILL2});
+      F([P(s0,-dw,dh),P(s1,-dw,dh),P(s1,dw,dh),P(s0,dw,dh)],{f:FILL2});
+      loop([P(s0-1.5,-dw,.3),P(s1+1.5,-dw,.3),P(s1+1.5,dw,.3),P(s0-1.5,dw,.3)]);
+      // the stop the door closes against, and the strike plate
+      soft(P(s0+1.5,dw-.6,0),P(s0+1.5,dw-.6,dh-.6),P(s0+1.5,-dw+.6,dh-.6),P(s0+1.5,-dw+.6,0));loop([P(s0+2,-dw+.05,34.5),P(s0+3.2,-dw+.05,34.5),P(s0+3.2,-dw+.05,37.5),P(s0+2,-dw+.05,37.5)]);};
+    const SB=100,SC=200;[0,SB,SC,LP-t].forEach(frame);
+    // a six-panel door standing open against a long wall, hinged at the jamb
+    const door=(s0,side)=>{const u0=side*dw,u1=side*(dw+1.75),s1=s0+2*dw,y0=.6,y1=dh-.4,Q=(s,y,u)=>P(s,u,y);
+      F([Q(s0,y0,u0),Q(s1,y0,u0),Q(s1,y1,u0),Q(s0,y1,u0)],{f:FILL2});F([Q(s0,y0,u1),Q(s1,y0,u1),Q(s1,y1,u1),Q(s0,y1,u1)],{f:FILL2});
+      F([Q(s1,y0,u0),Q(s1,y0,u1),Q(s1,y1,u1),Q(s1,y1,u0)],{f:FILL2});F([Q(s0,y1,u0),Q(s1,y1,u0),Q(s1,y1,u1),Q(s0,y1,u1)],{f:FILL2});
+      const m=3.6,g=2.8,pw=(s1-s0-2*m-g)/2,rows=[[y1-m-16,y1-m],[y1-m-16-g-24,y1-m-16-g],[y0+m,y0+m+24]];
+      [u0-side*.02,u1+side*.02].forEach(u=>[0,1].forEach(c=>rows.forEach(([a,b])=>{const sa=s0+m+c*(pw+g),sb=sa+pw;loop([Q(sa,a,u),Q(sb,a,u),Q(sb,b,u),Q(sa,b,u)]);soft(Q(sa+1,a+1,u),Q(sb-1,a+1,u),Q(sb-1,b-1,u),Q(sa+1,b-1,u),Q(sa+1,a+1,u));})));
+      // knob, rose and spindle on the face toward the middle; three hinges on the hinge edge
+      const kn=s1-2.6;[[1.4,0],[1.1,-1.6],[.7,-2.3]].forEach(([r,d])=>loop(ring([kn,36],r,10,([s,y],r,a)=>Q(s+r*Math.cos(a),y+r*Math.sin(a),u0-side*(-d)))));
+      line(Q(kn,36,u0),Q(kn,36,u0+side*2.3));
+      [8,38,68].forEach(y=>loop([Q(s0-.1,y,u0),Q(s0-.1,y,u1),Q(s0-.1,y+3.5,u1),Q(s0-.1,y+3.5,u0)]));};
+    door(SB+t,-1);door(SC+t,1);
+    // fittings on the walls, each a small sewn object
+    const plate=(side,s,y,kind)=>{const pw=kind==="double"?4.6:2.9,ph=4.6,q=onW(side,.3);
+      F(rectW(side,s-pw/2,s+pw/2,y-ph/2,y+ph/2,.3),{f:FILL2,a:.7});
+      if(kind==="switch"||kind==="double")(kind==="double"?[-1.05,1.05]:[0]).forEach(o=>loop([q(s+o-.25,y-.5),q(s+o+.25,y-.5),q(s+o+.25,y+.6),q(s+o-.25,y+.6)]));
+      if(kind==="outlet")[-1.05,1.05].forEach(o=>{loop([q(s-.55,y+o-.65),q(s+.55,y+o-.65),q(s+.55,y+o+.65),q(s-.55,y+o+.65)]);line(q(s-.25,y+o-.2),q(s-.25,y+o+.25));line(q(s+.25,y+o-.2),q(s+.25,y+o+.25));});};
+    const box=(side,s0,s1,y0,y1,d,o={})=>{const a=rectW(side,s0,s1,y0,y1,d),b=rectW(side,s0,s1,y0,y1,0);F(a,{f:FILL2,...o});F([b[3],b[2],a[2],a[3]]);F([b[0],b[1],a[1],a[0]]);F([b[0],b[3],a[3],a[0]]);F([b[1],b[2],a[2],a[1]]);return a;};
+    // hub one
+    plate(1,9,46,"switch");plate(1,22,12,"outlet");plate(-1,30,12,"outlet");
+    {const ic=onW(-1,.5);box(-1,9.5,14.5,48,56,.5);for(let y=50.6;y<54.5;y+=.7)line(ic(10.3,y),ic(13.7,y));loop(ring([12,49.2],.45,8,([s,y],r,a)=>ic(s+r*Math.cos(a),y+r*Math.sin(a))));}
+    {const rl=box(-1,40,70,62,66,.9),h=onW(-1,.9);[44,52,60,68].forEach(s=>line(h(s,64),onW(-1,3.4)(s,63.2),onW(-1,3.9)(s,65)));}
+    // hub two: the window over the radiator on one side, the open door and a thermostat on the other
+    {const w=onW(1,.2),s0=138,s1=168,y0=36,y1=80;F(rectW(1,s0,s1,y0,y1,.2),{f:FILL2});loop([w(s0+2,y0+2),w(s1-2,y0+2),w(s1-2,y1-2),w(s0+2,y1-2)]);
+      line(w((s0+s1)/2,y0+2),w((s0+s1)/2,y1-2));[1,2].forEach(i=>line(w(s0+2,y0+2+i*(y1-y0-4)/3),w(s1-2,y0+2+i*(y1-y0-4)/3)));
+      line(w(s0+2,(y0+y1)/2+.8),w(s1-2,(y0+y1)/2+.8));box(1,s0-2,s1+2,y0-1.4,y0,2.6);}
+    {const a=box(1,139,167,7,27,4.8),f=onW(1,4.8);for(let s=140.5;s<166;s+=1.85)line(f(s,8),f(s,26));[141,165].forEach(s=>line(onW(1,3)(s,7),onW(1,3)(s,0)));
+      loop(ring([166.2,24],.5,8,([s,y],r,a)=>f(s+r*Math.cos(a),y+r*Math.sin(a))));}
+    {const q=onW(-1,.8);box(-1,176,179.4,54,58.8,.8);loop(ring([177.7,57],1.05,12,([s,y],r,a)=>q(s+r*Math.cos(a),y+r*Math.sin(a))));plate(-1,190,46,"switch");}
+    plate(1,184,12,"outlet");
+    // hub three: the fuse box, a double switch, an outlet
+    {const q=onW(-1,3.4);box(-1,226,240,48,68,3.4);loop([q(227,49),q(239,49),q(239,67),q(227,67)]);
+      for(let r=0;r<6;r++)[0,1].forEach(c=>loop([q(228.6+c*5.2,51+r*2.6),q(231.6+c*5.2,51+r*2.6),q(231.6+c*5.2,52.4+r*2.6),q(228.6+c*5.2,52.4+r*2.6)]));
+      loop(ring([238.4,58],.45,8,([s,y],r,a)=>onW(-1,3.6)(s+r*Math.cos(a),y+r*Math.sin(a))));}
+    plate(1,252,46,"double");plate(1,268,12,"outlet");plate(-1,262,12,"outlet");
+    // a light in the middle of each ceiling, and a smoke alarm
+    const onC=(s,u,y)=>P(s,u,y),dome=(s,r)=>{const top=ring([s,0],r,18,([c,u],r,a)=>onC(c+r*Math.cos(a),u+r*Math.sin(a),H-.15)),bot=ring([s,0],r*.78,18,([c,u],r,a)=>onC(c+r*Math.cos(a),u+r*Math.sin(a),H-3.4));
+      F(bot,{f:FILL2});loop(top);for(let i=0;i<18;i+=3)line(top[i],bot[i]);loop(ring([s,0],r*.25,10,([c,u],r,a)=>onC(c+r*Math.cos(a),u+r*Math.sin(a),H-3.45)));};
+    [SB/2,(SB+SC+t)/2,(SC+t+LP-t)/2].forEach(s=>dome(s,6.5));
+    [[178,7],[60,-8]].forEach(([s,u])=>{loop(ring([s,u],2.6,14,([c,v],r,a)=>onC(c+r*Math.cos(a),v+r*Math.sin(a),H-.15)));loop(ring([s,u],2.2,14,([c,v],r,a)=>onC(c+r*Math.cos(a),v+r*Math.sin(a),H-1.5)));});
+    // the wires it hangs from, to the ceiling of the gallery
+    const wires=[];[0,SB,SC,LP].forEach(s=>[-1,1].forEach(sd=>wires.push(P(s,sd*hw,H),P(s,sd*hw,CEIL))));K.seg(.3,wires,{c:N});
+    K.seg(.85,D,{top:1,c:N});K.seg(.38,Dl,{top:1,c:N});
+    const mid=P(LP/2,0,48);
+    return {K,T:mid,R:225,yaw:1.6,pitch:.52,sway:.3,pmin:-.15,pmax:1.4,keys:["p-suh"],also:[65,66]};},
   /* 106: Splitting: Four Corners, the four roof corners of the house on the floor, outside corners out */
   corners(){const K=sceneKit(),fx=WX(765),fz=WZ(1020);
     const pieces=[[-34,-28,-90],[34,-30,180],[32,28,90],[-32,30,0]],jit=[8,-6,4,-10];
@@ -628,7 +708,7 @@ function drawScene(v){
   const wrap=document.createElement("div");wrap.className="room3d scene";
   const cv=document.createElement("canvas");cv.setAttribute("role","img");cv.setAttribute("aria-label",v.label+", drawn in perspective");
   const ctl=document.createElement("div");ctl.className="ctl";
-  ctl.innerHTML=S.keys.map(k=>`<a href="#o-${esc(k)}">${C[k].prop?esc(C[k].a)+", ":""}${esc(C[k].t)}</a>`).join("");
+  ctl.innerHTML=S.keys.map(k=>`<a href="#o-${esc(k)}">${C[k].prop?esc(C[k].a)+", ":""}${esc(C[k].t)}</a>`).join("")+(S.also&&!v.obj?S.also.map(k=>`<a class="alt" href="#o-${esc(k)}">${esc(C[k].a)}, ${esc(C[k].t)}</a>`).join(""):"");
   wrap.append(cv,ctl);
   const g=cv.getContext("2d"),dpr=Math.min(2,window.devicePixelRatio||1);let W=0,H=0;
   const size=()=>{const r=cv.getBoundingClientRect();W=r.width;H=r.height;cv.width=W*dpr;cv.height=H*dpr;};
@@ -669,7 +749,7 @@ function drawScene(v){
     if(!introDone){const e=ease(Math.min(1,t/I.ms));pitch=I.pitch+(S.pitch-I.pitch)*e;dist=S.R*3.4*(I.dist+(1-I.dist)*e);if(t>=I.ms)introDone=true;}
     else if(auto&&!drag){if(tb==null)tb=now;const k=Math.min(1,(now-tb)/2500);yaw=base+Math.sin((now-tb)/7000)*S.sway*(base===S.yaw&&!d0?1:k*k*(3-2*k));}
     g.setTransform(dpr,0,0,dpr,0,0);g.clearRect(0,0,W,H);
-    const runs=list=>list.forEach(l=>{g.strokeStyle=`rgba(0,0,0,${l.a})`;g.lineWidth=l.a<1?.7:1;g.setLineDash(l.dash||[]);g.beginPath();strokeSegs(l.p);g.stroke();});
+    const runs=list=>list.forEach(l=>{g.strokeStyle=`rgba(${l.c||"0,0,0"},${l.a})`;g.lineWidth=l.w||(l.a<1?.7:1);g.setLineDash(l.dash||[]);g.beginPath();strokeSegs(l.p);g.stroke();});
     runs(K.lines);g.setLineDash([]);
     // faces, far to near within each layer
     drawn=K.faces.map(F=>{const c=F.p.map(cam),P=clipPoly(c);return {F,P:P.map(scr),z:c.reduce((s,q)=>s+q[2],0)/c.length,n:P.length};})
@@ -678,8 +758,8 @@ function drawScene(v){
       const path=()=>{g.beginPath();P.forEach((q,i)=>i?g.lineTo(q[0],q[1]):g.moveTo(q[0],q[1]));g.closePath();};
       path();g.fillStyle=F.f||"#fff";g.fill();
       const im=F.img&&F.img.src&&getImg(F.img.src);if(im)picture(F,im);
-      if(F.det){g.strokeStyle=`rgba(0,0,0,${F.da||.3})`;g.lineWidth=.6;g.beginPath();strokeSegs(F.det);g.stroke();}
-      if(F.a!==0){const on=F.k!=null&&(String(F.k)===selK||String(F.k)===hover);path();g.strokeStyle=`rgba(0,0,0,${F.a??1})`;g.lineWidth=on?1.8:1;g.stroke();}
+      if(F.det){g.strokeStyle=`rgba(${F.c||"0,0,0"},${F.da||.3})`;g.lineWidth=.6;g.beginPath();strokeSegs(F.det);g.stroke();}
+      if(F.a!==0){const on=F.k!=null&&(String(F.k)===selK||String(F.k)===hover);path();g.strokeStyle=`rgba(${F.c||"0,0,0"},${F.a??1})`;g.lineWidth=on?(F.c?1.3:1.8):(F.c?.8:1);g.stroke();}
     }
     runs(K.top);g.setLineDash([]);
     raf=requestAnimationFrame(frame);
@@ -694,7 +774,7 @@ function drawScene(v){
     if(Math.hypot(e.clientX-drag.x,e.clientY-drag.y)>4){drag.moved=true;auto=false;introDone=true;}
     if(drag.moved){yaw=drag.yaw+(e.clientX-drag.x)*.006;pitch=Math.max(S.pmin,Math.min(S.pmax,drag.pitch+(e.clientY-drag.y)*.004));}});
   cv.addEventListener("pointerup",e=>{const d=drag;drag=null;if(d&&d.moved&&!reduce){auto=true;base=yaw;tb=performance.now();d0=true;}
-    if(d&&!d.moved){const k=hitAt(e);if(!k){leave();return;}
+    if(d&&!d.moved){const k=hitAt(e);if(!k){if(!v.obj)leave();return;}
     if(selK===k){openObj(k);return;}const i=picks.findIndex(p=>String(p)===k);if(i>=0)pick(i);}});
   cv.addEventListener("pointerleave",()=>{hover=null;});
   picks=S.keys.slice();wrap.mark=k=>{selK=k==null?null:String(k);};
@@ -926,7 +1006,7 @@ function openObject(k){
   body.appendChild(drawObj(k));tombstone(k,false);lastKey=String(k);
   const back=prevView||HOME[k];show(C[k].t);
   // a click on the work, or around it, goes back to the wall it came from
-  body.firstChild.addEventListener("click",e=>{if(e.target.closest("button,a"))return;location.hash=back?"#"+back:"#";});
+  body.firstChild.addEventListener("click",e=>{if(e.target.closest("button,a,canvas"))return;location.hash=back?"#"+back:"#";});
   cr.innerHTML=(back?`<a href="#${back}">Back</a>`:"")+`<a href="#">Close</a>`;
 }
 /* the checklist, room by room */
