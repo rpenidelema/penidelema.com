@@ -145,8 +145,8 @@ body.open .corner{display:none}
         <path class="z" d="M305 726 V771 L323 726 Z"/>
         <path class="z" d="M305 842 H323 M305 862 H323"/>
         <rect class="z d" x="495" y="915" width="54" height="45"/>
-        <!-- 102: the passage, on the diagonal, with the route from 103 to reception kept clear on the east -->
-        <path class="z d" d="M326.1 1132.2 L345 1110 L518.9 1257.8 L500 1280 Z"/>
+        <!-- 102: the passage, on the diagonal, entered from the opening out of 103; the route to reception kept clear on the east -->
+        <path class="z d" d="M548 1105.8 L564 1130.2 L343 1274.2 L327 1249.8 Z"/>
         <!-- courtyard: Blackwell commission (proposal), set back from the patio entrance -->
         <rect class="z d" x="1276" y="762" width="90" height="63"/>
         <!-- 133: projection on the east display wall, bench parallel to it -->
@@ -238,7 +238,7 @@ const C={
   "p-swept":{prop:1,a:"",t:"Swept House, document",W:16,H:20},
   "p-anderson":{prop:1,a:"Laurie Anderson",t:"Institutional Dream Series, image and text",W:34,H:16},
   "p-notebook":{prop:1,fr:"none",a:"Laurie Anderson",t:"Notebook, open to Duet for Door Jamb",note:"In a shallow case",W:16,H:10},
-  "p-suh":{prop:1,a:"Do Ho Suh",t:"Commission for gallery 102",m:"Translucent polyester fabric, stainless steel wire",s:"About 8 ft 4 in. × 3 ft 3 in. × 25 ft",note:"Working option, after his Hub works and the house he hung at MMCA Seoul: a passage at full scale on the diagonal, three hubs one after another, every door frame, door, switch, outlet, radiator and light sewn in deep ultramarine. A parallel route stays clear between 103 and the exit to reception",scene:"suh",W:40,H:28},
+  "p-suh":{prop:1,a:"Do Ho Suh",t:"Commission for gallery 102",m:"Translucent polyester fabric, stainless steel wire",s:"About 8 ft 4 in. × 3 ft 3 in. × 25 ft",note:"Working option, after his Hub works and the house he hung at MMCA Seoul: a passage at full scale on the diagonal, entered straight from 103, three hubs one after another, every door frame, door, switch, outlet, radiator and light sewn in deep ultramarine. A parallel route stays clear between 103 and the exit to reception",scene:"suh",W:40,H:28},
   "p-blackwell":{prop:1,a:ABL,t:"Commission for the courtyard",note:"In the open centre, set back from the patio entrance. The routes on either side stay open",W:120,H:84},
   "p-dundas":{prop:1,a:ABL,t:"Dundas Square",note:"Precedent",W:40,H:28},
   "p-model":{prop:1,a:ABL,t:"Model for a Public Space",note:"Precedent",W:40,H:28},
@@ -580,14 +580,15 @@ const SCENES={
     return {K,T:[tx,TH+4,tz],R:46,yaw:Math.PI/2,pitch:.78,sway:.22,pmin:.04,pmax:1.45,intro:{pitch:.05,dist:2.1,ms:2600},keys:[23,24,26]};},
 
 
-  /* 102: Do Ho Suh, the commission (proposal). A passage at full scale on the diagonal, sewn in translucent
+  /* 102: Do Ho Suh, the commission (proposal). A passage at full scale on the diagonal, entered from 103, sewn in translucent
      ultramarine fabric after his Hub works and the house he hung in MMCA Seoul: three hubs one after another,
      each door frame, door, switch, outlet, radiator, window and light fitting made in the same cloth.
-     Local measures in inches: s along the passage from its north end, u across it (+ to the north-east), y up. */
+     Local measures in inches: s along the passage from its entrance (north-east end), u across it (+ to the north-east), y up. */
   suh(){const K=sceneKit(),N="22,34,118",FILL=`rgba(${N},.075)`,FILL2=`rgba(${N},.15)`,k="p-suh";
     K.room("102",[]);
-    const ax=200,az=170,AL=Math.hypot(ax,az),A=[ax/AL,az/AL],Cv=[az/AL,-ax/AL],Wp=29.2,ins=(Wp/2)*Math.abs(Cv[1])/A[1];
-    const ox=WX(322.5+ins*A[0]),oz=WZ(1110+ins*A[1]),LP=(AL-2*ins)*S3,W=Wp*S3,hw=W/2,H=100,t=4.5,dw=15,dh=80;
+    // from the opening out of 103, at the end of the north wall, down to the south-west corner, about 4 ft short of it
+    const E0=[556,1118],S0=[335,1262],ax=S0[0]-E0[0],az=S0[1]-E0[1],AL=Math.hypot(ax,az),A=[ax/AL,az/AL],Cv=[az/AL,-ax/AL],Wp=29.2;
+    const ox=WX(E0[0]),oz=WZ(E0[1]),LP=AL*S3,W=Wp*S3,hw=W/2,H=100,t=4.5,dw=15,dh=80;
     const P=(s,u,y)=>[ox+s*A[0]+u*Cv[0],y,oz+s*A[1]+u*Cv[1]];
     const F=(pts,o={})=>K.face(pts,{k,f:FILL,c:N,a:.8,...o});
     const D=[],Dl=[],line=(...pts)=>{for(let i=0;i<pts.length-1;i++)D.push(pts[i],pts[i+1]);},loop=pts=>line(...pts,pts[0]);
@@ -655,7 +656,7 @@ const SCENES={
     const wires=[];[0,SB,SC,LP].forEach(s=>[-1,1].forEach(sd=>wires.push(P(s,sd*hw,H),P(s,sd*hw,CEIL))));K.seg(.3,wires,{c:N});
     K.seg(.85,D,{top:1,c:N});K.seg(.38,Dl,{top:1,c:N});
     const mid=P(LP/2,0,48);
-    return {K,T:mid,R:182,yaw:1.6,pitch:.5,sway:.3,pmin:-.15,pmax:1.4,keys:["p-suh"],also:[65,66]};},
+    return {K,T:mid,R:225,yaw:1.6,pitch:.52,sway:.3,pmin:-.15,pmax:1.4,keys:["p-suh"],also:[65,66]};},
   /* 106: Splitting: Four Corners, the four roof corners of the house on the floor, outside corners out */
   corners(){const K=sceneKit(),fx=WX(765),fz=WZ(1020);
     const pieces=[[-34,-28,-90],[34,-30,180],[32,28,90],[-32,30,0]],jit=[8,-6,4,-10];
