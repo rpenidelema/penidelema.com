@@ -1,10 +1,12 @@
 <!doctype html>
-<!-- Anarchitecture, exhibition proposal. Built 2026-11-25 -->
+<!-- Anarchitecture, exhibition proposal. Built 2026-11-26 -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Anarchitecture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;600&family=Reenie+Beanie&display=swap" rel="stylesheet">
 <meta name="description" content="Anarchitecture. Installation plan for an exhibition at the Benton Museum of Art at Pomona College. Rodrigo Penide Lema.">
 <style>
 /* One look on purpose: white ground, black drawing, Arial at one small size. Single theme. */
@@ -123,6 +125,17 @@ main{min-height:100%;display:flex;align-items:center;justify-content:center;padd
 body.open .corner{display:none}
 @media (max-width:640px){.corner-r{gap:12px}.page{grid-template-rows:auto auto;align-content:start}.tomb{position:static;grid-row:2;margin:0 24px 32px;max-width:none;font-size:12px}#pagebody{grid-row:1}.wallbox{min-height:0;padding-block:72px 24px}.room3d{width:100%}.wallbox svg.el{max-height:none}}
 .obj{cursor:pointer}.obj button,.obj a{cursor:pointer}
+/* reception 117: the introductory wall, a printed graphic on a warm ground */
+.rc .gr{fill:#F3F0E8}
+.rc .ink{fill:#23221F}
+.rc .fd{font-family:"Franklin Gothic Demi","Franklin Gothic Medium","Libre Franklin",Arial,sans-serif;font-weight:600}
+.rc .fb{font-family:"Franklin Gothic Book","Libre Franklin",Arial,sans-serif;font-weight:400}
+.rc .hand{font-family:"Reenie Beanie","Bradley Hand",cursive}
+.rc .tbar{fill:#9b978d}
+.rc .dims{display:none;fill:var(--grey)}
+.rc.showdims .dims{display:inline}
+.rc .dl{stroke:var(--grey);stroke-width:.6px;vector-effect:non-scaling-stroke;fill:none}
+.rc .dr{stroke:var(--grey);stroke-width:.6px;stroke-dasharray:3 3;vector-effect:non-scaling-stroke;fill:none}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -243,9 +256,9 @@ const C={
   "p-blackwell":{prop:1,a:ABL,t:"Commission for the courtyard",note:"In the open centre, set back from the patio entrance. The routes on either side stay open",W:120,H:84},
   "p-dundas":{prop:1,a:ABL,t:"Dundas Square",note:"Precedent",W:40,H:28},
   "p-model":{prop:1,a:ABL,t:"Model for a Public Space",note:"Precedent",W:40,H:28},
-  "i-title":{intro:1,fr:"none",t:"Anarchitecture",note:"Exhibition title",W:60,H:8},
-  "i-vis":{intro:1,t:"Introductory visual",note:"To be selected",W:66,H:50},
-  "i-text":{intro:1,fr:"none",t:"Introduction",note:"Text to come",W:40,H:54}
+  "i-title":{intro:1,fr:"none",t:"The Afterlives of the Cut: Anarchitecture and Its Legacies",m:"Wall title. Franklin Gothic Demi, capitals about 4 in.; subtitle in Franklin Gothic Book, capitals about 1¼ in.",s:"From 6 to 44 in., top at about 75 in."},
+  "i-vis":{intro:1,a:"Anarchitecture",t:"Photo-essay, Flash Art, nos. 46–47, June 1974, p. 70 (detail)",m:"The “PILLAR TO…” pair, handwritten caption by Gordon Matta-Clark. Enlarged from one scan of the page, printed flush on matte stock",s:"52 in. wide, from 48 to 100 in., centred at 60 in.",note:"Drawn stand-in. The scan is not shown until reproduction is cleared"},
+  "i-text":{intro:1,fr:"none",t:"Introduction",m:"About 150–175 words in three paragraphs. Franklin Gothic Book, 38–42 pt, ragged right",s:"From 105 in., up to 34 in. wide, starting at about 69 in.",note:"Copy to come"}
 };
 /* the Splitting prints are shown cropped to the print; the longest side, in inches, measured against the 10 in. sheet */
 Object.entries({4:9.58,5:9.61,6:9.74,7:9.73,8:10,9:8.79,10:9.49,11:9.72,12:7.7,13:9.86}).forEach(([k,l])=>C[k].L=l);
@@ -314,14 +327,13 @@ const L103N=()=>[{k:"24b",kind:"case",x:300,b:0,w:36,h:38}];
 const L103W=()=>{const [,h]=osz(64),[,h2]=osz("64b"),gap=6;return [at(64,100,60+(h2+gap)/2),at("64b",100,60-(h+gap)/2),{k:62,kind:"tri2",x:250,b:26,w:40,h:72},{k:63,kind:"plate",x:458-60,b:46,w:60,h:12}];};
 const L103E=()=>[{k:"p-notebook",kind:"case",x:40,b:0,w:30,h:38},{k:"p-anderson",kind:"imgtext",x:100,b:52,w:34,h:16},
   {k:"p-swept",x:170,b:50,w:16,h:20},{k:"p-contact",kind:"sheets",x:228,b:56,w:36,h:8}];
-/* 28'6": the title in the left third, the visual in the middle, the introduction on the right */
-const LINTRO=()=>[{k:"i-title",kind:"title",x:14,b:58,w:60,h:13},{...at("i-vis",171,60)},{k:"i-text",kind:"text",x:250,b:33,w:40,h:54}];
 
 /* ---------- the views: one per + on the plan ----------
    at = where the + sits, in plan units (the plan drawing is 2350 x 1350, starting at 265, 405).
    Wall markers sit 22 units in front of the middle of the wall face, measured from the drawing. */
 const VIEWS=[
-  {id:"intro",label:"Lobby, introduction wall",at:[973.5,1536.4],len:342,h:144,items:LINTRO},
+  {id:"intro",label:"Reception 117, introductory wall",at:[699.6,1379],len:145,draw:drawReception,
+   note:`<p>Reception 117, introductory wall</p><p class="where">12 ft 1 in., opposite the entrance to 106</p><p class="where">Exhibition proposal for the Benton Museum of Art at Pomona College</p>`},
   {id:"106-S",label:"106, south wall",at:[736.6,1266.5],len:188,h:180,min:[38,22],from:-4,items:()=>[at(1,21,60)]},
   {id:"106-E",label:"106, east wall",at:[878.3,1114.5],len:464,h:180,items:L106E},
   {id:"106-W",label:"106, west wall",at:[688,1159.8],len:343,h:180,items:L106W},
@@ -366,7 +378,7 @@ function tombLines(k,open){const c=C[k];
   const n=num(k),lines=[n?`<span class="n">${esc(n)}</span>`:"",esc(c.a),`<span class="t">${esc(c.t)}</span>${c.d?", "+esc(c.d):""}`,esc(c.m),esc(c.s),esc(c.cr),c.note?`<span class="n">${esc(c.note)}</span>`:""].filter(Boolean);
   return lines.map(l=>`<p>${l}</p>`).join("")+(open?`<p class="more"><a href="#o-${esc(k)}">View</a></p>`:"");}
 function tombstone(ks,open=true){
-  if(!ks){tomb.innerHTML="";return;}
+  if(!ks){tomb.innerHTML=current&&current.note||"";return;}
   tomb.innerHTML=[].concat(ks).map(k=>`<div class="tb">${tombLines(k,open)}</div>`).join("");}
 
 /* text stays the same small size whatever the scale of the drawing */
@@ -454,6 +466,87 @@ function drawWall(v){
   // a series or composition shares one label, at its right
   groups.forEach(G=>card(el("g",{class:"glab"},s),G.lab));
   s.addEventListener("click",e=>{if(e.target.closest(".e-work,.glab"))return;leave();});
+  fit=()=>fitText(s,vw,vh,10);
+  return s;
+}
+/* reception 117: the 12'1" face opposite the entrance to 106, seen straight on. Inches from the left edge
+   and from the finished floor (y = -height). Title left, the "PILLAR TO…" pair in the middle, the introduction right,
+   all on one warm-white ground. The photographs are a drawn stand-in until a cleared scan exists. */
+const RC={L:145,top:104,cap:.74,
+  title:{x:6,top:75,cap:4,sub:1.25,gap:2,lead:1.12},
+  img:{x:48,w:52,b:40,h:40,join:75.2,rb:44.6},
+  capt:{gap:1.5,fs:.5,lh:.7},
+  text:{x:105,w:34,meas:20,top:69,fs:.56,lh:.82,paras:[6,5,5],pgap:.45}};
+function drawReception(v){
+  const {L,top}=RC,mx=26,vx=-mx,vw=L+2*mx,vy=-top,vh=top+16;
+  const s=el("svg",{viewBox:`${vx} ${vy} ${vw} ${vh}`,role:"img","aria-label":v.label,class:"el rc"});
+  const defs=el("defs",{},s);
+  const dots=el("pattern",{id:"rcDots",width:.42,height:.42,patternUnits:"userSpaceOnUse",patternTransform:"rotate(45)"},defs);
+  el("circle",{cx:.21,cy:.21,r:.11,fill:"#000","fill-opacity":.22},dots);
+  const clip=(id,x,y,w,h)=>{const c=el("clipPath",{id},defs);el("rect",{x,y,width:w,height:h},c);};
+  el("rect",{x:vx,y:vy,width:vw,height:vh,class:"bg"},s);
+  // the wall face: the ground runs over the whole 12'1", cut at the top of the drawing
+  el("rect",{x:0,y:-top,width:L,height:top,class:"gr"},s);
+  el("path",{d:`M0 0 V${-top} M${L} 0 V${-top}`,class:"e-line"},s);
+  el("line",{x1:vx,y1:0,x2:vx+vw,y2:0,class:"e-floor"},s);
+  const parts=[];const part=k=>{const g=el("g",{class:"e-work",tabindex:"0",role:"button","aria-label":C[k].t},s);parts.push([g,k]);return g;};
+
+  // left: the title, four lines on one left edge
+  {const T=RC.title,g=part("i-title"),fs=T.cap/RC.cap,ss=T.sub/RC.cap;let y=-(T.top-T.cap);
+    const line=(t,cls,size,yy)=>{const e=el("text",{x:T.x,y:yy,class:"ink "+cls,style:`font-size:${size}px`},g);e.textContent=t;return e;};
+    line("The Afterlives","fd",fs,y);y+=fs*T.lead;line("of the Cut:","fd",fs,y);
+    y+=T.gap+T.sub;line("Anarchitecture","fb",ss,y);y+=ss*1.22;line("and Its Legacies","fb",ss,y);
+    el("rect",{x:T.x-1,y:-T.top-1,width:40,height:y+T.top+2,class:"hit"},g);}
+
+  // centre: the composite, a stand-in drawn after the page. Left photograph: two carved columns.
+  // Right: the nearer column again, larger, in a shallower print, with a step of page left below it.
+  {const I=RC.img,g=part("i-vis"),X0=I.x,X1=I.x+I.w,J=I.join,yT=-(I.b+I.h),yB=-I.b,yR=-I.rb;
+    el("rect",{x:X0,y:yT,width:I.w,height:I.h,style:"fill:#F6F3EC",stroke:"#d9d4c8","stroke-width":".5px","vector-effect":"non-scaling-stroke"},g);
+    clip("rcL",X0,yT,J-X0,yB-yT);clip("rcR",J,yT,X1-J,yR-yT);
+    const col=(p,cx,w,base,capY,tone)=>{ // a carved column: base, shaft with flutes, a band of carving, capital
+      const sx=cx-w/2,cap=w*.42,bs=w*.3;
+      el("rect",{x:cx-w*.62,y:base-bs,width:w*1.24,height:bs,style:"fill:"+tone},p);
+      el("rect",{x:sx,y:capY,width:w,height:base-bs-capY,style:"fill:"+tone},p);
+      el("path",{d:`M${cx-w*.7} ${capY} L${cx-w*.5} ${capY+cap} H${cx+w*.5} L${cx+w*.7} ${capY} Z`,style:"fill:"+tone},p);
+      el("rect",{x:cx-w*.78,y:capY-cap*.45,width:w*1.56,height:cap*.45,style:"fill:"+tone},p);
+      [.25,.5,.75].forEach(f=>el("rect",{x:sx+w*f-w*.025,y:capY+cap+w*.4,width:w*.05,height:base-bs-capY-cap-w*.8,style:"fill:#4a4640"},p));
+      [.18,.21].forEach(f=>{const yy=capY+(base-capY)*f;el("path",{d:`M${sx} ${yy} q${w/4} ${w*.22} ${w/2} 0 t${w/2} 0`,fill:"none",stroke:"#7a756b","stroke-width":".6px","vector-effect":"non-scaling-stroke"},p);});};
+    const pl=el("g",{"clip-path":"url(#rcL)"},g),hL=-57;
+    el("rect",{x:X0,y:yT,width:J-X0,height:hL-yT,style:"fill:#d3cec3"},pl);
+    el("rect",{x:X0,y:hL,width:J-X0,height:yB-hL,style:"fill:#8f897e"},pl);
+    el("path",{d:`M${X0} ${hL} q6 -1.2 11 -.4 t12 .6 t5 -.3`,style:"fill:#a29c90"},pl);
+    col(pl,54.5,3.4,-41.5,-72.5,"#2b2925");col(pl,66.5,3.4,-42.5,-72,"#2f2d29");
+    el("rect",{x:X0,y:yT,width:J-X0,height:yB-yT,style:"fill:url(#rcDots)"},pl);
+    const pr=el("g",{"clip-path":"url(#rcR)"},g),hR=-52.2;
+    el("rect",{x:J,y:yT,width:X1-J,height:hR-yT,style:"fill:#c2bcb0"},pr);
+    el("rect",{x:J,y:hR,width:X1-J,height:yR-hR,style:"fill:#7d776c"},pr);
+    col(pr,81.2,7.2,-38,-73.8,"#252320");
+    el("rect",{x:J,y:yT,width:X1-J,height:yR-yT,style:"fill:url(#rcDots)"},pr);
+    el("path",{d:`M${J} ${yT} V${yR} H${X1}`,fill:"none",stroke:"#000","stroke-opacity":.35,"stroke-width":".6px","vector-effect":"non-scaling-stroke"},g);
+    const ins=el("text",{x:61.5,y:-75.6,class:"hand",style:"fill:#1d1c1a;font-size:4.8px",transform:"rotate(-3 61.5 -75.6)"},g);ins.textContent="PILLAR TO…";
+    el("rect",{x:X0-1,y:yT-1,width:I.w+2,height:I.h+2,class:"hit"},g);
+    // the caption, at the left edge of the image, set at its real size
+    const P=RC.capt;["Detail from Anarchitecture’s photo-essay, Flash Art, nos. 46–47, June 1974, p. 70.","Handwritten caption by Gordon Matta-Clark.","Reproduction credit as supplied with the final scan"].forEach((t,i)=>{
+      const e=el("text",{x:X0,y:-(I.b-P.gap-P.fs*RC.cap)+i*P.lh+(i===2?P.lh*.5:0),class:"fb "+(i===2?"tbar":"ink"),style:`font-size:${P.fs}px`},g);e.textContent=t;});}
+
+  // right: the introduction (placeholder lines at size), one blank line, then the credit
+  {const T=RC.text,g=part("i-text");let y=-T.top;const meas=T.meas;
+    T.paras.forEach((n,pi)=>{for(let i=0;i<n;i++){const w=i===n-1?meas*[.62,.48,.7][pi]:meas*(.9+.1*((i*7+pi*3)%4)/3);
+      el("rect",{x:T.x,y:y+T.lh*.28,width:w,height:T.fs*.5,class:"tbar"},g);y+=T.lh;}y+=T.pgap;});
+    y+=T.lh;const c=el("text",{x:T.x,y:y+T.fs*RC.cap,class:"fb ink",style:`font-size:${T.fs}px`},g);c.textContent="Curated by Rodrigo Penide Lema";
+    el("rect",{x:T.x-1,y:-T.top-1,width:T.w+2,height:y+T.top+T.lh+2,class:"hit"},g);}
+
+  // dimensions, on request: the horizontal chain above, heights at the left, the width under the floor
+  {const d=el("g",{class:"dims"},s),ln=a=>el("path",{d:a,class:"dl"},d),tx=(x,y,t,anchor="middle")=>{const e=el("text",{x,y,"text-anchor":anchor},d);e.textContent=t;};
+    const yc=-90,xs=[0,6,44,48,100,105,139,145];ln(`M0 ${yc} H${L}`);
+    xs.forEach(x=>ln(`M${x} ${yc-1.2} V${yc+1.2}`));xs.slice(1).forEach((x,i)=>{const a=xs[i],w=x-a;tx((a+x)/2,yc-(w<8?(i%2?4.4:2):2),`${+w.toFixed(2)}″`);});
+    ln(`M0 8 H${L} M0 6.8 V9.2 M${L} 6.8 V9.2`);tx(L/2,12.5,"12′1″ (145″)");
+    const xh=-6;ln(`M${xh} 0 V-80`);[[80,"80″ image top"],[75,"75″ title top"],[69,"69″ text starts"],[60,"60″ image centre"],[40,"40″ image bottom"]].forEach(([h,t])=>{ln(`M${xh-1.2} ${-h} H${xh+1.2}`);tx(xh-2,-h+.9,t,"end");});
+    el("rect",{x:6,y:-80,width:38,height:40,class:"dr"},d);el("rect",{x:105,y:-69,width:34,height:21,class:"dr"},d);}
+
+  picks=parts.map(([,k])=>k);
+  parts.forEach(([g,k],i)=>{const go=()=>pick(i);g.addEventListener("click",go);g.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();go();}});});
+  s.addEventListener("click",e=>{if(e.target.closest(".e-work"))return;leave();});
   fit=()=>fitText(s,vw,vh,10);
   return s;
 }
@@ -983,7 +1076,7 @@ function pick(i){
   const o=body.querySelector(".obj");if(current&&current.options&&o){o.show(sel);tombstone(picks[sel],true);return;}
   const sc=body.querySelector(".scene");if(sc){sc.mark(picks[sel]);tombstone(picks[sel]);return;}
   body.querySelectorAll(".e-work").forEach((g,j)=>g.classList.toggle("dim",j!==sel));
-  tombstone(picks[sel]);
+  tombstone(picks[sel],!(current&&current.draw));
 }
 function show(label){page.setAttribute("aria-label",label);page.hidden=false;document.body.classList.add("open");page.scrollTop=0;}
 function openView(id){
@@ -992,7 +1085,7 @@ function openView(id){
   const keep=lastKey;stop();current=v;sel=-1;picks=[];tombstone(null);body.innerHTML="";prevView=id;lastKey=keep;
   if(v.options)body.appendChild(drawOptions(v));
   else{const box=document.createElement("div");box.className="wallbox";
-    box.appendChild(v.court?drawCourt(v):v.room&&v.room.w?drawRoom(v):v.scene?drawScene(v):drawWall(v));body.appendChild(box);
+    box.appendChild(v.draw?v.draw(v):v.court?drawCourt(v):v.room&&v.room.w?drawRoom(v):v.scene?drawScene(v):drawWall(v));body.appendChild(box);
     box.addEventListener("click",e=>{if(e.target===box||e.target.classList.contains("room3d"))leave();});}
   if(fit){cleanup=fit();fit=null;}
   if(v.room&&v.room.w)tombstone(67);
@@ -1000,6 +1093,8 @@ function openView(id){
   else if(v.options)pick(0);
   else{let i=picks.findIndex(p=>String(p)===lastKey);if(i<0&&v.key)i=picks.findIndex(p=>String(p)===String(v.key));if(i>=0)pick(i);}
   show(v.label);cr.innerHTML=`<a href="#">Close</a>`;
+  if(v.draw){const b=document.createElement("button");b.textContent="Dimensions";b.setAttribute("aria-pressed","false");cr.prepend(b);
+    b.addEventListener("click",()=>{const on=body.querySelector(".rc").classList.toggle("showdims");b.setAttribute("aria-pressed",on);});}
 }
 function openObject(k){
   if(!C[k])return closePage();
