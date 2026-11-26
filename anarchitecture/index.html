@@ -256,9 +256,9 @@ const C={
   "p-blackwell":{prop:1,a:ABL,t:"Commission for the courtyard",note:"In the open centre, set back from the patio entrance. The routes on either side stay open",W:120,H:84},
   "p-dundas":{prop:1,a:ABL,t:"Dundas Square",note:"Precedent",W:40,H:28},
   "p-model":{prop:1,a:ABL,t:"Model for a Public Space",note:"Precedent",W:40,H:28},
-  "i-title":{intro:1,fr:"none",t:"The Afterlives of the Cut: Anarchitecture and Its Legacies",m:"Wall title. Franklin Gothic Demi, capitals about 4 in.; subtitle in Franklin Gothic Book, capitals about 1¼ in.",s:"From 6 to 44 in., top at about 75 in."},
-  "i-vis":{intro:1,a:"Anarchitecture",t:"Photo-essay, Flash Art, nos. 46–47, June 1974, p. 70 (detail)",m:"The “PILLAR TO…” pair, handwritten caption by Gordon Matta-Clark. Enlarged from one scan of the page, printed flush on matte stock",s:"52 in. wide, from 48 to 100 in., centred at 60 in.",note:"Drawn stand-in. The scan is not shown until reproduction is cleared"},
-  "i-text":{intro:1,fr:"none",t:"Introduction",m:"About 150–175 words in three paragraphs. Franklin Gothic Book, 38–42 pt, ragged right",s:"From 105 in., up to 34 in. wide, starting at about 69 in.",note:"Copy to come"}
+  "i-title":{intro:1,fr:"none",t:"The Afterlives of the Cut: Anarchitecture and Its Legacies",m:"Wall title. Franklin Gothic Demi, capitals about 4¾ in.; subtitle in Franklin Gothic Book, capitals about 1¾ in.",s:"From 6 in., top at 82 in., level with the image"},
+  "i-vis":{intro:1,a:"Anarchitecture",t:"Photo-essay, Flash Art, nos. 46–47, June 1974, p. 70 (detail)",m:"The “PILLAR TO…” pair, handwritten caption by Gordon Matta-Clark. Enlarged from one scan of the page, printed flush on matte stock",s:"63 in. wide, centred at 60 in.",note:"Mock-up from the web scan of the spread. Production file and reproduction credit to secure"},
+  "i-text":{intro:1,fr:"none",t:"Introduction",m:"Three short paragraphs. Franklin Gothic Book, 36 pt, ragged right",s:"From 120 in., about 20 in. measure, starting at 82 in.",note:"Draft copy, for your edits"}
 };
 /* the Splitting prints are shown cropped to the print; the longest side, in inches, measured against the 10 in. sheet */
 Object.entries({4:9.58,5:9.61,6:9.74,7:9.73,8:10,9:8.79,10:9.49,11:9.72,12:7.7,13:9.86}).forEach(([k,l])=>C[k].L=l);
@@ -470,84 +470,63 @@ function drawWall(v){
   return s;
 }
 /* reception 117: the 12'1" face opposite the entrance to 106, seen straight on. Inches from the left edge
-   and from the finished floor (y = -height). Title left, the "PILLAR TO…" pair in the middle, the introduction right,
-   all on one warm-white ground. The photographs are a drawn stand-in until a cleared scan exists. */
-const RC={L:145,top:104,cap:.74,
-  title:{x:6,top:75,cap:4,sub:1.25,gap:2,lead:1.12},
-  img:{x:48,w:52,b:40,h:40,join:75.2,rb:44.6},
-  capt:{gap:1.5,fs:.5,lh:.7},
-  text:{x:105,w:34,meas:20,top:69,fs:.56,lh:.82,paras:[6,5,5],pgap:.45}};
+   and from the finished floor (y = -height). After the Mavis Pusey wall: one dark printed panel across the face,
+   the title large at the left, the "PILLAR TO…" pair enlarged in the middle, the introduction at the right. */
+const RC={L:145,top:106,cap:.74,panel:[22,98],ground:"#1c1b19",gold:"#D2A64B",paper:"#EDE8DC",
+  title:{x:6,top:82,cap:4.8,sub:1.7,gap:2.6,lead:1.06},
+  img:{x:53,w:63,src:"img/intro.jpg",ar:1156/812},
+  capt:{gap:1.6,fs:.5,lh:.72},
+  text:{x:120,meas:19.5,top:82,fs:.5,lh:.78,pgap:.45},
+  copy:["Coming in from the pavilion, you have just watched Gordon Matta-Clark saw a house in two and let the light in. Here the building is whole. What has been cut is the picture: one photograph enlarged and laid against another, so that a third column stands for as long as you believe they show one place.",
+    "In 1973 and 1974 a loose circle of artists around 112 Greene Street called themselves Anarchitecture. Matta-Clark’s work survives in abundance. Theirs survives mostly in a few magazine pages like this one. The exhibition begins with him and cannot end there.",
+    "Look for the join. A property line can leave a lot too narrow to stand on; a window can divide two publics looking at the same building. The galleries ahead follow the cut after it leaves the saw."]};
 function drawReception(v){
-  const {L,top}=RC,mx=26,vx=-mx,vw=L+2*mx,vy=-top,vh=top+16;
+  const {L,top}=RC,mx=26,vx=-mx,vw=L+2*mx,vy=-top,vh=top+16,[p0,p1]=RC.panel;
   const s=el("svg",{viewBox:`${vx} ${vy} ${vw} ${vh}`,role:"img","aria-label":v.label,class:"el rc"});
   const defs=el("defs",{},s);
-  const dots=el("pattern",{id:"rcDots",width:.42,height:.42,patternUnits:"userSpaceOnUse",patternTransform:"rotate(45)"},defs);
-  el("circle",{cx:.21,cy:.21,r:.11,fill:"#000","fill-opacity":.22},dots);
-  const clip=(id,x,y,w,h)=>{const c=el("clipPath",{id},defs);el("rect",{x,y,width:w,height:h},c);};
+  const sh=el("filter",{id:"rcSh",x:"-5%",y:"-5%",width:"110%",height:"112%"},defs);el("feDropShadow",{dx:0,dy:.25,stdDeviation:.35,"flood-color":"#000","flood-opacity":.6},sh);
   el("rect",{x:vx,y:vy,width:vw,height:vh,class:"bg"},s);
-  // the wall face: the ground runs over the whole 12'1", cut at the top of the drawing
-  el("rect",{x:0,y:-top,width:L,height:top,class:"gr"},s);
   el("path",{d:`M0 0 V${-top} M${L} 0 V${-top}`,class:"e-line"},s);
   el("line",{x1:vx,y1:0,x2:vx+vw,y2:0,class:"e-floor"},s);
+  // the printed panel, wall to wall
+  el("rect",{x:0,y:-p1,width:L,height:p1-p0,style:`fill:${RC.ground}`},s);
   const parts=[];const part=k=>{const g=el("g",{class:"e-work",tabindex:"0",role:"button","aria-label":C[k].t},s);parts.push([g,k]);return g;};
+  const txt=(g,x,y,t,cls,size,fill,extra={})=>{const e=el("text",{x,y,class:cls,style:`font-size:${size}px;fill:${fill}`,...extra},g);e.textContent=t;return e;};
 
-  // left: the title, four lines on one left edge
+  // left: the title, large, four lines on one left edge
   {const T=RC.title,g=part("i-title"),fs=T.cap/RC.cap,ss=T.sub/RC.cap;let y=-(T.top-T.cap);
-    const line=(t,cls,size,yy)=>{const e=el("text",{x:T.x,y:yy,class:"ink "+cls,style:`font-size:${size}px`},g);e.textContent=t;return e;};
-    line("The Afterlives","fd",fs,y);y+=fs*T.lead;line("of the Cut:","fd",fs,y);
-    y+=T.gap+T.sub;line("Anarchitecture","fb",ss,y);y+=ss*1.22;line("and Its Legacies","fb",ss,y);
-    el("rect",{x:T.x-1,y:-T.top-1,width:40,height:y+T.top+2,class:"hit"},g);}
+    txt(g,T.x,y,"The Afterlives","fd",fs,RC.gold);y+=fs*T.lead;txt(g,T.x,y,"of the Cut:","fd",fs,RC.gold);
+    y+=T.gap+T.sub;txt(g,T.x,y,"Anarchitecture","fb",ss,RC.paper);y+=ss*1.2;txt(g,T.x,y,"and Its Legacies","fb",ss,RC.paper);
+    el("rect",{x:T.x-1,y:-T.top-1,width:44,height:y+T.top+2,class:"hit"},g);}
 
-  // centre: the composite, a stand-in drawn after the page. Left photograph: two carved columns.
-  // Right: the nearer column again, larger, in a shallower print, with a step of page left below it.
-  {const I=RC.img,g=part("i-vis"),X0=I.x,X1=I.x+I.w,J=I.join,yT=-(I.b+I.h),yB=-I.b,yR=-I.rb;
-    el("rect",{x:X0,y:yT,width:I.w,height:I.h,style:"fill:#F6F3EC",stroke:"#d9d4c8","stroke-width":".5px","vector-effect":"non-scaling-stroke"},g);
-    clip("rcL",X0,yT,J-X0,yB-yT);clip("rcR",J,yT,X1-J,yR-yT);
-    const col=(p,cx,w,base,capY,tone)=>{ // a carved column: base, shaft with flutes, a band of carving, capital
-      const sx=cx-w/2,cap=w*.42,bs=w*.3;
-      el("rect",{x:cx-w*.62,y:base-bs,width:w*1.24,height:bs,style:"fill:"+tone},p);
-      el("rect",{x:sx,y:capY,width:w,height:base-bs-capY,style:"fill:"+tone},p);
-      el("path",{d:`M${cx-w*.7} ${capY} L${cx-w*.5} ${capY+cap} H${cx+w*.5} L${cx+w*.7} ${capY} Z`,style:"fill:"+tone},p);
-      el("rect",{x:cx-w*.78,y:capY-cap*.45,width:w*1.56,height:cap*.45,style:"fill:"+tone},p);
-      [.25,.5,.75].forEach(f=>el("rect",{x:sx+w*f-w*.025,y:capY+cap+w*.4,width:w*.05,height:base-bs-capY-cap-w*.8,style:"fill:#4a4640"},p));
-      [.18,.21].forEach(f=>{const yy=capY+(base-capY)*f;el("path",{d:`M${sx} ${yy} q${w/4} ${w*.22} ${w/2} 0 t${w/2} 0`,fill:"none",stroke:"#7a756b","stroke-width":".6px","vector-effect":"non-scaling-stroke"},p);});};
-    const pl=el("g",{"clip-path":"url(#rcL)"},g),hL=-57;
-    el("rect",{x:X0,y:yT,width:J-X0,height:hL-yT,style:"fill:#d3cec3"},pl);
-    el("rect",{x:X0,y:hL,width:J-X0,height:yB-hL,style:"fill:#8f897e"},pl);
-    el("path",{d:`M${X0} ${hL} q6 -1.2 11 -.4 t12 .6 t5 -.3`,style:"fill:#a29c90"},pl);
-    col(pl,54.5,3.4,-41.5,-72.5,"#2b2925");col(pl,66.5,3.4,-42.5,-72,"#2f2d29");
-    el("rect",{x:X0,y:yT,width:J-X0,height:yB-yT,style:"fill:url(#rcDots)"},pl);
-    const pr=el("g",{"clip-path":"url(#rcR)"},g),hR=-52.2;
-    el("rect",{x:J,y:yT,width:X1-J,height:hR-yT,style:"fill:#c2bcb0"},pr);
-    el("rect",{x:J,y:hR,width:X1-J,height:yR-hR,style:"fill:#7d776c"},pr);
-    col(pr,81.2,7.2,-38,-73.8,"#252320");
-    el("rect",{x:J,y:yT,width:X1-J,height:yR-yT,style:"fill:url(#rcDots)"},pr);
-    el("path",{d:`M${J} ${yT} V${yR} H${X1}`,fill:"none",stroke:"#000","stroke-opacity":.35,"stroke-width":".6px","vector-effect":"non-scaling-stroke"},g);
-    const ins=el("text",{x:61.5,y:-75.6,class:"hand",style:"fill:#1d1c1a;font-size:4.8px",transform:"rotate(-3 61.5 -75.6)"},g);ins.textContent="PILLAR TO…";
-    el("rect",{x:X0-1,y:yT-1,width:I.w+2,height:I.h+2,class:"hit"},g);
-    // the caption, at the left edge of the image, set at its real size
-    const P=RC.capt;["Detail from Anarchitecture’s photo-essay, Flash Art, nos. 46–47, June 1974, p. 70.","Handwritten caption by Gordon Matta-Clark.","Reproduction credit as supplied with the final scan"].forEach((t,i)=>{
-      const e=el("text",{x:X0,y:-(I.b-P.gap-P.fs*RC.cap)+i*P.lh+(i===2?P.lh*.5:0),class:"fb "+(i===2?"tbar":"ink"),style:`font-size:${P.fs}px`},g);e.textContent=t;});}
+  // centre: the composite from p. 70, as printed, edges and all
+  {const I=RC.img,g=part("i-vis"),h=I.w/I.ar,b=60-h/2,y=-(b+h);
+    el("image",{href:I.src,x:I.x,y,width:I.w,height:h,preserveAspectRatio:"none",filter:"url(#rcSh)"},g);
+    const P=RC.capt;["Detail from Anarchitecture’s photo-essay, Flash Art, nos. 46–47, June 1974, p. 70.","Handwritten caption by Gordon Matta-Clark."].forEach((t,i)=>
+      txt(g,I.x,-(b-P.gap-P.fs*RC.cap)+i*P.lh,t,"fb",P.fs,"#a9a496"));
+    el("rect",{x:I.x-1,y:y-1,width:I.w+2,height:h+2,class:"hit"},g);}
 
-  // right: the introduction (placeholder lines at size), one blank line, then the credit
-  {const T=RC.text,g=part("i-text");let y=-T.top;const meas=T.meas;
-    T.paras.forEach((n,pi)=>{for(let i=0;i<n;i++){const w=i===n-1?meas*[.62,.48,.7][pi]:meas*(.9+.1*((i*7+pi*3)%4)/3);
-      el("rect",{x:T.x,y:y+T.lh*.28,width:w,height:T.fs*.5,class:"tbar"},g);y+=T.lh;}y+=T.pgap;});
-    y+=T.lh;const c=el("text",{x:T.x,y:y+T.fs*RC.cap,class:"fb ink",style:`font-size:${T.fs}px`},g);c.textContent="Curated by Rodrigo Penide Lema";
-    el("rect",{x:T.x-1,y:-T.top-1,width:T.w+2,height:y+T.top+T.lh+2,class:"hit"},g);}
+  // right: the introduction, set at size, then the credit one line below
+  const T=RC.text,gt=part("i-text"),body=el("g",{},gt);
+  el("rect",{x:T.x-1,y:-T.top-1,width:T.meas+2,height:T.top-30,class:"hit"},gt);
+  const setText=()=>{body.innerHTML="";let y=-T.top+T.fs*RC.cap;const probe=txt(body,T.x,y,"","fb",T.fs,RC.paper);
+    const width=t=>{probe.textContent=t;return probe.getComputedTextLength();};
+    const line=t=>{txt(body,T.x,y,t,"fb",T.fs,RC.paper);y+=T.lh;};
+    RC.copy.forEach(par=>{let cur="";par.split(" ").forEach(w=>{const n=cur?cur+" "+w:w;if(cur&&width(n)>T.meas){line(cur);cur=w;}else cur=n;});if(cur)line(cur);y+=T.pgap;});
+    probe.remove();y+=T.lh-T.pgap;txt(body,T.x,y,"Curated by Rodrigo Penide Lema","fb",T.fs,RC.gold);};
 
   // dimensions, on request: the horizontal chain above, heights at the left, the width under the floor
   {const d=el("g",{class:"dims"},s),ln=a=>el("path",{d:a,class:"dl"},d),tx=(x,y,t,anchor="middle")=>{const e=el("text",{x,y,"text-anchor":anchor},d);e.textContent=t;};
-    const yc=-90,xs=[0,6,44,48,100,105,139,145];ln(`M0 ${yc} H${L}`);
-    xs.forEach(x=>ln(`M${x} ${yc-1.2} V${yc+1.2}`));xs.slice(1).forEach((x,i)=>{const a=xs[i],w=x-a;tx((a+x)/2,yc-(w<8?(i%2?4.4:2):2),`${+w.toFixed(2)}″`);});
+    const yc=-102,xs=[0,6,50,53,116,120,140,145];ln(`M0 ${yc} H${L}`);
+    xs.forEach(x=>ln(`M${x} ${yc-1.2} V${yc+1.2}`));xs.slice(1).forEach((x,i)=>{const a=xs[i],w=x-a;tx((a+x)/2,yc-(w<6?(i%2?4.4:2):2),`${+w.toFixed(2)}″`);});
     ln(`M0 8 H${L} M0 6.8 V9.2 M${L} 6.8 V9.2`);tx(L/2,12.5,"12′1″ (145″)");
-    const xh=-6;ln(`M${xh} 0 V-80`);[[80,"80″ image top"],[75,"75″ title top"],[69,"69″ text starts"],[60,"60″ image centre"],[40,"40″ image bottom"]].forEach(([h,t])=>{ln(`M${xh-1.2} ${-h} H${xh+1.2}`);tx(xh-2,-h+.9,t,"end");});
-    el("rect",{x:6,y:-80,width:38,height:40,class:"dr"},d);el("rect",{x:105,y:-69,width:34,height:21,class:"dr"},d);}
+    const ih=RC.img.w/RC.img.ar,it=Math.round(60+ih/2),ib=Math.round(60-ih/2);
+    const xh=-6;ln(`M${xh} 0 V${-p1}`);[[p1,p1+"″ panel top"],[it,it+"″ title, image and text top"],[60,"60″ image centre"],[ib,ib+"″ image bottom"],[p0,p0+"″ panel bottom"]].forEach(([h,t])=>{ln(`M${xh-1.2} ${-h} H${xh+1.2}`);tx(xh-2,-h+.9,t,"end");});}
 
   picks=parts.map(([,k])=>k);
   parts.forEach(([g,k],i)=>{const go=()=>pick(i);g.addEventListener("click",go);g.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();go();}});});
   s.addEventListener("click",e=>{if(e.target.closest(".e-work"))return;leave();});
-  fit=()=>fitText(s,vw,vh,10);
+  fit=()=>{const c=fitText(s,vw,vh,10);setText();document.fonts&&document.fonts.load(`400 10px "Libre Franklin"`).then(setText,()=>{});return c;};
   return s;
 }
 /* clicking the wall, or the empty drawing, lets go of the work */
