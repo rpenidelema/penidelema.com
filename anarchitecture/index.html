@@ -1,10 +1,12 @@
 <!doctype html>
-<!-- Anarchitecture, exhibition proposal. Built 2026-11-25 -->
+<!-- Anarchitecture, exhibition proposal. Built 2026-11-26 -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Anarchitecture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;600&display=swap" rel="stylesheet">
 <meta name="description" content="Anarchitecture. Installation plan for an exhibition at the Benton Museum of Art at Pomona College. Rodrigo Penide Lema.">
 <style>
 /* One look on purpose: white ground, black drawing, Arial at one small size. Single theme. */
@@ -123,6 +125,16 @@ main{min-height:100%;display:flex;align-items:center;justify-content:center;padd
 body.open .corner{display:none}
 @media (max-width:640px){.corner-r{gap:12px}.page{grid-template-rows:auto auto;align-content:start}.tomb{position:static;grid-row:2;margin:0 24px 32px;max-width:none;font-size:12px}#pagebody{grid-row:1}.wallbox{min-height:0;padding-block:72px 24px}.room3d{width:100%}.wallbox svg.el{max-height:none}}
 .obj{cursor:pointer}.obj button,.obj a{cursor:pointer}
+/* reception 117: the introductory wall, a printed graphic on a warm ground */
+.rc .gr{fill:#F3F0E8}
+.rc .ink{fill:#23221F}
+.rc .fd{font-family:"Franklin Gothic Demi","Franklin Gothic Medium","Libre Franklin",Arial,sans-serif;font-weight:600}
+.rc .fb{font-family:"Franklin Gothic Book","Libre Franklin",Arial,sans-serif;font-weight:400}
+.rc .tbar{fill:#9b978d}
+.rc .dims{display:none;fill:var(--grey)}
+.rc.showdims .dims{display:inline}
+.rc .dl{stroke:var(--grey);stroke-width:.6px;vector-effect:non-scaling-stroke;fill:none}
+.rc .dr{stroke:var(--grey);stroke-width:.6px;stroke-dasharray:3 3;vector-effect:non-scaling-stroke;fill:none}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -243,9 +255,8 @@ const C={
   "p-blackwell":{prop:1,a:ABL,t:"Commission for the courtyard",note:"In the open centre, set back from the patio entrance. The routes on either side stay open",W:120,H:84},
   "p-dundas":{prop:1,a:ABL,t:"Dundas Square",note:"Precedent",W:40,H:28},
   "p-model":{prop:1,a:ABL,t:"Model for a Public Space",note:"Precedent",W:40,H:28},
-  "i-title":{intro:1,fr:"none",t:"Anarchitecture",note:"Exhibition title",W:60,H:8},
-  "i-vis":{intro:1,t:"Introductory visual",note:"To be selected",W:66,H:50},
-  "i-text":{intro:1,fr:"none",t:"Introduction",note:"Text to come",W:40,H:54}
+  "i-title":{intro:1,fr:"none",t:"The Afterlives of the Cut: Anarchitecture and Its Legacies",m:"Exhibition title, in a white field cut out of the handwriting. Franklin Gothic Demi and Book",s:"Centred on the wall at eye level"},
+  "i-vis":{intro:1,a:"Anarchitecture",t:"The list of mutations of the word, from the group’s pages in Flash Art, nos. 46–47, June 1974, p. 70",m:"The handwritten list, enlarged and repeated over the whole face, floor to ceiling. AN ARCHITECTURE in full black, every other line in grey",s:"Each repeat about 58 × 32 in., handwriting about 2 in. high",note:"Mock-up from the web scan of the spread. A print needs a proper scan of the page"}
 };
 /* the Splitting prints are shown cropped to the print; the longest side, in inches, measured against the 10 in. sheet */
 Object.entries({4:9.58,5:9.61,6:9.74,7:9.73,8:10,9:8.79,10:9.49,11:9.72,12:7.7,13:9.86}).forEach(([k,l])=>C[k].L=l);
@@ -314,14 +325,13 @@ const L103N=()=>[{k:"24b",kind:"case",x:300,b:0,w:36,h:38}];
 const L103W=()=>{const [,h]=osz(64),[,h2]=osz("64b"),gap=6;return [at(64,100,60+(h2+gap)/2),at("64b",100,60-(h+gap)/2),{k:62,kind:"tri2",x:250,b:26,w:40,h:72},{k:63,kind:"plate",x:458-60,b:46,w:60,h:12}];};
 const L103E=()=>[{k:"p-notebook",kind:"case",x:40,b:0,w:30,h:38},{k:"p-anderson",kind:"imgtext",x:100,b:52,w:34,h:16},
   {k:"p-swept",x:170,b:50,w:16,h:20},{k:"p-contact",kind:"sheets",x:228,b:56,w:36,h:8}];
-/* 28'6": the title in the left third, the visual in the middle, the introduction on the right */
-const LINTRO=()=>[{k:"i-title",kind:"title",x:14,b:58,w:60,h:13},{...at("i-vis",171,60)},{k:"i-text",kind:"text",x:250,b:33,w:40,h:54}];
 
 /* ---------- the views: one per + on the plan ----------
    at = where the + sits, in plan units (the plan drawing is 2350 x 1350, starting at 265, 405).
    Wall markers sit 22 units in front of the middle of the wall face, measured from the drawing. */
 const VIEWS=[
-  {id:"intro",label:"Lobby, introduction wall",at:[973.5,1536.4],len:342,h:144,items:LINTRO},
+  {id:"intro",label:"Reception 117, introductory wall",at:[699.6,1379],len:145,draw:drawReception,
+   note:`<p>Reception 117, introductory wall</p><p class="where">12 ft 1 in., opposite the entrance to 106</p><p class="where">Exhibition proposal for the Benton Museum of Art at Pomona College</p>`},
   {id:"106-S",label:"106, south wall",at:[736.6,1266.5],len:188,h:180,min:[38,22],from:-4,items:()=>[at(1,21,60)]},
   {id:"106-E",label:"106, east wall",at:[878.3,1114.5],len:464,h:180,items:L106E},
   {id:"106-W",label:"106, west wall",at:[688,1159.8],len:343,h:180,items:L106W},
@@ -366,7 +376,7 @@ function tombLines(k,open){const c=C[k];
   const n=num(k),lines=[n?`<span class="n">${esc(n)}</span>`:"",esc(c.a),`<span class="t">${esc(c.t)}</span>${c.d?", "+esc(c.d):""}`,esc(c.m),esc(c.s),esc(c.cr),c.note?`<span class="n">${esc(c.note)}</span>`:""].filter(Boolean);
   return lines.map(l=>`<p>${l}</p>`).join("")+(open?`<p class="more"><a href="#o-${esc(k)}">View</a></p>`:"");}
 function tombstone(ks,open=true){
-  if(!ks){tomb.innerHTML="";return;}
+  if(!ks){tomb.innerHTML=current&&current.note||"";return;}
   tomb.innerHTML=[].concat(ks).map(k=>`<div class="tb">${tombLines(k,open)}</div>`).join("");}
 
 /* text stays the same small size whatever the scale of the drawing */
@@ -455,6 +465,50 @@ function drawWall(v){
   groups.forEach(G=>card(el("g",{class:"glab"},s),G.lab));
   s.addEventListener("click",e=>{if(e.target.closest(".e-work,.glab"))return;leave();});
   fit=()=>fitText(s,vw,vh,10);
+  return s;
+}
+/* reception 117: the 12'1" face opposite the entrance to 106, seen straight on. Inches from the left edge
+   and from the finished floor (y = -height). The whole face is covered, floor to ceiling, with the group's handwritten
+   list from Flash Art (p. 70), repeated; AN ARCHITECTURE is the one line set in full black. A clean white field is
+   cut out of it at eye level, and the title sits in the cut. No wall text: the introduction goes elsewhere. */
+const RC={L:145,H:144,top:146,cap:.74,tile:{w:58,src:"img/intro-list.png",ar:1123/620},
+  cut:{cy:62,pad:[7,6]},t1:5.4,t2:2.2};
+function drawReception(v){
+  const {L,H,top}=RC,mx=26,vx=-mx,vw=L+2*mx,vy=-top,vh=top+16,tw=RC.tile.w,th=tw/RC.tile.ar;
+  const s=el("svg",{viewBox:`${vx} ${vy} ${vw} ${vh}`,role:"img","aria-label":v.label,class:"el rc"});
+  const defs=el("defs",{},s);
+  // the tile, in a running bond so the repeat doesn't read as a grid
+  const pat=el("pattern",{id:"rcList",width:tw,height:2*th,patternUnits:"userSpaceOnUse",x:-7,y:-H},defs);
+  [[0,0],[-tw/2,th],[tw/2,th]].forEach(([x,y])=>el("image",{href:RC.tile.src,x,y,width:tw,height:th,preserveAspectRatio:"none"},pat));
+  const cl=el("clipPath",{id:"rcFace"},defs);el("rect",{x:0,y:-H,width:L,height:H},cl);
+  el("rect",{x:vx,y:vy,width:vw,height:vh,class:"bg"},s);
+  const parts=[];const part=(k,p)=>{const g=el("g",{class:"e-work",tabindex:"0",role:"button","aria-label":C[k].t},p);parts.push([g,k]);return g;};
+  const gw=part("i-vis",s);
+  el("rect",{x:0,y:-H,width:L,height:H,style:"fill:#fff"},gw);
+  el("rect",{x:0,y:-H,width:L,height:H,style:"fill:url(#rcList)","clip-path":"url(#rcFace)"},gw);
+  el("path",{d:`M0 0 V${-top} M${L} 0 V${-top}`,class:"e-line"},s);
+  el("line",{x1:vx,y1:0,x2:vx+vw,y2:0,class:"e-floor"},s);
+  // the cut: a white field sized to the title, centred at eye level
+  const gt=part("i-title",s),box=el("rect",{style:"fill:#fff"},gt),tg=el("g",{},gt);
+  const f1=RC.t1/RC.cap,f2=RC.t2/RC.cap,[px,py]=RC.cut.pad;
+  const t1=el("text",{class:"fd","text-anchor":"middle",style:`font-size:${f1}px;fill:#111`},tg);t1.textContent="The Afterlives of the Cut:";
+  const t2=el("text",{class:"fb","text-anchor":"middle",style:`font-size:${f2}px;fill:#111`},tg);t2.textContent="Anarchitecture and Its Legacies";
+  const gap=2.4,hh=RC.t1+gap+RC.t2,ytop=-(RC.cut.cy+hh/2);
+  t1.setAttribute("x",L/2);t1.setAttribute("y",ytop+RC.t1);t2.setAttribute("x",L/2);t2.setAttribute("y",ytop+RC.t1+gap+RC.t2);
+  const size=()=>{const w=Math.max(t1.getComputedTextLength(),t2.getComputedTextLength())+2*px;
+    box.setAttribute("x",L/2-w/2);box.setAttribute("width",w);box.setAttribute("y",ytop-py);box.setAttribute("height",hh+2*py);RC._w=w;dims();};
+  // dimensions, on request
+  const d=el("g",{class:"dims"},s);
+  const dims=()=>{d.innerHTML="";const ln=a=>el("path",{d:a,class:"dl"},d),tx=(x,y,t,anchor="middle")=>{const e=el("text",{x,y,"text-anchor":anchor},d);e.textContent=t;};
+    const w=RC._w||100,x0=L/2-w/2,x1=L/2+w/2,b0=RC.cut.cy-hh/2-py,b1=RC.cut.cy+hh/2+py;
+    ln(`M0 8 H${L} M0 6.8 V9.2 M${L} 6.8 V9.2`);tx(L/2,12.5,"12′1″ (145″), covered floor to ceiling");
+    ln(`M${x0} ${-b1-4} H${x1} M${x0} ${-b1-5.2} V${-b1-2.8} M${x1} ${-b1-5.2} V${-b1-2.8}`);tx(L/2,-b1-5.5,`cut ${w.toFixed(0)}″ × ${(b1-b0).toFixed(0)}″`);
+    const xh=-6;ln(`M${xh} 0 V${-H}`);[[H,H+"″ ceiling"],[b1,b1.toFixed(0)+"″ top of the cut"],[RC.cut.cy,RC.cut.cy+"″ centre"],[b0,b0.toFixed(0)+"″ bottom of the cut"]].forEach(([h,t])=>{ln(`M${xh-1.2} ${-h} H${xh+1.2}`);tx(xh-2,-h+.9,t,"end");});
+    tx(L+4,-H+th/2,`each repeat ${tw}″ × ${th.toFixed(1)}″`,"start");};
+  picks=parts.map(([,k])=>k);
+  parts.forEach(([g,k],i)=>{const go=()=>pick(i);g.addEventListener("click",go);g.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();go();}});});
+  s.addEventListener("click",e=>{if(e.target.closest(".e-work"))return;leave();});
+  fit=()=>{const c=fitText(s,vw,vh,10);size();document.fonts&&document.fonts.load(`600 10px "Libre Franklin"`).then(size,()=>{});return c;};
   return s;
 }
 /* clicking the wall, or the empty drawing, lets go of the work */
@@ -983,7 +1037,7 @@ function pick(i){
   const o=body.querySelector(".obj");if(current&&current.options&&o){o.show(sel);tombstone(picks[sel],true);return;}
   const sc=body.querySelector(".scene");if(sc){sc.mark(picks[sel]);tombstone(picks[sel]);return;}
   body.querySelectorAll(".e-work").forEach((g,j)=>g.classList.toggle("dim",j!==sel));
-  tombstone(picks[sel]);
+  tombstone(picks[sel],!(current&&current.draw));
 }
 function show(label){page.setAttribute("aria-label",label);page.hidden=false;document.body.classList.add("open");page.scrollTop=0;}
 function openView(id){
@@ -992,7 +1046,7 @@ function openView(id){
   const keep=lastKey;stop();current=v;sel=-1;picks=[];tombstone(null);body.innerHTML="";prevView=id;lastKey=keep;
   if(v.options)body.appendChild(drawOptions(v));
   else{const box=document.createElement("div");box.className="wallbox";
-    box.appendChild(v.court?drawCourt(v):v.room&&v.room.w?drawRoom(v):v.scene?drawScene(v):drawWall(v));body.appendChild(box);
+    box.appendChild(v.draw?v.draw(v):v.court?drawCourt(v):v.room&&v.room.w?drawRoom(v):v.scene?drawScene(v):drawWall(v));body.appendChild(box);
     box.addEventListener("click",e=>{if(e.target===box||e.target.classList.contains("room3d"))leave();});}
   if(fit){cleanup=fit();fit=null;}
   if(v.room&&v.room.w)tombstone(67);
@@ -1000,6 +1054,8 @@ function openView(id){
   else if(v.options)pick(0);
   else{let i=picks.findIndex(p=>String(p)===lastKey);if(i<0&&v.key)i=picks.findIndex(p=>String(p)===String(v.key));if(i>=0)pick(i);}
   show(v.label);cr.innerHTML=`<a href="#">Close</a>`;
+  if(v.draw){const b=document.createElement("button");b.textContent="Dimensions";b.setAttribute("aria-pressed","false");cr.prepend(b);
+    b.addEventListener("click",()=>{const on=body.querySelector(".rc").classList.toggle("showdims");b.setAttribute("aria-pressed",on);});}
 }
 function openObject(k){
   if(!C[k])return closePage();
