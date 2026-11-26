@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Anarchitecture</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;600&family=Oswald:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;600&display=swap" rel="stylesheet">
 <meta name="description" content="Anarchitecture. Installation plan for an exhibition at the Benton Museum of Art at Pomona College. Rodrigo Penide Lema.">
 <style>
 /* One look on purpose: white ground, black drawing, Arial at one small size. Single theme. */
@@ -130,7 +130,6 @@ body.open .corner{display:none}
 .rc .ink{fill:#23221F}
 .rc .fd{font-family:"Franklin Gothic Demi","Franklin Gothic Medium","Libre Franklin",Arial,sans-serif;font-weight:600}
 .rc .fb{font-family:"Franklin Gothic Book","Libre Franklin",Arial,sans-serif;font-weight:400}
-.rc .fw{font-family:"Oswald","Franklin Gothic Demi Cond","Arial Narrow",sans-serif;font-weight:700}
 .rc .tbar{fill:#9b978d}
 .rc .dims{display:none;fill:var(--grey)}
 .rc.showdims .dims{display:inline}
@@ -256,10 +255,8 @@ const C={
   "p-blackwell":{prop:1,a:ABL,t:"Commission for the courtyard",note:"In the open centre, set back from the patio entrance. The routes on either side stay open",W:120,H:84},
   "p-dundas":{prop:1,a:ABL,t:"Dundas Square",note:"Precedent",W:40,H:28},
   "p-model":{prop:1,a:ABL,t:"Model for a Public Space",note:"Precedent",W:40,H:28},
-  "i-title":{intro:1,fr:"none",t:"The Afterlives of the Cut: Anarchitecture and Its Legacies",m:"Exhibition title. Franklin Gothic Demi, capitals about 3 in.; subtitle in Franklin Gothic Book",s:"On the right piece, top at 55 in."},
-  "i-vis":{intro:1,t:"AN | ARCHITECTURE",m:"The false wall in two pieces, cut floor to top between AN and ARCHITECTURE. The right piece is jacked 4 in. and tilted about 2°, so the cut opens from 1 in. at the floor to about 5 in. at the top, as in Splitting. The word is cut vinyl, about 17 in. capitals, read from the doorway",s:"Cut 28 in. from the left edge",note:"After Splitting and the group’s name: the cut makes the word"},
-  "i-text":{intro:1,fr:"none",t:"Introduction",m:"Three short paragraphs. Franklin Gothic Book, 36 pt, ragged right",s:"From 100 in., about 21 in. measure, starting at 55 in.",note:"Draft copy, for your edits"},
-  "i-list":{intro:1,a:"Anarchitecture",t:"The list of mutations of the word, from the group’s pages in Flash Art, nos. 46–47, June 1974, p. 70",m:"Typeset from the handwritten list, one column on the AN side, about 45 pt",s:"From 5 in., top at 56 in.",note:"Transcription to check against the page. One line is left out"}
+  "i-title":{intro:1,fr:"none",t:"The Afterlives of the Cut: Anarchitecture and Its Legacies",m:"Exhibition title, in a white field cut out of the handwriting. Franklin Gothic Demi and Book",s:"Centred on the wall at eye level"},
+  "i-vis":{intro:1,a:"Anarchitecture",t:"The list of mutations of the word, from the group’s pages in Flash Art, nos. 46–47, June 1974, p. 70",m:"The handwritten list, enlarged and repeated over the whole face, floor to ceiling. AN ARCHITECTURE in full black, every other line in grey",s:"Each repeat about 58 × 32 in., handwriting about 2 in. high",note:"Mock-up from the web scan of the spread. A print needs a proper scan of the page"}
 };
 /* the Splitting prints are shown cropped to the print; the longest side, in inches, measured against the 10 in. sheet */
 Object.entries({4:9.58,5:9.61,6:9.74,7:9.73,8:10,9:8.79,10:9.49,11:9.72,12:7.7,13:9.86}).forEach(([k,l])=>C[k].L=l);
@@ -471,79 +468,47 @@ function drawWall(v){
   return s;
 }
 /* reception 117: the 12'1" face opposite the entrance to 106, seen straight on. Inches from the left edge
-   and from the finished floor (y = -height). A false wall in two pieces stands in front of the face. One saw cut
-   runs floor to top between AN and ARCHITECTURE; the right piece is jacked up 3 in., as the back of Splitting was
-   lowered. The word reads from the doorway. Up close, the AN side carries the group's own list from Flash Art, every
-   line a mutation of the word, and the right side carries the title and the introduction. */
-const RC={L:145,top:142,wallTop:132,cut:28,gap:1,lift:4,tilt:1.8,cap:.74,
-  word:{base:68,size:24.5,an:[5,20.5],arch:[33.5,136.5]},
-  list:{x:5,top:56,fs:.62,lh:1.32,col:"#555"},
-  title:{x:34.5,top:55,cap:3.1,sub:1.4},
-  text:{x:100,meas:21,top:55,fs:.5,lh:.78,pgap:.45},
-  LIST:["AN ARK KIT PUNCTURE","AN ARCHITECTURE","ANARCHY TORTURE","AN ARTIC LECTURE","ATLANTIS LECTURE","AN ORCHID TEXTURE","ANT LEGISLATOR","ANARCHY LECTURE","AN ART COLLECTOR","AUNT ARTIC TORTURE","AN AIR KEY TACKLE",
-    "A KNEECAP FRACTURE","IN ARCHITECTURE","ON ARCHITECTURE","AN ATTIC TORTURE","AN ARTIC VECTOR","AN ART KIT TORTURE","ANARCHY THUNDER","A LETTUCE TEXTURE","AN ART DEFECTOR","AN ASS REFLECTOR","AN AIR KEY TACTIC",
-    "AN ACUPUNCTURE","AN ASTRAL VECTOR","AN AUSTRAL UNDER","A NECTOR TASTER","A NARCO TRADER","AN ASSTRAL FACTOR","A FILLIBUSTER","A FULLER BRUSHMAN","AN ARTIC TRACTOR","AN AIR KEY TICKLE"],
-  copy:["Coming in from the pavilion, you have just watched Gordon Matta-Clark saw a house in two. Here the cut goes through a word. Take away the space and architecture turns into an architecture, or into anarchy, a lecture, a texture, a torture.",
-    "In 1973 and 1974 a loose circle of artists around 112 Greene Street gave themselves that word as a name. The list at the left is theirs, from the pages they made together for Flash Art. Matta-Clark’s work survives in abundance. Theirs survives mostly in pages like those.",
-    "The exhibition begins with him and cannot end there. Look for the join: a lot too narrow to stand on, a window between two publics, a wall that comes apart along a line."]};
+   and from the finished floor (y = -height). The whole face is covered, floor to ceiling, with the group's handwritten
+   list from Flash Art (p. 70), repeated; AN ARCHITECTURE is the one line set in full black. A clean white field is
+   cut out of it at eye level, and the title sits in the cut. No wall text: the introduction goes elsewhere. */
+const RC={L:145,H:144,top:146,cap:.74,tile:{w:58,src:"img/intro-list.png",ar:1123/620},
+  cut:{cy:62,pad:[7,6]},t1:5.4,t2:2.2};
 function drawReception(v){
-  const {L,top,wallTop:WT,cut:X,gap:G,lift:U}=RC,mx=26,vx=-mx,vw=L+2*mx,vy=-top,vh=top+16;
+  const {L,H,top}=RC,mx=26,vx=-mx,vw=L+2*mx,vy=-top,vh=top+16,tw=RC.tile.w,th=tw/RC.tile.ar;
   const s=el("svg",{viewBox:`${vx} ${vy} ${vw} ${vh}`,role:"img","aria-label":v.label,class:"el rc"});
   const defs=el("defs",{},s);
-  const gr=el("linearGradient",{id:"rcGap",x1:0,x2:1,y1:0,y2:0},defs);[["0","#0d0d0c"],[".55","#2b2a27"],["1","#0d0d0c"]].forEach(([o,c])=>el("stop",{offset:o,"stop-color":c},gr));
-  const sf=el("filter",{id:"rcSoft",x:"-20%",y:"-20%",width:"140%",height:"140%"},defs);el("feGaussianBlur",{stdDeviation:.6},sf);
+  // the tile, in a running bond so the repeat doesn't read as a grid
+  const pat=el("pattern",{id:"rcList",width:tw,height:2*th,patternUnits:"userSpaceOnUse",x:-7,y:-H},defs);
+  [[0,0],[-tw/2,th],[tw/2,th]].forEach(([x,y])=>el("image",{href:RC.tile.src,x,y,width:tw,height:th,preserveAspectRatio:"none"},pat));
+  const cl=el("clipPath",{id:"rcFace"},defs);el("rect",{x:0,y:-H,width:L,height:H},cl);
   el("rect",{x:vx,y:vy,width:vw,height:vh,class:"bg"},s);
-  // the existing wall behind, and the floor
+  const parts=[];const part=(k,p)=>{const g=el("g",{class:"e-work",tabindex:"0",role:"button","aria-label":C[k].t},p);parts.push([g,k]);return g;};
+  const gw=part("i-vis",s);
+  el("rect",{x:0,y:-H,width:L,height:H,style:"fill:#fff"},gw);
+  el("rect",{x:0,y:-H,width:L,height:H,style:"fill:url(#rcList)","clip-path":"url(#rcFace)"},gw);
   el("path",{d:`M0 0 V${-top} M${L} 0 V${-top}`,class:"e-line"},s);
   el("line",{x1:vx,y1:0,x2:vx+vw,y2:0,class:"e-floor"},s);
-  // the gap: the room behind the false wall, seen through the cut and under the lifted piece
-  // the right piece is lifted and tilted about its lower-left corner, so the cut opens into a wedge toward the top
-  const th=RC.tilt*Math.PI/180,px=X+G,py=-U,rot=(dx,dy)=>[px+dx*Math.cos(th)-dy*Math.sin(th),py+dx*Math.sin(th)+dy*Math.cos(th)];
-  const RW=L-X-G-4,tl=rot(0,-WT),br=rot(RW,0);
-  el("path",{d:`M${X} 0 V${-WT} L${tl[0]} ${tl[1]} L${px} ${py} L${br[0]} ${br[1]} V0 Z`,style:"fill:url(#rcGap)"},s);
-  // the two pieces of the false wall
-  const left=el("g",{},s),right=el("g",{transform:`translate(0 ${-U}) rotate(${RC.tilt} ${px} 0)`},s);
-  el("rect",{x:0,y:-WT,width:X,height:WT,style:"fill:#FBFAF7;stroke:#000;stroke-width:1px","vector-effect":"non-scaling-stroke"},left);
-  el("rect",{x:X+G,y:-WT,width:RW,height:WT,style:"fill:#FBFAF7;stroke:#000;stroke-width:1px","vector-effect":"non-scaling-stroke"},right);
-  const parts=[];const part=(k,p)=>{const g=el("g",{class:"e-work",tabindex:"0",role:"button","aria-label":C[k].t},p);parts.push([g,k]);return g;};
-  const txt=(g,x,y,t,cls,size,fill,extra={})=>{const e=el("text",{x,y,class:cls,style:`font-size:${size}px;fill:${fill}`,...extra},g);e.textContent=t;return e;};
-
-  // the word, across both pieces, fitted to its width
-  {const W=RC.word,g=part("i-vis",s);
-    const an=el("g",{},g),ar=el("g",{transform:`translate(0 ${-U}) rotate(${RC.tilt} ${px} 0)`},g);
-    txt(an,W.an[0],-W.base,"AN","fw",W.size,"#111",{textLength:W.an[1]-W.an[0],lengthAdjust:"spacingAndGlyphs"});
-    txt(ar,W.arch[0],-W.base,"ARCHITECTURE","fw",W.size,"#111",{textLength:W.arch[1]-W.arch[0],lengthAdjust:"spacingAndGlyphs"});
-    el("rect",{x:0,y:-W.base-W.size*.8,width:L,height:W.size*.85,class:"hit"},g);}
-
-  // the AN side: the group's list, one column, read up close
-  {const Ls=RC.list,g=part("i-list",left);RC.LIST.forEach((t,i)=>txt(g,Ls.x,-Ls.top+Ls.fs*RC.cap+i*Ls.lh,t,"fb",Ls.fs,Ls.col));
-    el("rect",{x:Ls.x-1,y:-Ls.top-1,width:X-Ls.x,height:RC.LIST.length*Ls.lh+2,class:"hit"},g);}
-
-  // the right side: title, then the introduction
-  {const T=RC.title,g=part("i-title",right),fs=T.cap/RC.cap,ss=T.sub/RC.cap;let y=-T.top+T.cap;
-    txt(g,T.x,y,"The Afterlives","fd",fs,"#111");y+=fs*1.08;txt(g,T.x,y,"of the Cut:","fd",fs,"#111");
-    y+=2+T.sub;txt(g,T.x,y,"Anarchitecture","fb",ss,"#111");y+=ss*1.2;txt(g,T.x,y,"and Its Legacies","fb",ss,"#111");
-    el("rect",{x:T.x-1,y:-T.top-1,width:40,height:y+T.top+2,class:"hit"},g);}
-  const T=RC.text,gt=part("i-text",right),body=el("g",{},gt);
-  el("rect",{x:T.x-1,y:-T.top-1,width:T.meas+2,height:T.top-14,class:"hit"},gt);
-  const setText=()=>{body.innerHTML="";let y=-T.top+T.fs*RC.cap;const probe=txt(body,T.x,y,"","fb",T.fs,"#111");
-    const width=t=>{probe.textContent=t;return probe.getComputedTextLength();};
-    const line=t=>{txt(body,T.x,y,t,"fb",T.fs,"#111");y+=T.lh;};
-    RC.copy.forEach(par=>{let cur="";par.split(" ").forEach(w=>{const n=cur?cur+" "+w:w;if(cur&&width(n)>T.meas){line(cur);cur=w;}else cur=n;});if(cur)line(cur);y+=T.pgap;});
-    probe.remove();y+=T.lh-T.pgap;txt(body,T.x,y,"Curated by Rodrigo Penide Lema","fb",T.fs,"#111");};
-
+  // the cut: a white field sized to the title, centred at eye level
+  const gt=part("i-title",s),box=el("rect",{style:"fill:#fff"},gt),tg=el("g",{},gt);
+  const f1=RC.t1/RC.cap,f2=RC.t2/RC.cap,[px,py]=RC.cut.pad;
+  const t1=el("text",{class:"fd","text-anchor":"middle",style:`font-size:${f1}px;fill:#111`},tg);t1.textContent="The Afterlives of the Cut:";
+  const t2=el("text",{class:"fb","text-anchor":"middle",style:`font-size:${f2}px;fill:#111`},tg);t2.textContent="Anarchitecture and Its Legacies";
+  const gap=2.4,hh=RC.t1+gap+RC.t2,ytop=-(RC.cut.cy+hh/2);
+  t1.setAttribute("x",L/2);t1.setAttribute("y",ytop+RC.t1);t2.setAttribute("x",L/2);t2.setAttribute("y",ytop+RC.t1+gap+RC.t2);
+  const size=()=>{const w=Math.max(t1.getComputedTextLength(),t2.getComputedTextLength())+2*px;
+    box.setAttribute("x",L/2-w/2);box.setAttribute("width",w);box.setAttribute("y",ytop-py);box.setAttribute("height",hh+2*py);RC._w=w;dims();};
   // dimensions, on request
-  {const d=el("g",{class:"dims"},s),ln=a=>el("path",{d:a,class:"dl"},d),tx=(x,y,t,anchor="middle")=>{const e=el("text",{x,y,"text-anchor":anchor},d);e.textContent=t;};
-    const yc=-137,xs=[0,X,X+G,L];ln(`M0 ${yc} H${L}`);xs.forEach(x=>ln(`M${x} ${yc-1.2} V${yc+1.2}`));
-    tx(X/2,yc-2,`${X}″`);tx(X+G/2,4.2,`cut ${G}″ at the floor, ${(G+WT*Math.tan(th)).toFixed(1)}″ at the top`);tx((X+G+L)/2,yc-2,`${+(L-X-G).toFixed(2)}″, right piece ${RW}″ wide`);
-    ln(`M0 8 H${L} M0 6.8 V9.2 M${L} 6.8 V9.2`);tx(L/2,12.5,"12′1″ (145″)");
-    const xh=-6,W=RC.word;ln(`M${xh} 0 V${-WT}`);
-    [[WT,WT+"″ false wall"],[W.base+W.size*.72,Math.round(W.base+W.size*.72)+"″ word top"],[W.base,W.base+"″ word baseline"],[RC.title.top,RC.title.top+"″ list, title and text"],[U,U+"″ lift, right piece, tilted "+RC.tilt+"°"]].forEach(([h,t])=>{ln(`M${xh-1.2} ${-h} H${xh+1.2}`);tx(xh-2,-h+.9,t,"end");});}
-
+  const d=el("g",{class:"dims"},s);
+  const dims=()=>{d.innerHTML="";const ln=a=>el("path",{d:a,class:"dl"},d),tx=(x,y,t,anchor="middle")=>{const e=el("text",{x,y,"text-anchor":anchor},d);e.textContent=t;};
+    const w=RC._w||100,x0=L/2-w/2,x1=L/2+w/2,b0=RC.cut.cy-hh/2-py,b1=RC.cut.cy+hh/2+py;
+    ln(`M0 8 H${L} M0 6.8 V9.2 M${L} 6.8 V9.2`);tx(L/2,12.5,"12′1″ (145″), covered floor to ceiling");
+    ln(`M${x0} ${-b1-4} H${x1} M${x0} ${-b1-5.2} V${-b1-2.8} M${x1} ${-b1-5.2} V${-b1-2.8}`);tx(L/2,-b1-5.5,`cut ${w.toFixed(0)}″ × ${(b1-b0).toFixed(0)}″`);
+    const xh=-6;ln(`M${xh} 0 V${-H}`);[[H,H+"″ ceiling"],[b1,b1.toFixed(0)+"″ top of the cut"],[RC.cut.cy,RC.cut.cy+"″ centre"],[b0,b0.toFixed(0)+"″ bottom of the cut"]].forEach(([h,t])=>{ln(`M${xh-1.2} ${-h} H${xh+1.2}`);tx(xh-2,-h+.9,t,"end");});
+    tx(L+4,-H+th/2,`each repeat ${tw}″ × ${th.toFixed(1)}″`,"start");};
   picks=parts.map(([,k])=>k);
   parts.forEach(([g,k],i)=>{const go=()=>pick(i);g.addEventListener("click",go);g.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();go();}});});
   s.addEventListener("click",e=>{if(e.target.closest(".e-work"))return;leave();});
-  fit=()=>{const c=fitText(s,vw,vh,10);setText();document.fonts&&document.fonts.load(`400 10px "Libre Franklin"`).then(setText,()=>{});return c;};
+  fit=()=>{const c=fitText(s,vw,vh,10);size();document.fonts&&document.fonts.load(`600 10px "Libre Franklin"`).then(size,()=>{});return c;};
   return s;
 }
 /* clicking the wall, or the empty drawing, lets go of the work */
